@@ -584,7 +584,7 @@ export class UIManager {
                 <div class="mission-desc"></div>`;
             card.querySelector('.mission-title').textContent = L.titulo;
             card.querySelector('.mission-desc').textContent = L.descricao;
-            card.addEventListener('click', () => this.abrirInvestigacao(inv.id));
+            card.addEventListener('click', () => this.abrirInvestigacao(inv.id, false, true));
             cont.appendChild(card);
         });
         this.desenharPesquisa(cont, lang);
@@ -603,21 +603,21 @@ export class UIManager {
         card.querySelector('.mission-desc').textContent = T.desc;
         const caixa = card.querySelector('.pesquisa-botoes');
         const botao = (texto, id, cls, fn) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'inv-botao ' + cls; b.id = id; b.textContent = texto; b.addEventListener('click', fn); return b; };
-        caixa.append(botao(T.sortear, 'pesquisa-sortear', 'primario', () => { const inv = sortearProblema(); this.abrirInvestigacao(inv.id); }));
+        caixa.append(botao(T.sortear, 'pesquisa-sortear', 'primario', () => { const inv = sortearProblema(); this.abrirInvestigacao(inv.id, false, true); }));
         const ou = document.createElement('p'); ou.className = 'mission-desc'; ou.textContent = T.ou; caixa.append(ou);
         for (const p of PROBLEMAS) {
-            const rotulo = p[lang].titulo.replace(/^Problema: |^Problem: /, ''), b = botao(rotulo.charAt(0).toUpperCase() + rotulo.slice(1), 'pesquisa-' + p.id.replace('pesquisa-', ''), '', () => { prepararProblema(p.id); this.abrirInvestigacao(p.id); });
+            const rotulo = p[lang].titulo.replace(/^Problema: |^Problem: /, ''), b = botao(rotulo.charAt(0).toUpperCase() + rotulo.slice(1), 'pesquisa-' + p.id.replace('pesquisa-', ''), '', () => { prepararProblema(p.id); this.abrirInvestigacao(p.id, false, true); });
             b.className += ' pesquisa-problema'; b.dataset.problema = p.id; b.title = p[lang].descricao; caixa.append(b);
         }
         cont.appendChild(card);
     }
 
-    abrirInvestigacao(id, leitura = false) {
+    abrirInvestigacao(id, leitura = false, relato = false) {
         const inv = investigacaoPorId(id);
         if (!inv) return;
         this.encerrarJogo();
         this.investigacao.abrir(inv, currentLang, () => { this.screens.investigacao.classList.remove('active','inv-em-campo'); this.encerrarJogo(); if (this.origem === 'agencia') { this.voltarAgencia(true); return; } this.updateMissionsDisplay(); this.mostrarAba('investigacoes'); this.showScreen('missionSelect'); }, { revisao: GameState.settings.revisao === true, emCampo: !leitura, base: this.origem === 'agencia' });
-        if(leitura)this.showScreen('investigacao');else document.dispatchEvent(new CustomEvent('rh:investigacao',{detail:{id:inv.id}}));
+        if(leitura)this.showScreen('investigacao');else document.dispatchEvent(new CustomEvent('rh:investigacao',{detail:{id:inv.id,relato}}));
     }
     
     getMissionStars(missionId) {

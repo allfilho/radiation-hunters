@@ -2264,3 +2264,7 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 .inv-fim-jornal .inv-botao:hover, .inv-fim-jornal .inv-sair:hover { background: #7a3d1f; color: #efe7d2; border-color: #7a3d1f; }
 .inv-fim-jornal .inv-nav { background: linear-gradient(to top, #efe7d2 70%, transparent); }
 .inv-fim-jornal .inv-selo { color: #7a3d1f; border-color: #7a3d1f; }
+
+/* v3.25: cabine do transporte (embarque, assentos, desembarque) no painel de voo da Agência */
+.ag-cabine { margin: 0 0 10px; border: 2px solid #355a78; border-radius: 6px; background: #050b11; overflow: hidden; }
+.ag-cabine svg { display: block; width: 100%; height: auto; shape-rendering: crispEdges; }

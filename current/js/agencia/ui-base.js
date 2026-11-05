@@ -14,7 +14,7 @@ import { moduloSvg, rochaSvg, pessoaSvg } from './base-svg.js';
 import { planta as plantaSvg } from '../arte/planta.js';
 import { NORMAS, razao, janelaMaisRestritiva, corCaneta, doseNaJanela, diasParaVoltar, motivoIndisponivel, disponivel } from './equipe.js';
 import {
-    CUSTOS, NAVES, TIPOS_NAVE, CONSTRUIVEIS, UNICOS, GRADE_MAX, baiasTotal, camasTotal, modulosProntos, temLaboratorio, pesquisaPronta, naveLivre,
+    CUSTOS, NAVES, TIPOS_NAVE, CONSTRUIVEIS, UNICOS, GRADE_MAX, baiasTotal, camasTotal, modulosProntos, temLaboratorio, temMedico, limiteRetorno, pesquisaPronta, naveLivre,
     primeiraNaveLivre, comprarNave, construirModulo, expandirBase, iniciarPesquisa, contratar, enviarResgate, enviarLevantamento, foiLevantado,
 } from './frota.js';
 
@@ -34,7 +34,7 @@ export const metodosBase = {
         const corTxt = { verde: L.canetaVerde, amarelo: L.canetaAmarela, vermelho: L.canetaVermelha }[cor];
         const mot = motivoIndisponivel(m, dia);
         let estado = L.disponivel;
-        if (mot === 'tratamento') { const d = diasParaVoltar(m, dia); estado = d <= 1 ? L.emTratamentoHoje : preencher(L.emTratamento, { d }); }
+        if (mot === 'tratamento') { const d = diasParaVoltar(m, dia, limiteRetorno(e)); estado = d <= 1 ? L.emTratamentoHoje : preencher(L.emTratamento, { d }); }
         else if (mot === 'viagem') estado = preencher(L.emViagem, { d: m.ocupadoAte });
         const [j1, j7, j30] = NORMAS.janelas;
         const doses = preencher(L.doseJanelas, { d: fmt(doseNaJanela(m, dia, 1)), s: fmt(doseNaJanela(m, dia, 7)), m: fmt(doseNaJanela(m, dia, 30)), ld: j1.limite, ls: j7.limite, lm: j30.limite });
@@ -49,11 +49,11 @@ export const metodosBase = {
     /** Em que sala cada cientista aparece hoje: tratamento no alojamento; os demais circulam pelas salas prontas. */
     pessoasPorSala() {
         const e = this.est, mapa = {};
-        const salas = e.modulos.filter((m) => m.pronto <= e.dia && ['alojamento', 'comando', 'laboratorio', 'biblioteca', 'academia'].includes(m.tipo));
+        const salas = e.modulos.filter((m) => m.pronto <= e.dia && ['alojamento', 'medico', 'comando', 'laboratorio', 'biblioteca', 'academia'].includes(m.tipo));
         salas.forEach((m) => { mapa[m.id] = []; });
         e.equipe.forEach((m, i) => {
             const mot = motivoIndisponivel(m, e.dia); if (mot === 'viagem' || !salas.length) return;
-            const alvo = mot === 'tratamento' ? (salas.find((q) => q.tipo === 'alojamento') || salas[0]) : salas[(i + e.dia) % salas.length];
+            const alvo = mot === 'tratamento' ? (salas.find((q) => q.tipo === 'medico') || salas.find((q) => q.tipo === 'alojamento') || salas[0]) : salas[(i + e.dia) % salas.length];
             mapa[alvo.id].push(m);
         });
         return mapa;
@@ -109,7 +109,7 @@ export const metodosBase = {
         const escavar = (escCol ? esc('escavar-coluna', L.escavarColuna, CUSTOS.expandirColuna) : '') + (escLin ? esc('escavar-linha', L.escavarLinha, CUSTOS.expandirLinha) : '');
         const construir = livre ? `<button type="button" class="ag-menu-bt destaque" data-vazio="${livre}"><span>${M.construir}</span></button>` : `<button type="button" class="ag-menu-bt" disabled><span>${M.construir}</span><em>${L.menuSemEspaco}</em></button>`;
         return `<nav class="ag-console" aria-label="${M.titulo}"><div class="ag-console-cab"><p class="ag-console-nome">${NOME_AGENCIA[currentLang]}</p><p class="ag-console-linha">${dia}</p><p class="ag-console-linha">${L.creditos}: <strong>${e.creditos}</strong></p></div>`
-            + `<div class="ag-menu">${ent('alojamento', M.pessoal)}${ent('hangar', M.hangar)}${ent('laboratorio', M.pesquisa)}${ent('comando', M.comando)}${ent('academia', M.treino)}${ent('cofre', M.arquivo)}${ent('biblioteca', M.biblioteca)}${ent('oficina', M.oficina)}${construir}${escavar}`
+            + `<div class="ag-menu">${ent('alojamento', M.pessoal)}${ent('medico', M.medico)}${ent('hangar', M.hangar)}${ent('laboratorio', M.pesquisa)}${ent('comando', M.comando)}${ent('academia', M.treino)}${ent('cofre', M.arquivo)}${ent('biblioteca', M.biblioteca)}${ent('oficina', M.oficina)}${construir}${escavar}`
             + `<button type="button" class="ag-menu-bt" data-ag="normas"><span>${L.normasTit}</span></button><button type="button" class="ag-menu-bt destaque" data-ag="trocar"><span>${L.irMapa}</span></button></div></nav>`;
     },
 
@@ -159,6 +159,7 @@ export const metodosBase = {
         if (s === 'hangar') return rel + this.htmlHangar();
         if (s === 'laboratorio') return rel + this.htmlLaboratorio();
         if (s === 'alojamento') return rel + this.htmlAlojamento();
+        if (s === 'medico') return rel + this.htmlMedico();
         if (s === 'comando') return rel + this.fala('marta', L.marta, L.martaMapa) + `<div class="ag-cartao"><p>${preencher(L.comandoResumo, { a: e.ativos.length, c: Object.values(e.concluidos).filter((n) => n > 0).length, x: e.expirados })}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="trocar">${L.irMapa}</button></div></div>`;
         if (s === 'academia') {
             const m1 = TUTORIAL, feito = treinamentoConcluido(this.cb.desbloqueadas()), est = this.cb.estrelas(1);
@@ -182,6 +183,16 @@ export const metodosBase = {
         return rel;
     },
 
+    /** v3.27: Departamento médico: quem está em tratamento fica aqui; com o módulo a alta sai com dose relativa < 85 % em vez de 75 % [H]. */
+    htmlMedico() {
+        const L = this.L, e = this.est, lim = limiteRetorno(e);
+        const doentes = e.equipe.filter((m) => motivoIndisponivel(m, e.dia) === 'tratamento');
+        const lista = doentes.length ? doentes.map((m) => this.htmlMembro(m)).join('') : `<p class="ag-nota">${L.medicoVazio}</p>`;
+        return this.fala('cecilia', L.cecilia, L.ceciliaFala)
+            + `<div class="ag-cartao"><h3>${L.sala.medico} · ${preencher(L.medicoOcupados, { n: doentes.length })}</h3>${lista}</div>`
+            + `<div class="ag-cartao"><p class="ag-nota">${preencher(L.medicoRegra, { p: Math.round(lim * 100), q: Math.round(NORMAS.retorno * 100) })}</p></div>`;
+    },
+
     htmlAlojamento() {
         const L = this.L, e = this.est;
         const eq = e.equipe.map((m) => this.htmlMembro(m)).join('');
@@ -190,7 +201,7 @@ export const metodosBase = {
             return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), CUSTOS.contratar, mot, `data-id="${c.id}"`)}</div></div>`;
         }).join('');
         return `<div class="ag-cartao"><h3>${L.sala.alojamento} · ${preencher(L.camas, { n: e.equipe.length, k: camasTotal(e) })}</h3>${eq}</div>`
-            + `<div class="ag-cartao"><h3>${L.contratarTit}</h3>${cands || `<p class="ag-nota">${L.semCandidatos}</p>`}</div>`
+            + (temMedico(e) ? '' : `<div class="ag-cartao"><p class="ag-nota">${L.semMedicoDica}</p></div>`) + `<div class="ag-cartao"><h3>${L.contratarTit}</h3>${cands || `<p class="ag-nota">${L.semCandidatos}</p>`}</div>`
             + `<div class="ag-cartao"><h3>${L.normasTit}</h3><p class="ag-nota">${L.normasTxt}</p></div>`;
     },
 
@@ -253,7 +264,7 @@ export const metodosBase = {
         }).join('');
         const cartoes = e.equipe.map((m) => {
             const ok = disponivel(m, e.dia), nave = p.seats.includes(m.id), d = infoDose(m), mot = motivoIndisponivel(m, e.dia);
-            const estado = nave ? L.naNave : (mot === 'tratamento' ? (diasParaVoltar(m, e.dia) <= 1 ? L.emTratamentoHoje : preencher(L.emTratamento, { d: diasParaVoltar(m, e.dia) })) : mot === 'viagem' ? preencher(L.emViagem, { d: m.ocupadoAte }) : L.disponivel);
+            const estado = nave ? L.naNave : (mot === 'tratamento' ? (diasParaVoltar(m, e.dia, limiteRetorno(e)) <= 1 ? L.emTratamentoHoje : preencher(L.emTratamento, { d: diasParaVoltar(m, e.dia) })) : mot === 'viagem' ? preencher(L.emViagem, { d: m.ocupadoAte }) : L.disponivel);
             return `<button type="button" class="ag-cartao-cient ag-borda-${d.cor}${nave ? ' naNave' : ''}${ok ? '' : ' indisp'}" data-cartao="${m.id}" ${ok && !nave ? '' : 'disabled'} aria-label="${m.nome}. ${preencher(L.doseRel, { p: d.pct })}, ${d.txt}. ${estado}"><span class="inv-retrato" aria-hidden="true">${retratoSvg(m.retrato, expressaoDe(d.cor, mot))}</span><span class="ag-cc-info"><strong>${m.nome}</strong><span class="ag-nota">${preencher(L.doseRel, { p: d.pct })} · <span class="ag-caneta ag-c-${d.cor}">${d.txt}</span></span><span class="ag-nota">${estado}</span></span></button>`;
         }).join('');
         const ids = this.idsDoPreparo(), pode = ids.length >= 1 && !semNave;

@@ -77,7 +77,7 @@
         <div id="investigacao-screen" class="screen"></div>
 
         <!-- Agência: Base, mapa de alertas, voo (ui-agencia.js) -->
-        <div id="agencia-screen" class="screen" role="region" aria-label="Agência"></div>
+        <div id="agencia-screen" class="screen" role="region" aria-label="Agency" data-i18n-aria="agenciaAria"></div>
 
         <!-- Story Intro Screen -->
         <div id="story-intro" class="screen">
@@ -87,7 +87,7 @@
                     <div class="character-portrait" id="story-portrait"></div>
                 </div>
                 <div class="story-nav">
-                    <button class="story-voltar" id="story-voltar" type="button" hidden>← Voltar</button>
+                    <button class="story-voltar" id="story-voltar" type="button" hidden>← Back</button>
                     <span class="story-pagina" id="story-pagina" aria-live="polite"></span>
                     <button class="story-continue" id="story-continue" data-i18n="continueStory">Continue →</button>
                 </div>
@@ -112,7 +112,7 @@
                         <div class="geiger-value">
                             <span id="geiger-reading">---</span>
                             <span class="geiger-unit">cps</span>
-                            <span class="geiger-unit" id="geiger-uncertainty" aria-label="incerteza"></span>
+                            <span class="geiger-unit" id="geiger-uncertainty" aria-label="uncertainty" data-i18n-aria="incertezaAria"></span>
                         </div>
                         <div class="geiger-bar">
                             <div class="geiger-bar-fill" id="geiger-bar-fill"></div>
@@ -122,7 +122,7 @@
                         <div class="pen-rot" id="pen-rot"></div>
                         <div class="pen-barra"><div class="pen-cheia" id="pen-cheia"></div></div>
                     </div>
-                    <div class="hud-equipe" id="hud-equipe" hidden role="group" aria-label="Equipe em campo"></div>
+                    <div class="hud-equipe" id="hud-equipe" hidden role="group" aria-label="Team in the field" data-i18n-aria="equipeCampoAria"></div>
                 </div>
                 <div class="hud-right">
                     <div class="score-display">

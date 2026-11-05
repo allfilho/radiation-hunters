@@ -20,9 +20,10 @@ const P = {
   marta: { estilo:'curto', blusa: '#5b7f9a', cabelo: '#9a9aa2', pele: '#c9956f', oculos: true },
   teo: { estilo:'curto', barba:true, blusa: '#c9a24f', cabelo: '#2b2a30', pele: '#9c6a49' },
   yara: { estilo:'trança', blusa: '#6f9a7d', cabelo: '#3a2a26', pele: '#b98563', jaleco: true },
+  cecilia: { estilo:'coque', blusa: '#e6eef1', cabelo: '#4a3a36', pele: '#d1a07a', oculos: true, jaleco: true },
   otavio: { estilo:'ondulado', blusa: '#8a6f9a', cabelo: '#5a4a3a', pele: '#dcae88' },
 };
-export const NOMES = { rita: 'Rita', helena: 'Helena', camila: 'Camila', andre: 'André', lucia: 'Lúcia', lara: 'Lara', caio: 'Caio', dora: 'Dora', ines: 'Inês', nelson: 'Nelson', leo: 'Léo', vera: 'Vera', paulo: 'Paulo', tania: 'Tânia', marta: 'Marta', teo: 'Téo', yara: 'Yara', otavio: 'Otávio' };
+export const NOMES = { rita: 'Rita', helena: 'Helena', camila: 'Camila', andre: 'André', lucia: 'Lúcia', lara: 'Lara', caio: 'Caio', dora: 'Dora', ines: 'Inês', nelson: 'Nelson', leo: 'Léo', vera: 'Vera', paulo: 'Paulo', tania: 'Tânia', marta: 'Marta', teo: 'Téo', yara: 'Yara', otavio: 'Otávio', cecilia: 'Cecília' };
 
 /** Estilos e expressões. O retrato é um busto 96×96 (pintura vetorial com luz de cima à esquerda), sem arte de terceiros. */
 export const EXPRESSOES = ['neutro', 'sorriso', 'preocupado', 'surpreso'];

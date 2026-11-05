@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { criarSessao, registrarHipotese, avaliarOpcao, avaliarCartoes, montarFicha, resolver } from '../current/js/investigacao/motor.js';
 import { HOSPITAL } from '../current/js/investigacao/hospital.js';
 import { lerParametros } from '../current/js/modo.js';
-import { servidor, abrirNavegador, novaPagina } from './helpers/navegador.mjs';
+import { servidor, abrirNavegador, novaPagina, passarHistoria } from './helpers/navegador.mjs';
 const inv = resolver(HOSPITAL, 'pt');
 const cena = (id) => inv.cenas.find((c) => c.id === id);
 
@@ -63,6 +63,7 @@ test('interface: voltar preserva hipótese; título recebe foco; SVG descreve es
     await pg.click('.inv-sair');
     assert.equal(await pg.getAttribute('.investigacao-card', 'role'), 'button');
     await pg.focus('.investigacao-card'); await pg.keyboard.press('Enter');
+    await pg.waitForSelector('#story-continue', { state: 'visible' }); await passarHistoria(pg);   // v3.26: abre como reportagem
     await pg.click('#inv-modo-leitura');
     await pg.waitForSelector('#investigacao-screen.active .inv-titulo');
     await pg.click('.inv-opcao[data-id="a"]'); await pg.click('#inv-continuar');

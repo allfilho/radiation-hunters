@@ -17,7 +17,7 @@ for (const [w, h] of [[1280, 720], [390, 844]]) {
       assert.equal(await pg.$$eval('.ag-planta .ag-planta-svg', (e) => e.length), 8, 'cada célula tem a sua planta');
       assert.equal(await pg.$$eval('.ag-rocha', (e) => e.length), 15 - 8, 'só se mostra a terra que dá para escavar (5×3 menos 4×2)');
       assert.equal(await pg.$$eval('.ag-console [data-ag^="escavar"]', (e) => e.length), 2, 'escavar fica no menu');
-      assert.equal(await pg.$$eval('.ag-console .ag-menu-bt', (e) => e.length), 13, 'menu: 8 instalações + construir + escavar×2 + normas + mapa');
+      assert.equal(await pg.$$eval('.ag-console .ag-menu-bt', (e) => e.length), 14, 'menu: 9 instalações + construir + escavar×2 + normas + mapa');
       assert.ok(await pg.$$eval('.ag-pessoa', (e) => e.length) >= 1, 'cientistas aparecem nas salas');
       assert.equal(await pg.$$eval('.ag-janela', (e) => e.length), 0, 'sem sala aberta não há janela');
       assert.match(await pg.textContent('.ag-marta-barra'), /Marta/);

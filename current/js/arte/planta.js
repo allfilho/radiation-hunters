@@ -59,7 +59,21 @@ function hangar(o) {
 }
 
 /** Nave vista de cima, nariz para a direita, centrada em (cx,cy), ~84 de comprimento. */
+/** v3.25: transporte de equipe visto de cima (nariz à direita): fuselagem larga, vidro da cabine, rampa traseira aberta, duas nacelas com hélices nas asas curtas. Desenho próprio. */
+function transportePlanta(cx, cy) {
+    const c = ['#dfe8ee', '#a9bac7', '#3f86c5'], esc = tom(c[1], -.4), disco = (x, y) => `<circle cx="${x}" cy="${y}" r="9" fill="#cfe3ee" opacity=".16"/><circle class="ag-gira" style="transform-box:fill-box;transform-origin:center" cx="${x}" cy="${y}" r="9" fill="none" stroke="#6f8696" stroke-width="1" stroke-dasharray="6 5" opacity=".9"/>${r(x - 1, y - 1, 2, 2, '#14191e')}`;
+    const pod = (y) => r(-18, y - 5, 22, 10, c[1]) + r(-18, y - 5, 22, 2, tom(c[1], .3)) + r(-20, y - 3, 3, 6, esc) + disco(-8, y) + disco(14, y);
+    const rampa = poli([[-40, -6], [-52, -7], [-52, 7], [-40, 6]], tom(c[1], -.25)) + Array.from({ length: 4 }, (_, i) => r(-51 + i * 3, -6, 1, 12, P.ambar, 'opacity=".8"')).join('');
+    return grupo(cx, cy, `<ellipse cx="2" cy="4" rx="46" ry="19" fill="#000" opacity=".32"/>`
+        + poli([[-6, -8], [-10, -20], [8, -20], [10, -8]], c[1]) + poli([[-6, 8], [-10, 20], [8, 20], [10, 8]], c[1]) + pod(-20) + pod(20)
+        + rampa
+        + `<path d="M-40 -8 L22 -9 Q46 -7 47 0 Q46 7 22 9 L-40 8Z" fill="${c[0]}" stroke="${tom(c[1], -.3)}" stroke-width=".8"/>`
+        + r(-40, -1, 70, 2, c[2]) + r(-34, -6, 9, 12, tom(c[0], -.12)) + r(-20, -6, 9, 12, tom(c[0], -.12)) + r(-6, -6, 9, 12, tom(c[0], -.12))
+        + `<path d="M26 -6 Q41 -5 43 0 Q41 5 26 6Z" fill="${P.ciano}"/><path d="M28 -5 Q36 -4 40 -1Z" fill="#fff" opacity=".5"/>` + r(46, -1, 2, 2, P.vermelho));
+}
+
 function navePlanta(tipo, cx, cy) {
+    if (tipo === 'tripulacao') return transportePlanta(cx, cy);
     const c = { tripulacao: ['#dfe8ee', '#a9bac7', '#3f86c5'], resgate: ['#f3d2c4', '#d99a84', '#ff6b35'], levantamento: ['#cfe8f7', '#8fb6d0', '#26b6a3'] }[tipo] || ['#dfe8ee', '#a9bac7', '#3f86c5'];
     return grupo(cx, cy, `<ellipse cx="3" cy="4" rx="42" ry="9" fill="#000" opacity=".35"/>`
         + poli([[-8, -3], [-24, -22], [-14, -22], [10, -3]], c[1]) + poli([[-8, 3], [-24, 22], [-14, 22], [10, 3]], c[1])
@@ -100,6 +114,15 @@ function alojamento(o) {
     s += cama(12, 12, 0) + cama(40, 12, 1) + cama(68, 12, 2) + cama(94, 12, 3).replace(/x="94"/g, 'x="94"');
     for (let k = 0; k < 5; k++) s += bisel(12 + k * 19, 96, 16, 12, '#43607a') + r(14 + k * 19, 99, 12, 1, P.aco1) + r(25 + k * 19, 101, 2, 3, P.aco6);
     return s + movel(44, 60, 32, 14, '#6b5230') + disco(54, 67, 3, '#e8e2d0') + disco(66, 67, 3, '#e8e2d0') + led(106, 52, P.verde, 3);
+}
+
+function medico(o) {
+    const maca = (x, y) => SOMBRA(x, y, 20, 34) + bisel(x, y, 20, 34, '#dfe8ee') + r(x + 3, y + 3, 14, 7, '#f4f8fa') + r(x + 3, y + 12, 14, 18, '#8fb3c8') + r(x + 3, y + 12, 14, 1, '#d8eef7');
+    const cruz = r(54, 52, 12, 36, '#c0392b', 'opacity=".85"') + r(42, 64, 36, 12, '#c0392b', 'opacity=".85"');
+    let s = casco(tom(P.aco2, .12), o.viz) + r(34, 46, 52, 48, '#ecf3f6', 'opacity=".55"') + cruz;
+    s += maca(10, 10) + maca(50, 10) + maca(90, 10);
+    s += bisel(10, 98, 40, 12, '#43607a') + bisel(66, 98, 44, 12, '#3b6a58') + r(14, 101, 32, 1, P.aco1);
+    return s + led(106, 56, P.verde, 3);
 }
 
 function oficina(o) {
@@ -145,11 +168,11 @@ function obra(o) {
     return vazio() + zebra(6, 6, T - 12, 6, 6) + zebra(6, T - 12, T - 12, 6, 6) + movel(18, 40, 26, 18, '#8a6a40') + movel(28, 64, 20, 14, '#7a5a34') + lin(70, 30, 104, 56, '#8a8f95', 3) + disco(104, 56, 4, P.ambar) + `<rect class="ag-pisca" x="84" y="84" width="14" height="10" fill="${P.ambar}"/><rect x="82" y="94" width="18" height="5" fill="#2a2a2a"/>`;
 }
 
-const BLOCOS = { hangar, comando, academia, cofre, alojamento, oficina, biblioteca, laboratorio };
+const BLOCOS = { hangar, comando, academia, cofre, alojamento, medico, oficina, biblioteca, laboratorio };
 /** Pontos (x,y) onde as pessoas aparecem de cima em cada bloco (em pé nos corredores internos). */
 export const PONTOS = {
     hangar: [[62, 58], [40, 58], [90, 58], [20, 58]], comando: [[60, 62], [34, 66], [86, 66], [60, 100]], academia: [[60, 24], [40, 50], [70, 52], [96, 60]],
-    cofre: [[24, 62], [96, 62], [60, 106], [60, 18]], alojamento: [[30, 56], [90, 56], [60, 90], [20, 92]], oficina: [[34, 74], [60, 76], [100, 74], [60, 98]],
+    cofre: [[24, 62], [96, 62], [60, 106], [60, 18]], alojamento: [[30, 56], [90, 56], [60, 90], [20, 92]], medico: [[30, 56], [70, 56], [100, 56], [60, 100]], oficina: [[34, 74], [60, 76], [100, 74], [60, 98]],
     biblioteca: [[60, 64], [56, 92], [20, 62], [100, 64]], laboratorio: [[40, 70], [60, 70], [86, 70], [60, 92]],
 };
 

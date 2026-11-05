@@ -23,6 +23,10 @@ export function updateTexts() {
         const txt = i18n[currentLang][el.getAttribute('data-i18n-title')];
         if (txt) { el.title = txt; el.setAttribute('aria-label', txt); }
     });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const txt = i18n[currentLang][el.getAttribute('data-i18n-aria')];
+        if (txt) el.setAttribute('aria-label', txt);
+    });
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (i18n[currentLang][key]) {

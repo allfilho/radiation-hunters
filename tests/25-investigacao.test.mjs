@@ -2,7 +2,7 @@
 import test from 'node:test';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import { servidor, abrirNavegador, novaPagina } from './helpers/navegador.mjs';
+import { servidor, abrirNavegador, novaPagina, passarHistoria } from './helpers/navegador.mjs';
 import { HOSPITAL } from '../current/js/investigacao/hospital.js';
 import { criarSessao, avaliarOpcao, avaliarCartoes, registrarHipotese, montarFicha, resolver, embaralhar, semRotulos, limparRotulos } from '../current/js/investigacao/motor.js';
 import { lerParametros } from '../current/js/modo.js';
@@ -172,6 +172,7 @@ test('interface (EN, modo normal) pelo menu: cartão abre; voltar numa cena já 
     await pg.click('#btn-missions');
     await pg.click('#aba-investigacoes');
     await pg.click('.investigacao-card');
+    await pg.waitForSelector('#story-continue', { state: 'visible' }); await passarHistoria(pg);   // v3.26: abre como reportagem
     await pg.click('#inv-modo-leitura');
     await pg.waitForSelector('#investigacao-screen.active .inv-titulo');
     assert.match(await pg.textContent('.inv-aviso'), /Fictional hospital and characters/);

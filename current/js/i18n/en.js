@@ -1,4 +1,5 @@
 export const en = {
+    agenciaAria: 'Agency', equipeCampoAria: 'Team in the field', incertezaAria: 'uncertainty',
         // Menu
         newGame: "New Game",
         continue: "Continue",

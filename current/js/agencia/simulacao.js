@@ -13,7 +13,7 @@
 import { ALERTAS } from './dados.js';
 import { ehRapida, alertaPorId, novaSemente } from './rapidas.js';
 import { equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
-import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA } from './frota.js';
+import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno } from './frota.js';
 
 export const PARAMETROS = {
     diasPorMes: 30,
@@ -141,8 +141,8 @@ export function avancarDia(est, rand = Math.random) {
     if (!est.iniciado) return [];
     const ev = [];
     est.dia += 1;
-    // equipe: quem estava em tratamento volta quando a dose relativa cai abaixo de 75 %
-    for (const m of est.equipe) if (verificarRetorno(m, est.dia)) { const e = { tipo: 'retorno', dia: est.dia, quem: m.nome }; ev.push(e); registrar(est, e); }
+    // equipe: quem estava em tratamento volta quando a dose relativa cai abaixo de 75 % (85 % com Departamento médico)
+    for (const m of est.equipe) if (verificarRetorno(m, est.dia, limiteRetorno(est))) { const e = { tipo: 'retorno', dia: est.dia, quem: m.nome }; ev.push(e); registrar(est, e); }
     // naves em viagem: chegada
     for (const n of est.naves) {
         if (n.missao && est.dia >= n.missao.chegaEm) {

@@ -1378,3 +1378,68 @@ Verificação 2.3: **255/255 testes passaram**, sem falhas ou testes ignorados, 
 - **Abertura:** investigações pela Agência abrem como reportagem (jornal/TV/rádio) antes do mapa (`jornalInvestigacao`). Pelo menu "Investigações" ainda abrem direto (decisão para não quebrar o fluxo do professor; pode virar reportagem também).
 - **Testes:** novo 69; ajustados 25, 27, 30, 34, 44, 65 (botão de saída, exportação recolhida, abertura em jornal, prêmio 180).
 - **Suíte:** 496 testes; na rodada completa 493 passaram e 3 falharam só por expectativas antigas (prêmios 300/390 → 600/780; investigação pela Agência agora passa pela abertura em jornal). Testes 42, 43 e 53 ajustados e reexecutados: 28/28 passaram.
+ 
+
+## v3.22.1 — 2026-11-03 — Um mito por região
+- **Problema:** os encontros de nível 1 de cada região (E-GOI a E-FUK) eram todos "fato": o jogador aprendia que pergunta de região = sempre fato.
+- **Mudança:** 7 perguntas novas "mito" (ids `E-GOI-M`, `E-RAD-M`, `E-CHE-M`, `E-LIA-M`, `E-ZAR-M`, `E-MAY-M`, `E-FUK-M`), cada uma contrariando um equívoco comum com fato já conferido [V] em `docs/fatos-historicos-3e.md` (clínica abandonada em Goiânia; rádio no osso, não só no pulmão; Chernobyl não foi só erro de operador (INSAG-7); Lia teve feridos e demora de semanas; Zaragoza sem isótopo, alinhado à investigação da v3.21; Mayapuri sem uso por mais de 15 anos; Fukushima = explosões de hidrogênio, não nucleares).
+- **Pendente:** revisão final dos 7 textos (lista em `claude/radhunter-revisao-mitos-regionais.md` no projeto). Motor inalterado.
+- **Testes:** 66 ampliado (mito e fato por região); 08 aceita `F3E-FUK`. Suíte 487/487 na época.
+
+## v3.22.2 — 2026-11-03 — Correção: relógio da Agência após o tutorial + abertura do tutorial em jornal
+- **Relato:** depois do tutorial, os botões de avançar dias e o play não respondiam (o relógio parecia pausado para sempre).
+- **Causa:** o aviso "Correto! Fonte identificada!" (`#notification`) fica invisível (opacity 0) mas deslocado para o topo-centro da tela, e tinha `pointer-events` ativo: cobria exatamente os botões play, ▶▶ e +1 dia da Agência e engolia os cliques. O relógio em si estava certo (confirmado: sem o aviso por cima, play e +1 dia funcionam).
+- **Correção:** `pointer-events: none` em `.notification` e `.achievement-popup` (styles.css). Vale para o jogo todo.
+- **Tutorial em jornal:** a tela de abertura do tutorial agora é a primeira página da "Gazeta dos Caçadores" (edição de boas-vindas, texto fictício do jogo, sem fatos históricos, rótulos próprios). `JORNAIS.tutorial`; `ui.js` e `main.js` passam 'tutorial'. A Academia completa (missão 1) segue sem jornal.
+- **Testes:** novo 67 (jornal do tutorial em PT/EN; nenhum aviso cobre os botões do relógio, visível ou escondido; play e +1 dia avançam). Verificado que o 67 falha sem a correção. Ajustado 63 (chave 'tutorial').
+- Suíte completa: 489 testes, 489 passaram.
+
+## v3.23.0 — 2026-11-04 — Jornal antes e depois das missões; fundos pretos dos quizzes
+- **Pedido:** ainda havia fundo preto/neon misturado ao jornal nos quizzes; os textos antes e depois das missões deveriam ser de jornal, inclusive um relato de sucesso ao concluir.
+- **Depois da missão:** o balanço virou uma **"EDIÇÃO EXTRA"** do jornal da missão (ou da Gazeta dos Caçadores): manchete conforme as estrelas (cumprida/concluída/"há o que melhorar"), subtítulo e texto só com os números do desempenho (fontes, tempo, precisão, aproveitamento), a mensagem final e o placar em quadro de papel. Todos os ids do balanço continuam (`complete-time`, `complete-fontes`, …). Novo módulo puro `js/jornal/reportagens.js` (`reportagemFim`, `jornalRapida`) e `htmlFimJornal` em `jornal.js`. Texto de jogo, fictício; sem fato histórico novo.
+- **Antes da missão:** os chamados rápidos abrem como **PLANTÃO** (TV, rádio ou jornal, conforme o veículo sorteado) com manchete, a fala e a cena do bioma; ui.js e main.js.
+- **Fundos pretos:** o encerramento do encontro (acerto, respostas, crédito) agora tem o mastro com a seção "Edição fechada", faixa, "Resposta:", crédito e botão "Voltar ao campo" em papel e tinta; o "reforço" também.
+- **Não alterado de propósito:** cofre de transporte e telas de investigação (consoles de jogo, não quizzes); se quiser, vira etapa própria.
+- **Testes:** novo 68 (edição extra PT/EN e ids; plantão do chamado rápido). Suíte completa: 492 testes, 492 passaram.
+
+## v3.23.1 — 2026-11-05 — Revisão final dos 7 mitos regionais
+- Cada mito conferido na fonte primária (AIEA Pub815, ATSDR, INSAG-7, AIEA Pub1660, CSN, Lok Sabha, BASE). Confirmados sem mudança: E-GOI-M, E-CHE-M, E-MAY-M (ressalva >15 x >20 anos). Ajustados: E-LIA-M (datas separadas e queimaduras), E-RAD-M (afinidade pelo osso atribuída à semelhança com o cálcio; sarcomas ósseos e tumores de cabeça), E-ZAR-M (o CSN não diz "nenhum isótopo"; agora "nenhuma fonte radioativa perdida" e 36 MeV só como o que o CSN mediu), E-FUK-M (fatos citados a BASE; frase de física geral marcada [C]).
+- A mesma troca "nenhum isótopo" foi feita nas opções da investigação de Zaragoza e no jornal da missão 6.
+- Relatório completo: `claude/radhunter-revisao-mitos-regionais.md` no projeto. Teste 66 ajustado (/Nenhuma fonte radioativa/). Suíte completa: 492 testes, 492 passaram.
+
+## v3.24.0 — 2026-11-05 — Dinheiro, falso alarme em mapa sorteado, saída única, aberturas em reportagem
+- **Relato do Arnaldo:** dinheiro por missão pequeno; falso alarme (detector de fumaça) sempre no hospital; saída com muitos botões e "baixar JSON"; aberturas e finais sem a temática de jornal/TV.
+- **Dinheiro:** prêmios dobrados (rápida 180, fácil 400, normal 600, difícil 900, extremo 1400, investigação 600) e coleta a 60 por fonte; custos iguais. Recalibrado com `tests/ferramentas/calibrar-economia.mjs` (200 simulações): laboratório ~dia 14 (antes 30), 2º hangar ~60 (antes 90), Base completa ~251 (antes 360).
+- **Falso alarme:** agora num mapa sorteado do bioma do chamado (rua, quintal, depósito, costa...), com as mesmas 5 cenas; `prepararFalso(semente, bioma)` na chegada da Agência; sem sorteio (acesso pelo menu) vale a planta antiga do hospital. Os 5 pontos se ajustam aos tiles alcançáveis do mapa gerado.
+- **Saída:** o final de toda investigação é uma "edição extra" (TV, rádio ou jornal, conforme o caso) com a mensagem da equipe, as evidências e o que ficou em aberto; **um único botão** "Voltar à Base" (ou "Voltar ao menu" fora da Agência); o caderno completo fica recolhido e "Baixar .json / Copiar resumo" ficam em "Para professores e revisores", também recolhido. "Sair" e "Voltar ao cenário" só aparecem com a investigação em andamento ou no modo revisão.
+- **Abertura:** investigações pela Agência abrem como reportagem (jornal/TV/rádio) antes do mapa (`jornalInvestigacao`). Pelo menu "Investigações" ainda abrem direto (decisão para não quebrar o fluxo do professor; pode virar reportagem também).
+- **Testes:** novo 69; ajustados 25, 27, 30, 34, 44, 65 (botão de saída, exportação recolhida, abertura em jornal, prêmio 180).
+- **Suíte:** 496 testes; na rodada completa 493 passaram e 3 falharam só por expectativas antigas (prêmios 300/390 → 600/780; investigação pela Agência agora passa pela abertura em jornal). Testes 42, 43 e 53 ajustados e reexecutados: 28/28 passaram.
+
+## v3.25.0 — 2026-11-05 — Nave de transporte (embarque e cabine)
+- **Pedido:** nave em que a equipe "entra de verdade", inspirada na ideia de transporte de esquadrão de jogos táticos (arte original, sem copiar nenhum jogo).
+- **Arte (`js/arte/transporte.js`, novo):** transporte desenhado em pixel-art com rampa traseira, cabine do piloto, bancos laterais, rotores e fogo; `transporteSvg`, `interiorSvg` (equipe sentada), `cenaEmbarqueSvg` (fila de embarque), `posicoesEmbarque`. `nave.js` usa o transporte para o tipo "tripulação"; `planta.js` ganhou `transportePlanta` (vista de cima no Hangar da Base).
+- **Jogo (`ui-agencia.js`):** ao decolar, a equipe caminha até a rampa e embarca; durante o voo mostra-se a cabine com a equipe sentada; na chegada há animação de desembarque (pulada com movimento reduzido). Sem exploração livre.
+- **Testes:** novo 70 (posições de embarque, arte, cabine no jogo).
+- **Pendente:** investigações abertas pelo menu "Investigações" ainda não abrem como reportagem.
+
+## v3.26.0 — 2026-11-05 — Investigações do menu abrem como reportagem
+- **Pedido:** a abertura de toda missão deve ter o tema de jornal/TV; faltavam as investigações abertas pela aba "Investigações" do menu.
+- **Mudança:** `ui.abrirInvestigacao(id, leitura, relato)`; os cartões, o "Sortear" e os 4 problemas de pesquisa passam `relato=true` e `main.js` mostra `jornalInvestigacao` antes do mapa. Links diretos por URL (`?investigacao=`, modo leitura) continuam abrindo direto, para o professor.
+- **Testes:** novo 71; ajustados 25, 30, 34 e 35 (passam pela reportagem antes do mapa).
+- **Validação:** suíte completa rodada na v3.25.0; na v3.26.0 rodaram os testes 25, 27, 30, 34, 35 e 71 (todos verdes). Nova suíte completa recomendada antes do deploy.
+
+## v3.27.0 — 2026-11-05 — Departamento médico (Fase A do plano de ciência e equipamentos)
+- **Novo módulo `medico`** (construível, único, 1100 créditos, 4 dias de obra) com arte em corte lateral (`base-svg.js`: armário com cruz, maca, monitor, portal de descontaminação) e em planta (`arte/planta.js`: três macas e cruz no piso); retrato novo da Dra. Cecília (`cecilia` em `retratos.js`).
+- **Regra [H]:** com o módulo pronto, a alta de quem está em tratamento sai com dose relativa < 85 % (`NORMAS.retornoMedico`) em vez de 75 %; `limiteRetorno(est)`/`temMedico(est)` em `frota.js`; `verificarRetorno` e `diasParaVoltar` ganharam o parâmetro `limite`. Atenção: o plano original falava em "60 %", mas um limite menor atrasaria a alta; adotei 85 % para acelerar. Sem o módulo nada muda, e saves antigos continuam válidos.
+- **Interface:** botão "Departamento médico" no menu da Base (desabilitado até construir); sala com a fala da Dra. Cecília, lista de quem está em tratamento (ficha com dose e dias para a alta) e a regra em vigor; quem está em tratamento aparece na sala médica (antes, no alojamento); o alojamento sugere construir o médico enquanto não existe. Rótulo curto "Dep. médico" nas células da planta.
+- **Testes:** novo 72 (construção, alta antecipada, arte, interface em 1280×720 e 390×844); ajustado 50 (menu com 14 botões).
+- **Ainda pendente do plano:** Fase B (banco de pesquisa + engenheiros), Fase C (progressão de fontes: Cs-137 e Co-60 separados no início), Fase D (tipos de cientista e inventário).
+
+## v3.27.1 — 2026-11-05 — Inglês completo
+- **Pedido:** com o inglês escolhido, nada pode aparecer em português.
+- **Auditoria:** 4 varreduras automáticas (dados `pt`/`en`, chaves faltando, textos gerados pelos jornais e casos, telas navegando em inglês). Os dados e jornais estavam limpos; os vazamentos eram pontos fixos do código.
+- **Corrigido:** rótulos dentro das ilustrações da Base e da superfície (`LIMITE: 3 PESSOAS`, `DESCON.`, `RESGATE`, `LEV.`, `EM VOO` agora seguem o idioma: `LIMIT: 3 PEOPLE`, `DECON.`, `RESCUE`, `SURVEY`, `IN FLIGHT`); descrições de acessibilidade "Agência", "Equipe em campo" e "incerteza" (novo atributo `data-i18n-aria` + chaves `agenciaAria`, `equipeCampoAria`, `incertezaAria`); botão "← Voltar" do HTML agora "← Back" por padrão.
+- **Teste novo 73:** nenhum texto `en` dos módulos contém português (referências bibliográficas ficam de fora); menu, Base e todas as salas em inglês sem português (inclui rótulos SVG e atributos de acessibilidade); rótulos da ilustração mudam com o idioma. Teste 26 ajustado (investigação do menu abre em reportagem).
+- **Teste novo 74 (troca de idioma):** na mesma página, pt → en → pt → en pelos botões do menu; em cada idioma percorre menu, missões, investigações, Agência (alertas), Base (todas as salas), história e jogo da missão 2, texto do mapa, pausa e reportagem de investigação, e falha se aparecer texto (ou descrição de acessibilidade) visível no idioma errado, nas duas direções. Passou sem vazamentos nas telas visíveis.
+- **Limite honesto:** a varredura automática cobre o menu, a Agência, a Base, os alertas, os jornais e as investigações; telas muito profundas (encontros no meio de uma missão, cofre, caderno) foram verificadas só pelos dados `pt`/`en`. Se aparecer português em outro lugar, o teste 73 é o ponto para acrescentar a tela.

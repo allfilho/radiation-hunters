@@ -4,7 +4,8 @@
 // Original deste projeto (sem relação com nenhuma nave de jogo ou filme).
 // ============================================
 import { P, tom } from './paleta.js';
-import { r, poli, lin } from './primitivas.js';
+import { r, poli, lin, grupo } from './primitivas.js';
+import { transporteSvg } from './transporte.js';
 
 /** Cores por tipo de nave: [casco, sombra, faixa]. */
 export const COR_NAVE = {
@@ -14,6 +15,7 @@ export const COR_NAVE = {
 };
 
 export function naveSvg(tipo = 'tripulacao', { fogo = true } = {}) {
+    if (tipo === 'tripulacao') return grupo(0, 27 - 27 * 0.8, transporteSvg({ rampa: 0, fogo, giro: false }), 0.8);   // v3.25: o transporte de equipe (rampa, cabine, nacelas) substitui o jato
     const [c1, c2, fx] = COR_NAVE[tipo] || COR_NAVE.tripulacao;
     const escuro = tom(c2, -.35), claro = tom(c1, .35);
     // asa distante, deriva, fuselagem, asa próxima, cabine, motor, trem de pouso

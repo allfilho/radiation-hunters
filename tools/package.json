@@ -1,0 +1,8 @@
+{
+  "name": "radhunter-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ferramentas de reorganização do Radiation Hunters (divisão em módulos e sua auditoria).",
+  "dependencies": { "acorn": "8.19.0", "eslint-scope": "9.1.2" }
+}

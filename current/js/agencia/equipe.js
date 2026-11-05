@@ -18,6 +18,7 @@ export const NORMAS = {
     ],
     atencao: 0.5,    // r >= 0,5: caneta amarela [H]
     retorno: 0.75,   // sai do tratamento quando r < 0,75 [H]
+    retornoMedico: 0.85, // com o Departamento médico construído: alta com reavaliação clínica quando r < 0,85 [H]
     doseLider: 1,    // fração da dose da missão recebida por quem vai à frente [H]
     doseApoio: 0.4,  // fração recebida pelos demais (ficam atrás) [H]
     doseColeta: 0.2, // dose de manejo na coleta de fontes, em fração de L1 por fonte [H]
@@ -83,15 +84,15 @@ export function registrarDose(m, dia, msv) {
 }
 
 /** A cada dia: quem está em tratamento volta ao serviço quando r < 0,75. Devolve true se voltou. */
-export function verificarRetorno(m, dia) {
-    if (m.tratamento && razao(m, dia) < NORMAS.retorno) { m.tratamento = false; return true; }
+export function verificarRetorno(m, dia, limite = NORMAS.retorno) {
+    if (m.tratamento && razao(m, dia) < limite) { m.tratamento = false; return true; }
     return false;
 }
 
 /** Quantos dias faltam para voltar (só com as doses que ainda estão nas janelas; sem novas doses). null se não está em tratamento. */
-export function diasParaVoltar(m, dia) {
+export function diasParaVoltar(m, dia, limite = NORMAS.retorno) {
     if (!m.tratamento) return null;
-    for (let t = 0; t <= 60; t++) if (razao(m, dia + t) < NORMAS.retorno) return t;
+    for (let t = 0; t <= 60; t++) if (razao(m, dia + t) < limite) return t;
     return 60;
 }
 

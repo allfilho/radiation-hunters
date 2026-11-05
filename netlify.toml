@@ -1,0 +1,10 @@
+# Radiation Hunters: site estático, sem etapa de build. Só a pasta current/ é publicada.
+[build]
+  publish = "current"
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

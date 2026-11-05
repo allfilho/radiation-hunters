@@ -5,15 +5,15 @@
 // Todos os VALORES abaixo (custos, prazos, capacidades) são escolhas de jogo [H] para calibrar em sala de aula.
 // As ações recebem o estado `est` (de simulacao.js) e devolvem { ok: true, ... } ou { ok: false, motivo }.
 // ============================================
-import { disponivel, gerarCandidato } from './equipe.js';
+import { disponivel, gerarCandidato, NORMAS } from './equipe.js';
 
 // Calibrados em 28/10/2026 com tests/ferramentas/calibrar-economia.mjs (200 anos simulados, jogador que atende 85 % dos alertas):
 // laboratório por volta do dia 30, pesquisa do detector aéreo pronta por volta do dia 70, 2º hangar por volta do dia 120,
 // nave de levantamento por volta do dia 150 e Base 6×3 completa por volta do mês 17 [H]. Quem joga mais devagar leva mais tempo.
 export const CUSTOS = {
     nave: { tripulacao: 1000, resgate: 750, levantamento: 1500 },
-    modulo: { hangar: 1900, alojamento: 1000, laboratorio: 1250 },
-    diasObra: { hangar: 5, alojamento: 3, laboratorio: 4 },
+    modulo: { hangar: 1900, alojamento: 1000, laboratorio: 1250, medico: 1100 },
+    diasObra: { hangar: 5, alojamento: 3, laboratorio: 4, medico: 4 },
     expandirColuna: 750, expandirLinha: 1000,
     contratar: 500,
     pesquisa: { detectorAereo: { custo: 1500, dias: 10 } },
@@ -31,9 +31,9 @@ export const BAIAS_POR_HANGAR = 2;
 export const CAMAS_POR_ALOJAMENTO = 6;
 export const GRADE_INICIAL = { cols: 4, rows: 2 };
 export const GRADE_MAX = { cols: 6, rows: 3 };
-export const UNICOS = ['comando', 'academia', 'cofre', 'biblioteca', 'oficina', 'laboratorio'];
-export const CONSTRUIVEIS = ['hangar', 'alojamento', 'laboratorio'];
-export const MODULOS_VALIDOS = ['hangar', 'comando', 'academia', 'cofre', 'alojamento', 'oficina', 'biblioteca', 'laboratorio'];
+export const UNICOS = ['comando', 'academia', 'cofre', 'biblioteca', 'oficina', 'laboratorio', 'medico'];
+export const CONSTRUIVEIS = ['hangar', 'alojamento', 'laboratorio', 'medico'];
+export const MODULOS_VALIDOS = ['hangar', 'comando', 'academia', 'cofre', 'alojamento', 'oficina', 'biblioteca', 'laboratorio', 'medico'];
 export const TIPOS_NAVE = Object.keys(NAVES);
 
 export function modulosIniciais() {
@@ -50,6 +50,9 @@ const novoId = (est, p) => { est.proxId += 1; return p + est.proxId; };
 export const modulosProntos = (est, tipo) => est.modulos.filter((m) => m.tipo === tipo && m.pronto <= est.dia);
 export const baiasTotal = (est) => modulosProntos(est, 'hangar').length * BAIAS_POR_HANGAR;
 export const camasTotal = (est) => modulosProntos(est, 'alojamento').length * CAMAS_POR_ALOJAMENTO;
+export const temMedico = (est) => modulosProntos(est, 'medico').length > 0;
+/** Limite de dose relativa para dar alta: mais folgado com o Departamento médico (reavaliação clínica) [H]. */
+export const limiteRetorno = (est) => (temMedico(est) ? NORMAS.retornoMedico : NORMAS.retorno);
 export const temLaboratorio = (est) => modulosProntos(est, 'laboratorio').length > 0;
 export const pesquisaPronta = (est, id) => !!est.pesquisa[id] && est.pesquisa[id].pronto <= est.dia;
 export const naveLivre = (n, dia) => !n.missao && n.livreEm <= dia;

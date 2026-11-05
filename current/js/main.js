@@ -1,6 +1,6 @@
 /**
  * RADIATION HUNTERS - The Isotope Chronicles
- * Version 3.24.0
+ * Version 3.27.1
  * 
  * A gamified physics education tool for teaching about radioactive decay,
  * radiation types, and shielding materials.
@@ -116,7 +116,7 @@ function iniciarJogoPendente() {
 
 document.addEventListener('rh:investigacao',(evento)=>{
     pendingMission=missaoInvestigacao(evento.detail.id,currentLang);GameState.currentMission=pendingMission;
-    if(ui.origem==='agencia'){   // v3.24: pela Agência, a investigação abre como reportagem (jornal, TV ou rádio) antes do mapa
+    if(ui.origem==='agencia'||evento.detail.relato){   // v3.24/3.26: pela Agência ou pelo menu, a investigação abre como reportagem (jornal, TV ou rádio) antes do mapa
         const inv=investigacaoPorId(evento.detail.id);
         if(inv){ui.mostrarHistoria('',jornalInvestigacao(inv));ui.showScreen('storyIntro');return;}
     }

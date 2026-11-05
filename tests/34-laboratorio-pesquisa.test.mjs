@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { encerrarNoJato } from './helpers/jato.mjs';
-import { servidor, abrirNavegador, novaPagina } from './helpers/navegador.mjs';
+import { servidor, abrirNavegador, novaPagina, passarHistoria } from './helpers/navegador.mjs';
 import { gerarDados } from '../current/js/investigacao/sorteio-fissao.js';
 import { resumoConjunto, resumoComprimentos, zetaCalculado } from '../current/js/investigacao/dados-fissao.js';
 import { prepararProblema, PROBLEMAS, investigacaoPorId, INVESTIGACOES } from '../current/js/investigacao/index.js';
@@ -151,6 +151,7 @@ test('menu: Laboratório de pesquisa com sorteio e os quatro problemas; o Cadern
         assert.equal(await pg.locator('.pesquisa-card').count(), 1);
         assert.equal(await pg.locator('.pesquisa-problema').count(), 4); assert.equal(await pg.locator('#pesquisa-sortear').count(), 1);
         await pg.click('.pesquisa-problema[data-problema="pesquisa-annealing"]');
+        await pg.waitForSelector('#story-continue', { state: 'visible' }); await passarHistoria(pg);   // v3.26
         await pg.waitForFunction(() => window.gameScene?.missionData.investigacao === 'pesquisa-annealing');
         assert.equal(await pg.evaluate(() => window.gameScene.pontosInvestigacao.length), 5);
         await pg.click('#inv-caderno'); await pg.waitForSelector('#inv-etapas');

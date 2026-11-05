@@ -1,8 +1,13 @@
+# macOS
 .DS_Store
-node_modules/
+# dependências e artefatos de teste
 tests/node_modules/
+node_modules/
+logs/
+runner.sh
+# backups locais (o Git substitui a pasta archive/)
 archive/
+# pacotes temporários de entrega
 *.tgz
 _pacote-*
 README-append.md
-logs/

@@ -2,7 +2,7 @@
 // offline no Chromium; integração com o jogo (cada missão toca a sua trilha, volume 0 = silêncio).
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { servidor, abrirNavegador, novaPagina, iniciarMissao } from './helpers/navegador.mjs';
+import { servidor, abrirNavegador, novaPagina, iniciarMissao, passarHistoria } from './helpers/navegador.mjs';
 import { TRILHAS, trilhaDaMissao } from '../current/js/musica/trilhas.js';
 import { compilar, validarTrilha, duracaoDoCiclo, notaMidi, frequencia, acorde, compilarMelodia } from '../current/js/musica/partitura.js';
 import { INVESTIGACOES, PROBLEMAS, prepararProblema } from '../current/js/investigacao/index.js';
@@ -125,6 +125,7 @@ test('no jogo: toda investigação (4 cartões e os 4 problemas de pesquisa) toc
     await pg.click('#btn-missions'); await pg.click('#aba-investigacoes');
     for (const inv of INVESTIGACOES) {
       await pg.click(`.investigacao-card[data-investigacao="${inv.id}"]`);
+      await pg.waitForSelector('#story-continue', { state: 'visible' }); await passarHistoria(pg);
       await pg.waitForFunction((id) => window.gameScene?.missionData.investigacao === id, inv.id);
       const r = await pg.evaluate(async () => ({ n: window.gameScene.missionData.id, m: (await import('/js/audio.js')).audioManager.music?.id }));
       assert.ok(r.m, 'investigação ' + inv.id + ' sem música'); assert.equal(r.m, r.n === 20 ? 6 : r.n);   // Zaragoza (20) toca a trilha 6

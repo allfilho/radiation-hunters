@@ -12,6 +12,7 @@ import { t, currentLang } from '../i18n/index.js';
 import { lerArmazenado, gravarArmazenado } from '../progresso.js';
 import { BASE, distanciaKm, horasDeVoo, paraPercentual, treinamentoConcluido } from './dados.js';
 import { alertaPorId, alertaRapida, ehRapida, missaoRapida, semDe } from './rapidas.js';
+import { interiorSvg, cenaEmbarqueSvg, VB_EMBARQUE } from '../arte/transporte.js';
 import { prepararFalso } from '../investigacao/falso-alarme.js';
 import { mapaMundiSvg, posicaoSvg } from './mapa-mundi.js';
 import { TXT, NOME_AGENCIA } from './textos.js';
@@ -98,7 +99,7 @@ export class AgenciaUI {
         let volta = null;
         if (q && a && a.tipo !== 'treino' && a.lat != null && this.est.iniciado) {
             const horas = horasDeVoo(Math.round(distanciaKm(BASE, a) / 10) * 10), dias = diasDeVolta(horas);
-            if (registrarRetorno(this.est, q.naveId, q.ids, dias, a.id)) volta = { alvo: a, retorno: true, dias };
+            if (registrarRetorno(this.est, q.naveId, q.ids, dias, a.id)) volta = { alvo: a, retorno: true, dias, ids: [...q.ids] };
         }
         this.gravar();
         this._parar(); this.vista = 'mapa'; this.sel = null; this.sala = null; this.mod = null; this.vazio = null; this.preparo = null; this.equipeSaida = null; this.voo = volta; this.vel = 0;
@@ -130,7 +131,7 @@ export class AgenciaUI {
         q.ativo = id;
         return this.est.equipe.find((x) => x.id === id) || null;
     }
-    _parar() { if (this._raf) { cancelAnimationFrame(this._raf); this._raf = 0; } if (this._timer) { clearTimeout(this._timer); this._timer = 0; } }
+    _parar() { if (this._rafC) { cancelAnimationFrame(this._rafC); this._rafC = 0; } if (this._raf) { cancelAnimationFrame(this._raf); this._raf = 0; } if (this._timer) { clearTimeout(this._timer); this._timer = 0; } }
     /** Para o relógio e o voo quando a tela sai de vista (missão, menu). */
     pararTudo() { this._parar(); this.vel = 0; }
 
@@ -326,13 +327,13 @@ export class AgenciaUI {
         const km = Math.round(distanciaKm(BASE, a) / 10) * 10, h = Math.max(1, Math.round(horasDeVoo(km)));
         if (this.voo.retorno) {
             const n = this.voo.dias;
-            return this.fala('otavio', L.otavio, L.otavioVolta)
+            return this.htmlCabine() + this.fala('otavio', L.otavio, L.otavioVolta)
                 + `<p class="ag-voo-estado" id="ag-voo-estado" role="status">${preencher(L.vooVolta, { origem: a.local[lang] })}</p>`
                 + `<div class="ag-barra-voo" role="progressbar" aria-label="${L.barra}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ag-barra"><span id="ag-barra-cheia"></span></div>`
                 + `<div class="ag-cartao"><h3>${L.vooTituloVolta}</h3><p class="ag-nota">${preencher(L.distancia, { km: km.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), h })}</p><p class="ag-nota">${preencher(n === 1 ? L.naveVoltaUm : L.naveVolta, { d: n })}</p></div>`
                 + `<div class="ag-acoes"><button type="button" class="menu-btn primary" id="ag-chegar" data-ag="chegar">${L.pularViagem}</button></div>`;
         }
-        return this.fala('otavio', L.otavio, L.martaVoo)
+        return this.htmlCabine() + this.fala('otavio', L.otavio, L.martaVoo)
             + `<p class="ag-voo-estado" id="ag-voo-estado" role="status">${preencher(L.vooSaindo, { destino: a.local[lang] })}</p>`
             + `<div class="ag-barra-voo" role="progressbar" aria-label="${L.barra}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ag-barra"><span id="ag-barra-cheia"></span></div>`
             + `<div class="ag-cartao"><h3>${L.briefing}: ${d.titulo}</h3><p>${d.desc}</p><p class="ag-nota">${preencher(L.distancia, { km: km.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), h })}</p></div>`
@@ -358,7 +359,8 @@ export class AgenciaUI {
             const est = this.el.querySelector('#ag-voo-estado'); if (est) est.textContent = volta ? L.vooPousouBase : preencher(L.vooChegou, { destino: a.local[lang] });
             const b = this.el.querySelector('#ag-chegar'); if (b) b.textContent = volta ? L.pousarBase : L.chegar;
         };
-        if (reduzMovimento()) { fim(); return; }
+        if (reduzMovimento()) { this.cabine(null); fim(); return; }
+        const comecar = () => {
         const dur = 5200, t0 = performance.now();
         rota.style.strokeDashoffset = String(total);
         const passo = (agora) => {
@@ -367,6 +369,43 @@ export class AgenciaUI {
             if (p < 1) this._raf = requestAnimationFrame(passo); else { this._raf = 0; fim(); }
         };
         this._raf = requestAnimationFrame(passo);
+        };
+        this.cabine(comecar);   // v3.25: primeiro a equipe embarca (só na ida); depois o voo
+    }
+
+    // ---------- cabine do transporte (v3.25): embarque, assentos e desembarque ----------
+    equipeDoVoo() {
+        const ids = (this.equipeSaida && this.equipeSaida.ids) || (this.voo && this.voo.ids) || [];
+        return ids.map((id) => this.est.equipe.find((m) => m.id === id)).filter(Boolean).map((m) => ({ id: m.id, nome: m.nome }));
+    }
+    htmlCabine() { return this.equipeDoVoo().length ? `<div class="ag-cabine" id="ag-cabine" role="img" aria-label="${this.L.cabine}"></div>` : ''; }
+    _pintarCabine(svg, vb) { const c = this.el.querySelector('#ag-cabine'); if (c) c.innerHTML = `<svg viewBox="${vb}" aria-hidden="true" focusable="false">${svg}</svg>`; return !!c; }
+    /** Ida: a fila sobe a rampa (2,6 s + 0,25 s por pessoa), a rampa fecha e a cabine mostra todos sentados; depois chama `depois`. */
+    cabine(depois) {
+        const crew = this.equipeDoVoo(), sentados = () => this._pintarCabine(interiorSvg({ equipe: crew, rampa: 0 }), '0 0 260 96');
+        if (!crew.length) { if (depois) depois(); return; }
+        if (reduzMovimento() || (this.voo && this.voo.retorno)) { sentados(); if (depois) depois(); return; }
+        const est = this.el.querySelector('#ag-voo-estado'); if (est) est.textContent = this.L.embarcando;
+        const t0 = performance.now(), dur = 2600 + crew.length * 250;
+        const passo = (agora) => {
+            const t = Math.min(1, (agora - t0) / dur);
+            this._pintarCabine(cenaEmbarqueSvg(crew, t, { rampa: t < 0.85 ? 1 : 1 - (t - 0.85) / 0.15 }), VB_EMBARQUE);
+            if (t < 1) this._rafC = requestAnimationFrame(passo); else { this._rafC = 0; sentados(); const e2 = this.el.querySelector('#ag-voo-estado'); if (e2 && this.voo && this.voo.alvo) e2.textContent = preencher(this.L.vooSaindo, { destino: this.voo.alvo.local[currentLang] }); if (depois) depois(); }
+        };
+        this._rafC = requestAnimationFrame(passo);
+    }
+    /** Chegada: a rampa baixa e a equipe desce, depois chama `depois`. Sem animação se o voo foi pulado ou há movimento reduzido. */
+    desembarcar(depois) {
+        const crew = this.equipeDoVoo(), v = this.voo;
+        if (!v || !v.chegou || v.retorno || !crew.length || reduzMovimento() || !this.el.querySelector('#ag-cabine')) { depois(); return; }
+        const est = this.el.querySelector('#ag-voo-estado'); if (est) est.textContent = this.L.desembarcando;
+        const t0 = performance.now(), dur = 1400 + crew.length * 250;
+        const passo = (agora) => {
+            const t = Math.min(1, (agora - t0) / dur);
+            this._pintarCabine(cenaEmbarqueSvg(crew, t, { desembarque: true, rampa: 1 }), VB_EMBARQUE);
+            if (t < 1) this._rafC = requestAnimationFrame(passo); else { this._rafC = 0; depois(); }
+        };
+        this._rafC = requestAnimationFrame(passo);
     }
 
     // ---------- eventos ----------
@@ -395,7 +434,7 @@ export class AgenciaUI {
         else if (k === 'passo') this.passoDeTempo(true);
         else if (k === 'enviar') { const a = alertaPorId(this.sel); if (a) { this._parar(); this.vel = 0; this.iniciarPreparo('voo', { alvo: a }); this.desenhar(false); const c = this.el.querySelector('#ag-preparo'); if (c) c.scrollIntoView({ block: 'nearest' }); } }
         else if (k === 'cancelar-voo') { this._parar(); this.voo = null; this.equipeSaida = null; this.desenhar(false); }
-        else if (k === 'chegar') { this._parar(); this.chegar(); }
+        else if (k === 'chegar') { this._parar(); this.desembarcar(() => this.chegar()); }
         else if (k === 'treino' || k === 'academia-completa') { const completa = k === 'academia-completa'; this.alvo = { tipo: 'treino', missaoId: 1, completa }; this.equipeSaida = null; this._parar(); this.vel = 0; this.cb.iniciarMissao(completa ? MISSIONS[0] : TUTORIAL); }
         else if (k === 'pular') { this.cb.pularTreinamento(); if (treinamentoConcluido(this.cb.desbloqueadas()) && !this.est.iniciado) { iniciar(this.est, CUSTOS.creditosIniciais); this.gravar(); } this.desenhar(false); }
         else if (k === 'caderno') this.cb.abrirCaderno();

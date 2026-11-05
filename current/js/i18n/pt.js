@@ -1,4 +1,5 @@
 export const pt = {
+    agenciaAria: 'Agência', equipeCampoAria: 'Equipe em campo', incertezaAria: 'incerteza',
         // Menu
         newGame: "Novo Jogo",
         continue: "Continuar",

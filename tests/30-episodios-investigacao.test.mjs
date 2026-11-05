@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {encerrarNoJato} from './helpers/jato.mjs';
-import {servidor,abrirNavegador,novaPagina,iniciarMissao} from './helpers/navegador.mjs';
+import {servidor,abrirNavegador,novaPagina,iniciarMissao,passarHistoria} from './helpers/navegador.mjs';
 import {INVESTIGACOES,investigacaoPorId} from '../current/js/investigacao/index.js';
 import {criarSessao,resolver,registrarHipotese,avaliarOpcao,avaliarCartoes,registrarObservacao,montarFicha} from '../current/js/investigacao/motor.js';
 import {modeloAquisicao,compararRadon,modeloTracos} from '../current/js/investigacao/modelos.js';
@@ -101,7 +101,7 @@ test('menu troca entre cinco investigações e volta à missão comum sem botõe
  await comPagina(null,{idioma:'pt'},async({pg})=>{
   await pg.click('#btn-missions');await pg.click('#aba-investigacoes');assert.equal(await pg.locator('.investigacao-card').count(),5);
   for(const inv of INVESTIGACOES){
-   await pg.click(`.investigacao-card[data-investigacao="${inv.id}"]`);await pg.waitForFunction(id=>window.gameScene?.missionData.investigacao===id,inv.id);
+   await pg.click(`.investigacao-card[data-investigacao="${inv.id}"]`);await pg.waitForSelector('#story-continue',{state:'visible'});await passarHistoria(pg);await pg.waitForFunction(id=>window.gameScene?.missionData.investigacao===id,inv.id);
    assert.equal(await pg.textContent('.mission-name'),inv.pt.titulo);
    await pg.click('#inv-caderno');await pg.click('#inv-menu');assert.equal(await pg.getAttribute('#aba-investigacoes','aria-selected'),'true');
   }

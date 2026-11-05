@@ -5,6 +5,7 @@
 // Para criar um módulo novo: siga docs/skills/arte-radhunter/SKILL.md (adicione a função aqui, registre em DESENHO e, se precisar de largura diferente, em LARGURA).
 // ============================================
 import { P, tom, prng } from '../arte/paleta.js';
+import { currentLang } from '../i18n/index.js';
 import { r, poli, lin, grupo, bisel, parafusos, led, ledFixo, lampada, tubo, veneziana, zebra, trevo, monitor, bancada, cadeira, casco } from '../arte/primitivas.js';
 import { naveSvg } from '../arte/nave.js';
 import { pessoaSvg } from '../arte/pessoa.js';
@@ -64,7 +65,7 @@ function cofre(w) {
         const x = 124 + c * 24, y = 16 + l * 20;
         gavetas += bisel(x, y, 22, 18, '#3b464f') + r(x + 7, y + 12, 8, 2, '#9aa9b5') + r(x + 3, y + 3, 6, 4, '#0e1317') + ((c + l) % 3 === 0 ? grupo(x + 15, y + 7, trevo(4)) : '');
     }
-    return casco(w, 120, { luzes: [55, 160], cor: tom(P.aco2, -.15) }) + porta + gavetas + zebra(20, PISO + 3, 94, 5) + txt(122, 112, 'LIMITE: 3 PESSOAS', 'ag-svg-mini');
+    return casco(w, 120, { luzes: [55, 160], cor: tom(P.aco2, -.15) }) + porta + gavetas + zebra(20, PISO + 3, 94, 5) + txt(122, 112, (currentLang === 'en' ? 'LIMIT: 3 PEOPLE' : 'LIMITE: 3 PESSOAS'), 'ag-svg-mini');
 }
 
 function alojamento(w) {
@@ -80,6 +81,15 @@ function alojamento(w) {
     const relogio = `<circle cx="132" cy="30" r="8" fill="#e9eef2" stroke="${P.aco4}" stroke-width="2"/><line x1="132" y1="30" x2="132" y2="25" stroke="#111"/><line x1="132" y1="30" x2="136" y2="32" stroke="#111"/>`;
     return casco(w, 120, { luzes: [50, 150] }) + beliche(12, '#3f6f9a', '#a2503f') + beliche(78, '#5c8a4f', '#7a5aa0') + armario(150) + armario(170) + relogio
         + r(144, PISO - 4, 40, 4, '#1b2f44', 'opacity=".0"') + r(4, PISO + 3, 192, 2, '#000', 'opacity=".25"') + `<rect x="138" y="${PISO - 3}" width="8" height="3" fill="${P.aco6}" opacity=".0"/>`;
+}
+
+function medico(w) {
+    const cruz = (x, y, k, cor) => r(x - k, y - 3 * k, 2 * k, 6 * k, cor) + r(x - 3 * k, y - k, 6 * k, 2 * k, cor);
+    const maca = (x) => r(x + 4, 72, 3, 26, P.aco5) + r(x + 50, 72, 3, 26, P.aco5) + bisel(x, 66, 58, 7, '#dfe8ee') + r(x + 3, 62, 18, 5, '#f4f8fa') + r(x + 3, 62, 18, 1, '#fff') + r(x + 24, 66, 32, 2, '#7fb0c8') + r(x + 2, 98, 8, 2, '#111') + r(x + 46, 98, 8, 2, '#111');
+    const armario = bisel(12, 22, 44, 62, '#dfe8ee') + r(14, 24, 40, 2, '#fff') + cruz(34, 40, 2, P.vermelho || '#c0392b') + [0, 1, 2].map((k) => r(18 + k * 12, 58, 10, 22, '#8fb3c8') + r(18 + k * 12, 58, 10, 1, '#fff')).join('');
+    const monitorV = bisel(122, 34, 34, 24, '#26323b') + r(125, 37, 28, 18, '#0d2b22') + `<path d="M126 48 L132 48 L135 41 L139 53 L142 46 L151 46" stroke="${P.verde}" stroke-width="1.4" fill="none"/>` + r(136, 58, 6, 6, P.aco5) + r(128, 64, 22, 3, P.aco4);
+    const portal = bisel(160, 26, 34, 72, '#3a5668') + r(164, 30, 26, 60, '#16313f') + `<path d="M170 34 Q177 44 184 34" stroke="#9fd2ea" fill="none"/>` + [0, 1, 2].map((k) => r(170 + k * 6, 46 + (k % 2) * 4, 2, 6, '#9fd2ea', 'opacity=".7"')).join('') + txt(177, 22, (currentLang === 'en' ? 'DECON.' : 'DESCON.'), 'ag-svg-mini');
+    return casco(w, 120, { luzes: [50, 150], cor: tom(P.aco2, .05) }) + armario + maca(64) + monitorV + portal + zebra(0, PISO + 3, w, 3);
 }
 
 function oficina(w) {
@@ -146,7 +156,7 @@ function obra(w) {
         + bandeira + `<rect class="ag-pisca" x="${w - 60}" y="46" width="8" height="6" fill="${P.ambar}"/><rect x="${w - 62}" y="52" width="12" height="4" fill="#2a2a2a"/>` + r(20, 56, 22, 8, P.ambar) + r(22, 58, 18, 4, '#1a1a1a');
 }
 
-const DESENHO = { hangar, comando, academia, cofre, alojamento, oficina, biblioteca, laboratorio };
+const DESENHO = { hangar, comando, academia, cofre, alojamento, medico, oficina, biblioteca, laboratorio };
 
 /** Miniatura SVG de UM módulo (célula da Base). `tipo` 'vazio' = cavidade escavada; `emObra` mostra a obra. */
 export function moduloSvg(tipo, emObra = false) {
@@ -181,7 +191,7 @@ export function superficieSvg(naves, baias) {
             + `<text x="${cx + 78}" y="153" text-anchor="middle" class="ag-svg-h">H</text>`;
         postes += lin(cx + 112, 146, cx + 112, 96, '#6d8394', 2) + r(cx + 104, 92, 16, 4, '#9fb3c3') + poli([[cx + 105, 96], [cx + 119, 96], [cx + 140, 146], [cx + 84, 146]], P.luzQuente, 'opacity=".05"');
         if (nv && nv.missao) {
-            pads += `<g transform="translate(${cx - 10} 128)" opacity=".85"><rect x="-76" y="-26" width="152" height="40" rx="3" fill="none" stroke="#7fb4d6" stroke-dasharray="5 5"/><text x="0" y="-4" text-anchor="middle" class="ag-svg-rot">${nv.tipo === 'resgate' ? 'RESGATE' : nv.tipo === 'levantamento' ? 'LEV.' : 'EM VOO'}</text></g>`;
+            pads += `<g transform="translate(${cx - 10} 128)" opacity=".85"><rect x="-76" y="-26" width="152" height="40" rx="3" fill="none" stroke="#7fb4d6" stroke-dasharray="5 5"/><text x="0" y="-4" text-anchor="middle" class="ag-svg-rot">${nv.tipo === 'resgate' ? (currentLang === 'en' ? 'RESCUE' : 'RESGATE') : nv.tipo === 'levantamento' ? (currentLang === 'en' ? 'SURVEY' : 'LEV.') : (currentLang === 'en' ? 'IN FLIGHT' : 'EM VOO')}</text></g>`;
         } else if (nv) pads += `<ellipse cx="${cx - 8}" cy="147" rx="64" ry="2.4" fill="#000" opacity=".45"/>` + grupo(cx - 8, 147 - 27 * 0.78, naveSvg(nv.tipo, { fogo: false }), 0.78);
     }
     const torre = lin(1110, 150, 1126, 52, '#9bb3c6', 2) + lin(1142, 150, 1126, 52, '#9bb3c6', 2) + [[130, 1115, 1137], [110, 1118, 1134], [88, 1120, 1132], [70, 1122, 1130]].map(([y, a, b]) => lin(a, y, b, y, '#9bb3c6', 2)).join('') + `<rect class="ag-luz" x="1123" y="46" width="6" height="6" fill="${P.vermelho}"/>`;
