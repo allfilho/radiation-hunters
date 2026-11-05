@@ -11,3 +11,5 @@ archive/
 *.tgz
 _pacote-*
 README-append.md
+._*
+.netlify/
