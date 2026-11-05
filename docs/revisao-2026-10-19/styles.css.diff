@@ -1,0 +1,38 @@
+--- 2.3/current/styles.css
++++ 2.4/current/styles.css
+@@ -627,7 +627,10 @@
+ 
+ .shield-icon {
+     font-size: 1.2rem;
+-}
++    display: flex;
++    line-height: 0;
++}
++.shield-icon svg { display: block; }
+ 
+ .shield-key {
+     font-family: var(--pixel-font);
+@@ -1546,6 +1549,10 @@
+     .action-label { font-size: 0.5rem; }
+     .pause-btn { position: fixed; top: 60px; right: 10px; width: 40px; height: 40px; border-radius: 50%; }
+     .pause-btn .action-icon { font-size: 1rem; }
++    /* Dica: botão pequeno sob a pausa (a fileira de baixo já tem inventário, Geiger e Identificar) */
++    .dica-btn { position: fixed; top: 108px; right: 10px; width: 40px; height: 40px; }
++    .dica-btn .action-icon { font-size: 1rem; }
++    .dica-btn .action-label { display: none; }
+     .hud-bottom-center { display: flex !important; position: fixed; top: 82px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+     .sources-tracker { gap: 6px; }
+     .source-slot { width: 34px; height: 34px; border-radius: 10px; background: rgba(8,14,20,0.6); }
+@@ -1703,3 +1710,12 @@
+ .inv-mural p { border-left:3px solid #377b87; padding-left:10px; }
+ #inv-transferencia { width:100%; box-sizing:border-box; }
+ #inv-caderno { font-size:11px; }
++
++/* Seleção: abas "Missões | Investigações" (as missões continuam sendo o destino padrão, também no celular). */
++.mission-tabs { display:flex; gap:8px; justify-content:center; padding:0 10px 12px; flex:0 0 auto; }
++.mission-tab { flex:1 1 0; max-width:220px; min-height:44px; padding:8px 14px; border:2px solid var(--surface-lighter); border-radius:var(--border-radius); background:var(--surface); color:var(--text-dim, #9fb4b8); font-family:inherit; font-size:14px; cursor:pointer; }
++.mission-tab.active { border-color:var(--primary); color:var(--primary); box-shadow:var(--glow); }
++#mission-select.aba-missoes #investigacoes-container { display:none; }
++#mission-select.aba-investigacoes #missions-container { display:none; }
++
++@media (max-width: 900px), (pointer: coarse) { .shield-icon svg { width: 28px; height: 28px; } }

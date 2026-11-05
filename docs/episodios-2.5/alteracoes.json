@@ -1,0 +1,140 @@
+{
+  "versao": "2.5",
+  "backup": "archive/2026-10-19_pre-tres-investigacoes.tar.gz",
+  "arquivos": [
+    {
+      "arquivo": "current/styles.css",
+      "estado": "alterado",
+      "sha256": "15217a80921de94cc37163710946ff4b8acdfb8a7648c3a993a96f2314047fdd"
+    },
+    {
+      "arquivo": "current/js/main.js",
+      "estado": "alterado",
+      "sha256": "6722f6748b4cae9cd4e0fa206471502260d05025be42b11a93933a4873ebad45"
+    },
+    {
+      "arquivo": "current/js/ui.js",
+      "estado": "alterado",
+      "sha256": "a6f5d8f6bf2c3b8609ffcc29db63beb2181bc6f74cd31e7f738e476fa9243210"
+    },
+    {
+      "arquivo": "current/js/modo.js",
+      "estado": "alterado",
+      "sha256": "1294e945b227102a2b438676920991d38f2cb98b64b13fa0c5a8fde24fd399c5"
+    },
+    {
+      "arquivo": "current/js/investigacao/configuracoes-campo.js",
+      "estado": "novo",
+      "sha256": "739d8ebebda2ac7aa3321d4c0669b91dfbb82a301e770f7d6425a0e8d85845dc"
+    },
+    {
+      "arquivo": "current/js/investigacao/hospital.js",
+      "estado": "alterado",
+      "sha256": "81ccc89d4ed889769b87e66bbee55037f3341532fcb25df74ccd3539b16daae0"
+    },
+    {
+      "arquivo": "current/js/investigacao/motor.js",
+      "estado": "alterado",
+      "sha256": "38b51ea7a008746ae4a5ca16b11d63cbd5e757a7b62bcd4c76c1f73b0592cb17"
+    },
+    {
+      "arquivo": "current/js/investigacao/autoria.js",
+      "estado": "novo",
+      "sha256": "282c95b3541093b6be75e89f9681b7d1a3e94d994d3c5424dae4fc55e4bcf411"
+    },
+    {
+      "arquivo": "current/js/investigacao/hospital-campo.js",
+      "estado": "alterado",
+      "sha256": "47e4a2662be7433ac99c93289ed56a30ece90f476decddb9ce4dd1368173eaee"
+    },
+    {
+      "arquivo": "current/js/investigacao/ui-investigacao.js",
+      "estado": "alterado",
+      "sha256": "550d22fb0eefd5aa94a5e61df7139d747df38cc9056200fb0ea48278b7303b9c"
+    },
+    {
+      "arquivo": "current/js/investigacao/index.js",
+      "estado": "alterado",
+      "sha256": "a0dd0a7201104c7410acfe0fc5545ff3ea7f01b0f409d03f9177bc77bd3463cd"
+    },
+    {
+      "arquivo": "current/js/investigacao/modelos.js",
+      "estado": "novo",
+      "sha256": "6ca83c661602f86774bd667ac52c5cc0831a44324c4cdeaf5c48a1b3762f141f"
+    },
+    {
+      "arquivo": "current/js/investigacao/medicina-nuclear.js",
+      "estado": "novo",
+      "sha256": "1d592b2a7ebc27fceadc3baa6b473b39f04d9e5e16da49349b3997ca99ff8b13"
+    },
+    {
+      "arquivo": "current/js/investigacao/arquivo-tempo.js",
+      "estado": "novo",
+      "sha256": "2e1764b186b1a3794c33ebfe1af3c8dfdcd68e498328ac74ab03b7b259b41acc"
+    },
+    {
+      "arquivo": "current/js/investigacao/radonio-escola.js",
+      "estado": "novo",
+      "sha256": "7c2b8a546d26be97fa6806b301a569972c1922ca9e93b9581cdd657bbc90788f"
+    },
+    {
+      "arquivo": "current/js/investigacao/atividades.js",
+      "estado": "novo",
+      "sha256": "c816e03069f4d6b5e99ac795c307a612d5160ab716376acda1bdaf10e630427b"
+    },
+    {
+      "arquivo": "current/js/investigacao/campo.js",
+      "estado": "novo",
+      "sha256": "6e4da1ea06b57aa5d38695e128781e654ac2cdf7df766fd930d2c5cd19e70a75"
+    },
+    {
+      "arquivo": "current/js/mapa/gerador.js",
+      "estado": "alterado",
+      "sha256": "fa40e154666d028fa54afd2cca1f2f92c8683a13bc208498274771c051c0f78b"
+    },
+    {
+      "arquivo": "current/js/render/moveis.js",
+      "estado": "alterado",
+      "sha256": "f6b3227c055873a37e691a82e487a19d8b25c211e35400951b76734c9cfdbb0d"
+    },
+    {
+      "arquivo": "current/js/render/npcs-hospital.js",
+      "estado": "alterado",
+      "sha256": "6e25e0d4e9b5b493025efbb470fa134ae3757eca9682119e9eb8939a77901a20"
+    },
+    {
+      "arquivo": "current/js/render/mobiliario-investigacao.js",
+      "estado": "novo",
+      "sha256": "41122d78b11d00deee215ca9b3959ee4563dab5a68bbc0a295d805c45fc59bea"
+    },
+    {
+      "arquivo": "tests/25-investigacao.test.mjs",
+      "estado": "alterado",
+      "sha256": "df3da8069c2b422d8f4b03618087cd952996452334047431a0270ec152a36d27"
+    },
+    {
+      "arquivo": "tests/30-episodios-investigacao.test.mjs",
+      "estado": "novo",
+      "sha256": "1ba82b23b083d739963febdeb9585898f13060f05c66490b854172f06b580633"
+    },
+    {
+      "arquivo": "tools/preview.py",
+      "estado": "novo",
+      "sha256": "75881e716df22af9d798b3f4365822f0c653c5496fff31ed9c70245a24104652"
+    },
+    {
+      "arquivo": "README.md",
+      "estado": "alterado",
+      "sha256": "c72a54a5bb7cc860d37962b7b89e6612c29621c0eda1c4ab97e3051243d3333c"
+    }
+  ],
+  "testes": {
+    "total": 273,
+    "aprovados": 273,
+    "falhas": 0,
+    "cancelados": 0,
+    "ignorados": 0,
+    "duracao_ms": 464105.845,
+    "exit_code": 0
+  }
+}

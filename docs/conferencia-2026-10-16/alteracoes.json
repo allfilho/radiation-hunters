@@ -1,0 +1,140 @@
+{
+  "versao": "2.2",
+  "backup": "archive/2026-10-16_pre-conferencia-codex-134533.tar.gz",
+  "alterados": [
+    {
+      "arquivo": "current/js/academia/ui-licao.js",
+      "sha256_antes": "cc5274b7a780a92c1c5d1e687d5e35b75c5e6db66f48ec04c30d4fa29b42db3f",
+      "sha256_depois": "58606b01c6752eefb7024a917ca737daf7378fe900c62e354c8af4e3cfbc9336"
+    },
+    {
+      "arquivo": "current/js/data/encontros/conceitos.js",
+      "sha256_antes": "c6b26dd444cd2743835db46f86033e35e1b7fdf402e30533ed73a42783bb3aac",
+      "sha256_depois": "b7ad58962c6dde0a0dcf420797e31228d6f5eb48b493194b795037353d75de20"
+    },
+    {
+      "arquivo": "current/js/data/encontros/perguntas.js",
+      "sha256_antes": "5d0277213cd38cd0285faf9a5405b667f6875817c252c38ea5d642eddf4155ce",
+      "sha256_depois": "9e9d06f2336fc27c9d947c9f9110adbee604c36182eb3fa7e2957a5d3bcf6060"
+    },
+    {
+      "arquivo": "current/js/i18n/en.js",
+      "sha256_antes": "9d860e924f3a7da2901bb2ec34629ae27cc1d9a8bdc4c310308e9a35ffa4c5de",
+      "sha256_depois": "22802ac5ad0471bd7611e0f4ee297a3b453d8546be541ed1720e14a35f328e64"
+    },
+    {
+      "arquivo": "current/js/i18n/pt.js",
+      "sha256_antes": "f9d5c6f9a4e93c904e97a74c0c87835b591892684c18a5b295afd95df1666f6d",
+      "sha256_depois": "fb1c1457a2cc99fc4af6eaf08a70708826ad65351684d3ca5f4707acfe1eaeee"
+    },
+    {
+      "arquivo": "current/js/investigacao/hospital.js",
+      "sha256_antes": "7545aa47f07a21b3dde7e6365ab02d7cfda29a368c1ed24ee4cf69b4171e8a77",
+      "sha256_depois": "7f54e26824972816957ab152bc1e8a6bdd37cacd57ba3049f9c28eda6c5f4e03"
+    },
+    {
+      "arquivo": "current/js/investigacao/motor.js",
+      "sha256_antes": "d0d72b24cda9dbe646c8fb43784c9151d9a6ff2dd9d9a8afff60743d47181730",
+      "sha256_depois": "670bbaa84362809408389731dd317254c2929257181fb719e9d8c206f4641973"
+    },
+    {
+      "arquivo": "current/js/investigacao/ui-investigacao.js",
+      "sha256_antes": "1ff9e4762f1fa1a7691936443645064e8cd9ccf43749c34905d8e6ce456fa6d2",
+      "sha256_depois": "8565c7cda9a860d8a748ae92107c13fa6f507b4d3be1fa5202a079b404432e34"
+    },
+    {
+      "arquivo": "current/js/main.js",
+      "sha256_antes": "521aae7389e745a0f8d21ef2a1d8c11a366e63ad0d46f5f045a4f72cb43db808",
+      "sha256_depois": "1426970af2523f74f488c86119ce693f0ba1bb757bdbffe5c59cefbe6c009903"
+    },
+    {
+      "arquivo": "current/js/mapa/gerador.js",
+      "sha256_antes": "49786b887f0719fcf165bebd5625e27b450b543ee7d75b1bc5d58e8872d8a5d6",
+      "sha256_depois": "628f5f50a676f59f32375ef97809d307d6f780c7e693e6c1624196009e8d761c"
+    },
+    {
+      "arquivo": "current/js/modo.js",
+      "sha256_antes": "84ba8e58e0f43f543da70e7d79dd2e305bd3c1f857a606c8817d2b3b5f9fc5a1",
+      "sha256_depois": "7608a09d468c8126fcacc6d551245f79cc5b4ae63ec98031e26ee138f7c5658c"
+    },
+    {
+      "arquivo": "current/js/render/terreno.js",
+      "sha256_antes": "b5141f25468f2c89ab51406325aff1af2a169b89862c77c6453b9b20acc0e11a",
+      "sha256_depois": "e6911d144a106faeaca16e487a3b47d79f4255311e7eac4d4825128dab074553"
+    },
+    {
+      "arquivo": "current/js/ui.js",
+      "sha256_antes": "48304e701c87ea4e869e0b8f9134b6afabb77e152b3cd7c705db67eb77b51db2",
+      "sha256_depois": "88d789bf517523cbb1e18a417b19426485a557fd120946b25034382961759072"
+    },
+    {
+      "arquivo": "current/styles.css",
+      "sha256_antes": "2d74b6b5672354dc404a9134958afe5bf89a506b5e4ee387b7328c6e99edeafc",
+      "sha256_depois": "450851450a2c110361a243468a18b11daae0cb154f2038c4b9acedb9c0eadb9b"
+    },
+    {
+      "arquivo": "tests/07-graficos.test.mjs",
+      "sha256_antes": "a6c8cfbe41f67d300f624dc21d851c1d7268b113845353f3febb7fc33911dfcc",
+      "sha256_depois": "de54cf01db9ae7795ff85ec18f830ea31b23f5e448dcd760b549e3116e14c813"
+    },
+    {
+      "arquivo": "tests/08-encontros.test.mjs",
+      "sha256_antes": "dc29e7039c94948a5942ea20b25cd09ebcba20c2d2a213deee9d39bc16e1d722",
+      "sha256_depois": "4039a7a777d4c545ebf2fd056bb88d882af0797f5011bade667b14ea8ea94597"
+    },
+    {
+      "arquivo": "tests/25-investigacao.test.mjs",
+      "sha256_antes": "190fd0fde5a74b64e40422246175e19c52370c8de51b3e8f9bc1e417b2b41606",
+      "sha256_depois": "287e2cfa8a3505977e36f8326b67442e0423b7c254e30d363909f48ba7ab5ec4"
+    },
+    {
+      "arquivo": "tests/README.md",
+      "sha256_antes": "e8da419adac1fdf81445cd0baec88b1f7084406f9c7a9326f2022f575cdc1118",
+      "sha256_depois": "a8b39842b0f2d4877feed911da193f40cb9541a5d2611f752eb441030987d7e0"
+    },
+    {
+      "arquivo": "README.md",
+      "sha256_antes": "2a85210530338d1d99926f04e9c9389e9da7b6ffe4ca30e02a4dff4fc79afabc",
+      "sha256_depois": "49a064945146e7a2d4ca3578b22a6e9c03e030cdb54cb2c2596dcd1f8af8f378"
+    },
+    {
+      "arquivo": "docs/roteiro-hospital-investigacao.md",
+      "sha256_antes": "4e520478d93dffd8b148f7e389fb23cb87450e655cf92c92641a051343935955",
+      "sha256_depois": "4acd30a7d247fc6f68b98a7b0bad3ac5c87a720c887a9a99e178cfbc6c189999"
+    }
+  ],
+  "adicionados": [
+    {
+      "arquivo": "current/js/investigacao/hospital-campo.js",
+      "sha256": "b9ad49ef88a47e85c5d5dcbd19f0f900ba592f525a6a168078f0ad3b019631b8"
+    },
+    {
+      "arquivo": "current/js/render/npcs-hospital.js",
+      "sha256": "4b48d2702dffd75cd4ead985f0184148b4f4617ffc09327ab64bfc1a1a7535de"
+    },
+    {
+      "arquivo": "tests/26-revisao-relatorio.test.mjs",
+      "sha256": "25c318ad93972b3d457239aac76e56b4952667d89dd49c36ceed909aa658d3d1"
+    },
+    {
+      "arquivo": "tests/27-hospital-campo.test.mjs",
+      "sha256": "1a0a8507d0642dd44b83883dfbaab6b9e0b2339993b3372dfe9bf4dd5e5ae6aa"
+    },
+    {
+      "arquivo": "docs/conferencia-relatorio-2026-10-16.md",
+      "sha256": "ecdfc9fcbb00b095cd782a42bf56dd99cc2bd1f3cefd1b165540cf85bbef9c22"
+    },
+    {
+      "arquivo": "docs/referencias-5c/busca/revisao-2026-10-16.md",
+      "sha256": "af28ba52e625ba9e2a49761631f939e873866b18e923c4ec009b91c3bcddb8c9"
+    }
+  ],
+  "verificacao": {
+    "testes": 252,
+    "passaram": 252,
+    "falhas": 0,
+    "duracao_s": 447.404205208,
+    "log": "docs/conferencia-2026-10-16/testes-2.2.log",
+    "sha256_log": "9b42ebec5d3fdba7d681c09c209859b5f4ab85a35d17ef987b5d71c52a2bb1d2"
+  }
+}

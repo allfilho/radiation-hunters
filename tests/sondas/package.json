@@ -1,0 +1,3 @@
+{ "name":"radhunter-audit","private":true,"type":"module","version":"0.1.0",
+  "description":"Sondas de auditoria do Radiation Hunters (Chromium headless). Somente leitura: não alteram o jogo.",
+  "dependencies":{"phaser":"3.60.0","playwright-core":"^1.50.0"} }

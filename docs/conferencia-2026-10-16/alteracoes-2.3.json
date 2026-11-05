@@ -1,0 +1,86 @@
+{
+  "versao": "2.3",
+  "data": "2026-10-16",
+  "backup": "archive/2026-10-16_pre-hospital-evidencias-mobiliario.tar.gz",
+  "arquivos": [
+    {
+      "arquivo": "current/styles.css",
+      "estado": "alterado",
+      "sha256": "4618720b3d929d9b27d690be91b95c1750f3903a7d12ec8f91b124189fc3277f"
+    },
+    {
+      "arquivo": "current/js/modo.js",
+      "estado": "alterado",
+      "sha256": "784256f9a9cdab3c48ce6feb77f6b280505b3e201cc4d22a2846389340f67bf5"
+    },
+    {
+      "arquivo": "current/js/investigacao/hospital.js",
+      "estado": "alterado",
+      "sha256": "b7d28baf914122444c2acdbd4f01008d4b50a16f1c99141333d4706bb387e702"
+    },
+    {
+      "arquivo": "current/js/investigacao/motor.js",
+      "estado": "alterado",
+      "sha256": "5042f3100d5ecf87dc71fe163568e5265c473915ce4ba2aec63262b58d5ffc79"
+    },
+    {
+      "arquivo": "current/js/investigacao/hospital-campo.js",
+      "estado": "alterado",
+      "sha256": "eec95b848635c84d898b2cb571e4d334b1201c30a178123277f5d4e1e6c2d1d7"
+    },
+    {
+      "arquivo": "current/js/investigacao/ui-investigacao.js",
+      "estado": "alterado",
+      "sha256": "28945b8e35c4735c13906c1affaf1efae693d12cc0a365344f904c3688e1b48b"
+    },
+    {
+      "arquivo": "current/js/mapa/gerador.js",
+      "estado": "alterado",
+      "sha256": "c929b769c4893b330c0b3329955d74031f6f54caa0469541176c4ef8158a7a62"
+    },
+    {
+      "arquivo": "current/js/render/moveis.js",
+      "estado": "alterado",
+      "sha256": "075bf20a0d0cc481fc158265e034492c94e947ca79faeaede3e9665869b3822a"
+    },
+    {
+      "arquivo": "current/js/render/mobiliario-hospital.js",
+      "estado": "novo",
+      "sha256": "b13f6bec5d31f9c002524c8820dc579d187278fa2f015a09014934a1a05723a9"
+    },
+    {
+      "arquivo": "tests/25-investigacao.test.mjs",
+      "estado": "alterado",
+      "sha256": "2755dbd453c69d780ab318790c4b18112289b910d6e5288a78c960ed631595a3"
+    },
+    {
+      "arquivo": "tests/27-hospital-campo.test.mjs",
+      "estado": "alterado",
+      "sha256": "76fdd439ca702bb080c82857abc1bb9658abbb91ca81babca93220f4b515cd2f"
+    },
+    {
+      "arquivo": "tests/28-hospital-evidencias.test.mjs",
+      "estado": "novo",
+      "sha256": "4fd2083c7ef76b8c568db7a35ab33d7433c671584a85c6ac61d74b5308db880b"
+    },
+    {
+      "arquivo": "README.md",
+      "estado": "alterado",
+      "sha256": "48feb4589819b14b3088623f20e29389adda72b72e555d564ba00b4d0b08761e"
+    }
+  ],
+  "documentacao": [
+    "docs/hospital-2.3.md",
+    "docs/conferencia-relatorio-2026-10-16.md"
+  ],
+  "verificacao": "docs/conferencia-2026-10-16/testes-2.3.log",
+  "testes": {
+    "total": 255,
+    "aprovados": 255,
+    "falhas": 0,
+    "cancelados": 0,
+    "ignorados": 0,
+    "duracao_ms": 446085.05125,
+    "log": "docs/conferencia-2026-10-16/testes-2.3.log"
+  }
+}

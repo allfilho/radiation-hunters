@@ -1,0 +1,14 @@
+{
+  "name": "radhunter-tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Suíte do Radiation Hunters (Chromium headless). Não altera o jogo.",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 --test-reporter=spec [0-9]*.test.mjs"
+  },
+  "dependencies": {
+    "phaser": "3.60.0",
+    "playwright-core": "1.56.1"
+  }
+}

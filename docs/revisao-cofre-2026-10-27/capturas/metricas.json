@@ -1,0 +1,948 @@
+[
+  {
+    "rotulo": "960x640-01-cofre-inicio",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 618,
+      "ch": 618,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 512,
+      "ch": 512,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron"
+    ]
+  },
+  {
+    "rotulo": "960x640-02-ficha-aberta-Am-241",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 761,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 655,
+      "ch": 655,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "960x640-03-erro-1a-tentativa",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 761,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 655,
+      "ch": 655,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "960x640-04-blindagens-escolhidas",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 1029,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 923,
+      "ch": 923,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "960x640-05-resumo",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 525,
+      "ch": 525,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "visible"
+    },
+    "alvosPequenos": [],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "960x640-06-caderno-aba1",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 0,
+      "ch": 0,
+      "w": 0
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "close-btn",
+        "txt": "Close",
+        "w": 19,
+        "h": 37
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Arial",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "960x640-07-caderno-protecao",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 0,
+      "ch": 0,
+      "w": 0
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "close-btn",
+        "txt": "Close",
+        "w": 19,
+        "h": 37
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Arial",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "960x640-erros-m5",
+    "erros": []
+  },
+  {
+    "rotulo": "960x640-08-ficha-I-131-guardado",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 817,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 711,
+      "ch": 711,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "960x640-erros-m4",
+    "erros": []
+  },
+  {
+    "rotulo": "390x844-01-cofre-inicio",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 888,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 145,
+      "ch": 145,
+      "vis": "hidden"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron"
+    ]
+  },
+  {
+    "rotulo": "390x844-02-ficha-aberta-Am-241",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 907,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 607,
+      "ch": 607,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-ficha-fechar",
+        "txt": "Fechar a ficha",
+        "w": 64,
+        "h": 20
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-02b-ficha-rolada",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 907,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 607,
+      "ch": 607,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-ficha-fechar",
+        "txt": "Fechar a ficha",
+        "w": 64,
+        "h": 20
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-03-erro-1a-tentativa",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 927,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 607,
+      "ch": 607,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-ficha-fechar",
+        "txt": "Fechar a ficha",
+        "w": 64,
+        "h": 20
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-03b-erro-ficha-fechada",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 927,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 607,
+      "ch": 607,
+      "vis": "hidden"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-04-blindagens-escolhidas",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 1307,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 642,
+      "ch": 607,
+      "vis": "hidden"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-05-resumo",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 844,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "hidden"
+    },
+    "alvosPequenos": [],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-06-caderno-aba1",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 0,
+      "ch": 0,
+      "w": 0
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "hidden"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "close-btn",
+        "txt": "Close",
+        "w": 19,
+        "h": 37
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Arial",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-07-caderno-protecao",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 0,
+      "ch": 0,
+      "w": 0
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "hidden"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "close-btn",
+        "txt": "Close",
+        "w": 19,
+        "h": 37
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Arial",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-erros-m5",
+    "erros": []
+  },
+  {
+    "rotulo": "390x844-08-ficha-I-131-guardado",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 1019,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 650,
+      "ch": 607,
+      "vis": "visible"
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 187,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 99,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 106,
+        "h": 40
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 112,
+        "h": 40
+      },
+      {
+        "cls": "cf-ficha-fechar",
+        "txt": "Fechar a ficha",
+        "w": 64,
+        "h": 20
+      }
+    ],
+    "fontes": [
+      "Inter",
+      "Orbitron",
+      "Georgia",
+      "\"Courier New\""
+    ]
+  },
+  {
+    "rotulo": "390x844-erros-m4",
+    "erros": []
+  }
+]

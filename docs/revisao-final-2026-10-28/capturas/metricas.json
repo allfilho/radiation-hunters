@@ -1,0 +1,1930 @@
+[
+  {
+    "rotulo": "pt-960x640-itens-m5",
+    "itens": [
+      {
+        "nome": "Am-241",
+        "n": 1,
+        "prat": "alfa"
+      },
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Co-60",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "pt-960x640-01-cofre-inicio",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 642,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 121,
+      "ch": 121,
+      "vis": "visible",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 513
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "pt-960x640-02-ficha-aberta-Am-241",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 643,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 655,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 513
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "pt-960x640-03-erro-1a-tentativa",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 643,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 655,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 513
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "pt-960x640-03c-tudo-guardado",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 811,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 793,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 540
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 131,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 68,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 74,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 73,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 131,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 68,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 74,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 73,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 131,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 68,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 74,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 73,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 77,
+        "h": 36
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "pt-960x640-04-blindagens-escolhidas",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 868,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 793,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 597
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": false
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 148,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 68,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 74,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 73,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 131,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 68,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 74,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 89,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 131,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 68,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 74,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 89,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 77,
+        "h": 36
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "pt-960x640-05-resumo",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 525,
+      "ch": 525,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-960x640-06-caderno-aba1",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 442,
+      "ch": 442,
+      "w": 760
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-960x640-erros-m5",
+    "erros": []
+  },
+  {
+    "rotulo": "pt-960x640-itens-m4",
+    "itens": [
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "I-131",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "pt-960x640-08-ficha-I-131-guardado",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 688,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 796,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 542
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Papel / embalagem",
+        "w": 131,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrílico",
+        "w": 68,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Alumínio",
+        "w": 74,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Chumbo",
+        "w": 73,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concreto",
+        "w": 77,
+        "h": 36
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "pt-960x640-erros-m4",
+    "erros": []
+  },
+  {
+    "rotulo": "pt-390x844-itens-m5",
+    "itens": [
+      {
+        "nome": "Am-241",
+        "n": 1,
+        "prat": "alfa"
+      },
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Co-60",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "pt-390x844-01-cofre-inicio",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 912,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 165,
+      "ch": 165,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 751
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-02-ficha-aberta-Am-241",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 912,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 627,
+      "ch": 607,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": false,
+      "y": 751
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-03-erro-1a-tentativa",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 927,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 627,
+      "ch": 607,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 751
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira a",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira b",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Guardar Am-241 na prateleira g",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-03c-tudo-guardado",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 1355,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 732,
+      "ch": 607,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": false,
+      "descoberto": false,
+      "y": 1179
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-04-blindagens-escolhidas",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 1355,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 732,
+      "ch": 607,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 668
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": false
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-05-resumo",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 844,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-06-caderno-aba1",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 444,
+      "ch": 444,
+      "w": 367
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-erros-m5",
+    "erros": []
+  },
+  {
+    "rotulo": "pt-390x844-itens-m4",
+    "itens": [
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "I-131",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "pt-390x844-08-ficha-I-131-guardado",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 1035,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 740,
+      "ch": 607,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": false,
+      "y": 791
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Alfa",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Beta",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Prateleira Gama",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "pt-390x844-erros-m4",
+    "erros": []
+  },
+  {
+    "rotulo": "en-960x640-itens-m5",
+    "itens": [
+      {
+        "nome": "Am-241",
+        "n": 1,
+        "prat": "alfa"
+      },
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Co-60",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "en-960x640-01-cofre-inicio",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 609,
+      "ch": 609,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 121,
+      "ch": 121,
+      "vis": "visible",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 489
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "en-960x640-02-ficha-aberta-Am-241",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 627,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 664,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 481
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the alpha shel",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the beta shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the gamma shel",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "en-960x640-03-erro-1a-tentativa",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 627,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 664,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 481
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the alpha shel",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the beta shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the gamma shel",
+        "w": 211,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "en-960x640-03c-tudo-guardado",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 779,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 788,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 528
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Paper / packaging",
+        "w": 126,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrylic",
+        "w": 65,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Aluminium",
+        "w": 84,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Lead",
+        "w": 54,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concrete",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Paper / packaging",
+        "w": 126,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrylic",
+        "w": 65,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Aluminium",
+        "w": 84,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Lead",
+        "w": 54,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concrete",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Paper / packaging",
+        "w": 126,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrylic",
+        "w": 65,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Aluminium",
+        "w": 84,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Lead",
+        "w": 54,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concrete",
+        "w": 77,
+        "h": 36
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "en-960x640-04-blindagens-escolhidas",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 836,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 788,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 585
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": false
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Paper / packaging",
+        "w": 142,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrylic",
+        "w": 65,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Aluminium",
+        "w": 84,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Lead",
+        "w": 54,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concrete",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Paper / packaging",
+        "w": 126,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrylic",
+        "w": 65,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Aluminium",
+        "w": 84,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Lead",
+        "w": 70,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concrete",
+        "w": 77,
+        "h": 36
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Paper / packaging",
+        "w": 126,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrylic",
+        "w": 65,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Aluminium",
+        "w": 84,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Lead",
+        "w": 70,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concrete",
+        "w": 77,
+        "h": 36
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "en-960x640-05-resumo",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 525,
+      "ch": 525,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-960x640-06-caderno-aba1",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 442,
+      "ch": 442,
+      "w": 760
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-960x640-erros-m5",
+    "erros": []
+  },
+  {
+    "rotulo": "en-960x640-itens-m4",
+    "itens": [
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "I-131",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "en-960x640-08-ficha-I-131-guardado",
+    "vw": 960,
+    "vh": 640,
+    "sw": 960,
+    "conteudo": {
+      "sh": 655,
+      "ch": 625,
+      "w": 941
+    },
+    "ficha": {
+      "sh": 772,
+      "ch": 537,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 527
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 209,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 211,
+        "h": 28
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Paper / packaging",
+        "w": 126,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Acrylic",
+        "w": 65,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Aluminium",
+        "w": 84,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Lead",
+        "w": 54,
+        "h": 36
+      },
+      {
+        "cls": "cf-mat",
+        "txt": "Concrete",
+        "w": 77,
+        "h": 36
+      }
+    ],
+    "atalhosTecladoVisiveis": true
+  },
+  {
+    "rotulo": "en-960x640-erros-m4",
+    "erros": []
+  },
+  {
+    "rotulo": "en-390x844-itens-m5",
+    "itens": [
+      {
+        "nome": "Am-241",
+        "n": 1,
+        "prat": "alfa"
+      },
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Co-60",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "en-390x844-01-cofre-inicio",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 876,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 165,
+      "ch": 165,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 715
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-02-ficha-aberta-Am-241",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 876,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 627,
+      "ch": 607,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": false,
+      "y": 715
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the alpha shel",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the beta shelf",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the gamma shel",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-03-erro-1a-tentativa",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 876,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 627,
+      "ch": 607,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 715
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the alpha shel",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the beta shelf",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Store Am-241 on the gamma shel",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-03c-tudo-guardado",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 1169,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 732,
+      "ch": 607,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": false,
+      "descoberto": false,
+      "y": 993
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-04-blindagens-escolhidas",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 1246,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 732,
+      "ch": 607,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": true,
+      "y": 683
+    },
+    "lacrar": {
+      "naTela": true,
+      "disabled": false
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-05-resumo",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 844,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-06-caderno-aba1",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 444,
+      "ch": 444,
+      "w": 367
+    },
+    "ficha": {
+      "sh": 0,
+      "ch": 0,
+      "vis": "hidden",
+      "aberta": false
+    },
+    "retorno": null,
+    "lacrar": null,
+    "alvosPequenos": [],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-erros-m5",
+    "erros": []
+  },
+  {
+    "rotulo": "en-390x844-itens-m4",
+    "itens": [
+      {
+        "nome": "Sr-90",
+        "n": 1,
+        "prat": "beta"
+      },
+      {
+        "nome": "Cs-137",
+        "n": 2,
+        "prat": "gama"
+      },
+      {
+        "nome": "I-131",
+        "n": 2,
+        "prat": "gama"
+      }
+    ]
+  },
+  {
+    "rotulo": "en-390x844-08-ficha-I-131-guardado",
+    "vw": 390,
+    "vh": 844,
+    "sw": 390,
+    "conteudo": {
+      "sh": 953,
+      "ch": 844,
+      "w": 390
+    },
+    "ficha": {
+      "sh": 740,
+      "ch": 607,
+      "vis": "visible",
+      "aberta": true
+    },
+    "retorno": {
+      "naTela": true,
+      "descoberto": false,
+      "y": 741
+    },
+    "lacrar": {
+      "naTela": false,
+      "disabled": true
+    },
+    "alvosPequenos": [
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Alpha shelf",
+        "w": 314,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Beta shelf",
+        "w": 316,
+        "h": 28
+      },
+      {
+        "cls": "cf-prat-btn",
+        "txt": "Gamma shelf",
+        "w": 316,
+        "h": 28
+      }
+    ],
+    "atalhosTecladoVisiveis": false
+  },
+  {
+    "rotulo": "en-390x844-erros-m4",
+    "erros": []
+  }
+]

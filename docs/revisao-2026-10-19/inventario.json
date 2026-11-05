@@ -1,0 +1,498 @@
+{
+  "base": "archive/2026-10-19_pre-abas-dica.tar.gz",
+  "atual": "current",
+  "alteracoes": [
+    {
+      "arquivo": "current/index.html",
+      "estado": "modificado",
+      "bytes": 23175,
+      "sha256": "fd90af7616469208880028a1529cc6e4ccb39a715534ef4f63082d92107c564e"
+    },
+    {
+      "arquivo": "current/styles.css",
+      "estado": "modificado",
+      "bytes": 64675,
+      "sha256": "e95e52c436f74b80a0a7d66d1d6766c3b2337a6aadc3a1f8190cddb217dbe3b5"
+    },
+    {
+      "arquivo": "current/.netlify/netlify.toml",
+      "estado": "novo",
+      "bytes": 326,
+      "sha256": "bd1aeed0f507852ac0e9b119e60e43a1c69503229900add092981eba8e1e4012"
+    },
+    {
+      "arquivo": "current/js/ui.js",
+      "estado": "modificado",
+      "bytes": 37217,
+      "sha256": "62deb512bca9c4e78746441ad43c3520b5f64dde470a122dbd541aad975ae7b6"
+    },
+    {
+      "arquivo": "current/js/modo.js",
+      "estado": "modificado",
+      "bytes": 1591,
+      "sha256": "77c714c51a442978cf12141f59f4efd741b81058bf2de7f7bea72f5a8c6fff47"
+    },
+    {
+      "arquivo": "current/js/encontros/aproveitamento.js",
+      "estado": "modificado",
+      "bytes": 2725,
+      "sha256": "79c2b63a0256ac8effdfd1d94d91a6f9975b9899a41112ee3b0ee4e8da1d1ad8"
+    },
+    {
+      "arquivo": "current/js/encontros/dica.js",
+      "estado": "novo",
+      "bytes": 1380,
+      "sha256": "63d66a95c020581d0604e13f7081a78fc7dff8ff95e0eb19b842086208e04d54"
+    },
+    {
+      "arquivo": "current/js/i18n/en.js",
+      "estado": "modificado",
+      "bytes": 25970,
+      "sha256": "a232afed8afc0383a1efaca9c4c2f9783cde079be6c250b5f1a72e0faa5503ec"
+    },
+    {
+      "arquivo": "current/js/i18n/pt.js",
+      "estado": "modificado",
+      "bytes": 27331,
+      "sha256": "bddc673698898421f20ae925d22db45b989d4b3ab0beae5e0f5ddc5c5a90499a"
+    },
+    {
+      "arquivo": "current/js/render/moveis.js",
+      "estado": "modificado",
+      "bytes": 57241,
+      "sha256": "654dcf242d1dd3d27145f04dd02ffb666592212ce66f53dd18cc726a97937ca7"
+    },
+    {
+      "arquivo": "current/js/render/estilo-rpg.js",
+      "estado": "novo",
+      "bytes": 3453,
+      "sha256": "69ba9b7f6b6a6c6924021b2a741f9b5e85793dd1fce19f9939b2e03e47e103ee"
+    },
+    {
+      "arquivo": "current/js/render/moveis-rpg.js",
+      "estado": "novo",
+      "bytes": 8076,
+      "sha256": "93bc0158d62c72f8d359e214accf78b210aafb9203c09d729b45aa7b774f4093"
+    },
+    {
+      "arquivo": "current/js/render/moveis-rpg-interior.js",
+      "estado": "novo",
+      "bytes": 21745,
+      "sha256": "cde19eabf5e06e0aaddcbd80eff97a8202a5ea58f480f59cd29584ae30c2dd7c"
+    },
+    {
+      "arquivo": "current/js/render/moveis-rpg-ruinas.js",
+      "estado": "novo",
+      "bytes": 28398,
+      "sha256": "899a5dc858ad27ac5749484712e07222089321e2da34d3fae42b44c5c27b3fda"
+    },
+    {
+      "arquivo": "current/js/scenes/GameScene.js",
+      "estado": "modificado",
+      "bytes": 86858,
+      "sha256": "4213083ff64d60cf184c19979f618ddc170855dc11dd3d41a9a9943a326cc301"
+    },
+    {
+      "arquivo": "tests/01-dados.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 7310,
+      "sha256": "f40c18f063920569a4ff0eb1ffac33d4d223e1b58e7bfba7f96a26f93f9d1bf0"
+    },
+    {
+      "arquivo": "tests/README.md",
+      "estado": "sem-base-no-backup",
+      "bytes": 6710,
+      "sha256": "a8b39842b0f2d4877feed911da193f40cb9541a5d2611f752eb441030987d7e0"
+    },
+    {
+      "arquivo": "tests/04-geiger.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 9285,
+      "sha256": "4bbe2cc9c33564d1602a5f921e970fbb30c64fb16372d2e4123dab7fbf86157f"
+    },
+    {
+      "arquivo": "tests/package.json",
+      "estado": "sem-base-no-backup",
+      "bytes": 367,
+      "sha256": "ca144b2e8dc2bc3480a18b676b5a4b7ac796b214c08b8162a9045d8f3c8b6580"
+    },
+    {
+      "arquivo": "tests/03-robustez.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3077,
+      "sha256": "079b551a98e47a37ce6605404c85d3f538ea52f5afe64ed9024cfbd4bc26ed8f"
+    },
+    {
+      "arquivo": "tests/package-lock.json",
+      "estado": "sem-base-no-backup",
+      "bytes": 1358,
+      "sha256": "98eb878b4364a0968fe4ef410c2e431e42b4d6b2670bc6e923743ba58cef8caa"
+    },
+    {
+      "arquivo": "tests/02-fluxo.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 11014,
+      "sha256": "8af266312855dfad616dc2a270f0dfbd125054efb88afea3cc1264a516c91347"
+    },
+    {
+      "arquivo": "tests/05-geiger-modelo.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 10114,
+      "sha256": "1c98c3a3867a0dfcea03e7d2d913b792871eea7ebd2cafd0c5bb5595d488e215"
+    },
+    {
+      "arquivo": "tests/06-jogabilidade.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 5153,
+      "sha256": "5c7a8a37e4632b7c59fb009742c83ae75e43828ea4264b31f364b4eabe28a61a"
+    },
+    {
+      "arquivo": "tests/07-graficos.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3358,
+      "sha256": "de54cf01db9ae7795ff85ec18f830ea31b23f5e448dcd760b549e3116e14c813"
+    },
+    {
+      "arquivo": "tests/08-encontros.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 10281,
+      "sha256": "4039a7a777d4c545ebf2fd056bb88d882af0797f5011bade667b14ea8ea94597"
+    },
+    {
+      "arquivo": "tests/09-encontros-jogo.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 16396,
+      "sha256": "a8d905e2ad96db4a71e2d7eaf5d09947eacb07c72f4a1062c60921ee8fc3dd35"
+    },
+    {
+      "arquivo": "tests/10-emissoes.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3758,
+      "sha256": "d6292a712bf33cf92c84e5e3802b91b56a6335f17e0b324986d51cc59b1823e2"
+    },
+    {
+      "arquivo": "tests/11-cofre.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 14409,
+      "sha256": "80dffa5ae770a00b833275a3bf8118a2ff5501a4ce7aa6258888360457e7055b"
+    },
+    {
+      "arquivo": "tests/12-geiger-componentes.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 10823,
+      "sha256": "53f50df94b7d389cf419c5f11557c1bca0f832108dbd24d4e0251858a427eaaf"
+    },
+    {
+      "arquivo": "tests/15-camera.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 6684,
+      "sha256": "2758323e1ab1314fb62e789b064d0141ff9bb5ee2f45ff50d6547a0a620abd11"
+    },
+    {
+      "arquivo": "tests/17-assistencia.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3214,
+      "sha256": "dbf5313f0d9193a731c79ac0bc146cf47bb0ee239ffc93c34837ab47c95865fb"
+    },
+    {
+      "arquivo": "tests/13-cofre-ficha.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 8622,
+      "sha256": "5ebac3d00ca73c24bef0cd33913f68c894b934fbd947e22aa0c7db5690f5bb3f"
+    },
+    {
+      "arquivo": "tests/16-acessibilidade.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3256,
+      "sha256": "1595cbc5078f5ebdbf53b46ee070a797bc3b0631e0500a732058d9cd56c6ccad"
+    },
+    {
+      "arquivo": "tests/14-cofre-ui.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 18759,
+      "sha256": "2d18ce46dd37aa9e7278bfd75a233ce8f7c6463fef09792144d5d083d7446dd8"
+    },
+    {
+      "arquivo": "tests/25-investigacao.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 16574,
+      "sha256": "b8d9cbace021660bc5cc9d3555c21d3d2b4d47db2d7bdc6770fe064041ba5f2e"
+    },
+    {
+      "arquivo": "tests/19-licoes.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 12368,
+      "sha256": "539c988b850d7eb9cc44e282486fa84b1ea2ddfc786920af37736b7be7a7d821"
+    },
+    {
+      "arquivo": "tests/18-academia.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 8437,
+      "sha256": "05f72d0a644a0e65f7aa69f006e17cc56bf5276b7f4c97909fc52980dbf518ea"
+    },
+    {
+      "arquivo": "tests/26-revisao-relatorio.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 5624,
+      "sha256": "25c318ad93972b3d457239aac76e56b4952667d89dd49c36ceed909aa658d3d1"
+    },
+    {
+      "arquivo": "tests/20-objetivo.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 9268,
+      "sha256": "90c9293ae680cf03a8239ef90060647748afcd79626bec7df5b47f19b618825f"
+    },
+    {
+      "arquivo": "tests/27-hospital-campo.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 6096,
+      "sha256": "76fdd439ca702bb080c82857abc1bb9658abbb91ca81babca93220f4b515cd2f"
+    },
+    {
+      "arquivo": "tests/21-academia-completa.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 4964,
+      "sha256": "169fd8a4e76b2f969098eb46fd3fe1fdc1e37d313fe790a008500a3236a27918"
+    },
+    {
+      "arquivo": "tests/29-dica-fontes.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 5749,
+      "sha256": "5e8ffb0e57b3c0534694a21c8ee6230813977dc269108f6fb9c837f23e44bccc"
+    },
+    {
+      "arquivo": "tests/28-hospital-evidencias.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 4348,
+      "sha256": "4fd2083c7ef76b8c568db7a35ab33d7433c671584a85c6ac61d74b5308db880b"
+    },
+    {
+      "arquivo": "tests/22-paginacao.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 8201,
+      "sha256": "73106df2f0856b35e903b66618c434592c755b12fd085e769ee4ef2164b34a12"
+    },
+    {
+      "arquivo": "tests/23-modo-professor.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 4086,
+      "sha256": "60325d568d9dcaf47d62ec8eee1ef8ab9704f41cda9bf32031255aaf5e51b344"
+    },
+    {
+      "arquivo": "tests/24-dados-insuficientes.test.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 4613,
+      "sha256": "bd819e6d34a825c29a1494bdc30aa822564de6a68ca88a10cfe9ed152e78992f"
+    },
+    {
+      "arquivo": "tests/sondas/README.md",
+      "estado": "sem-base-no-backup",
+      "bytes": 1314,
+      "sha256": "9c51dceb44781451ab761906ec70f5f5c2385793e431682e565afdcfdaed85fc"
+    },
+    {
+      "arquivo": "tests/sondas/01-fluxo-menus-localstorage.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 5722,
+      "sha256": "b6a882387026716da62f9c030a0fcc1af0843fd471e3651ea5a58c4d8a303ff8"
+    },
+    {
+      "arquivo": "tests/sondas/package.json",
+      "estado": "sem-base-no-backup",
+      "bytes": 263,
+      "sha256": "eab163a875deba0cf7b7cc18d509d1ab424e119496c9957eba95292bbb7a1458"
+    },
+    {
+      "arquivo": "tests/sondas/02-geiger-missoes-celular.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 6926,
+      "sha256": "21e981825cb501b72d574646f9b59b20cf7bf74e563966c49f1c03798a97d9a5"
+    },
+    {
+      "arquivo": "tests/sondas/03-identificacao-conclusao.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 4864,
+      "sha256": "3097b6a9d4f4b32de4be55edd2f7e400ef0006c5032c7f2e4fffba679a9ee808"
+    },
+    {
+      "arquivo": "tests/sondas/04-varredura-alcance-por-tipo.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3319,
+      "sha256": "61a82bd59b8745c6338d165829973565e353c7add077d7e57caf9cba9f116705"
+    },
+    {
+      "arquivo": "tests/helpers/geiger.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3629,
+      "sha256": "1ec83c2de7f19eb79795f9dd58e29f5aa13f21ccc2029fe10c73bfcd19c7b419"
+    },
+    {
+      "arquivo": "tests/helpers/navegador.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 6891,
+      "sha256": "5c5f420a1bcc1d06d7b96908616c71a2b7a53855e0008cebd77e9ef9235ad04d"
+    },
+    {
+      "arquivo": "tests/helpers/robo.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3215,
+      "sha256": "b91e43884c49fc629328d0838e2107f8a1f2beb47458a6630d2884985437aaaf"
+    },
+    {
+      "arquivo": "tests/helpers/cofre.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 1923,
+      "sha256": "5e1a4af894ad4b0bd908f59905520dd94fe93a31cb2ad049305554652f23deed"
+    },
+    {
+      "arquivo": "tests/ferramentas/comparar-versoes.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 4878,
+      "sha256": "8c312b093e37a77633544d45aed34f77cdb0c402c585b791b8309067183c56e9"
+    },
+    {
+      "arquivo": "tests/ferramentas/catalogo-moveis.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3076,
+      "sha256": "6f9967163afbf83865904f2b350a2119e3f48a6e9387ccd49494609dd108641b"
+    },
+    {
+      "arquivo": "tests/ferramentas/pixels-missao.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 2591,
+      "sha256": "688b5ebfc1d1550ebc0a47a3d765fa8541e1a4e7bedd031e5f986ce64317aaa2"
+    },
+    {
+      "arquivo": "tests/simulacao/extrair-mapas.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 1149,
+      "sha256": "c1379b894281b27789144c1bfd9136883669d5b9f9d239f3453b46c7931b4241"
+    },
+    {
+      "arquivo": "tests/simulacao/cobertura.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 2236,
+      "sha256": "f31b6ff6e61bcc226bef3bd1fabb00f222ef866b9f85076a2a37d239073071c7"
+    },
+    {
+      "arquivo": "tests/simulacao/README.md",
+      "estado": "sem-base-no-backup",
+      "bytes": 2324,
+      "sha256": "4e520a75ce56fc9780f9fa1ba18e9f959fffdd442e88c1afbe932a95dca18af5"
+    },
+    {
+      "arquivo": "tests/simulacao/mapas.json",
+      "estado": "sem-base-no-backup",
+      "bytes": 277471,
+      "sha256": "fbf01b07b1590566b5b2c424d0da69442b1074e468280bd80d5660e6f6e5d633"
+    },
+    {
+      "arquivo": "tests/simulacao/lib.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 8302,
+      "sha256": "d65f82c55a24534cfc13869bb6703b3660570d4c920fb9f64017720fcb941c0d"
+    },
+    {
+      "arquivo": "tests/simulacao/alcanc.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 924,
+      "sha256": "8a461e36a4390422c94e4cb8afa088dcba36073458d9c395d29cef0dab05acff"
+    },
+    {
+      "arquivo": "tests/simulacao/sim.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 2873,
+      "sha256": "38eec23146bdfbeaf6b7270351bb0c7fb874bd0835e9a9ae7e29cf2605c36a58"
+    },
+    {
+      "arquivo": "tests/simulacao/diag.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 978,
+      "sha256": "3c9fccf7e1b74db75df0c1ecf8496055349d2e5b565ba9e64bd15b76471f8bc5"
+    },
+    {
+      "arquivo": "tests/simulacao/encontros-sim.mjs",
+      "estado": "sem-base-no-backup",
+      "bytes": 3067,
+      "sha256": "39a8fdd2de89b479e0474eaeb564cedbebf354a54dbaf69c2d04321018a4218c"
+    }
+  ],
+  "nota": "O backup pre-abas contém current, não a árvore de testes. Arquivos de testes sem base no backup não são declarados novos por essa comparação.",
+  "fonteAtual": {
+    "current/index.html": "fd90af7616469208880028a1529cc6e4ccb39a715534ef4f63082d92107c564e",
+    "current/styles.css": "e95e52c436f74b80a0a7d66d1d6766c3b2337a6aadc3a1f8190cddb217dbe3b5",
+    "current/js/util.js": "ba9a8107e82c41baaefe5f710af22780690bf25cbb6ee4eccbf310fb56bd05d3",
+    "current/js/audio.js": "3e45c872a3bc07045717becf9e0ebc5238bfeb452e4beaa52b1c16ff146aa75f",
+    "current/js/main.js": "1426970af2523f74f488c86119ce693f0ba1bb757bdbffe5c59cefbe6c009903",
+    "current/js/progresso.js": "6629040df4df053ba8c9bfbcb61b6435a2bfc978072dc1f951d33b8a6f2bd8ba",
+    "current/js/ui.js": "62deb512bca9c4e78746441ad43c3520b5f64dde470a122dbd541aad975ae7b6",
+    "current/js/estado.js": "92a656b27a630cb2b10a03936afd465478ff2fc1331e36764f55db0ea8e10e99",
+    "current/js/paginar.js": "3d9913a3ffb00bd0955ce476bc7369a584b87dd1b8afba77311c5d939d22c2d6",
+    "current/js/modo.js": "77c714c51a442978cf12141f59f4efd741b81058bf2de7f7bea72f5a8c6fff47",
+    "current/js/encontros/motor.js": "19aed7b1c92a4100dd254bc2efbb3a19e2cbd9b85df4936a65b8bad14ba3832e",
+    "current/js/encontros/aproveitamento.js": "79c2b63a0256ac8effdfd1d94d91a6f9975b9899a41112ee3b0ee4e8da1d1ad8",
+    "current/js/encontros/ui-encontro.js": "128da6d3fb7d290a78a9eec5ad2ef6cafe6a5633f260cc8177da89af06008ee8",
+    "current/js/encontros/caderno.js": "d736307d1e44c0c59c4c3133eed25ed58324869eee02ef95fe1673cad2bb7434",
+    "current/js/encontros/gerenciador.js": "bdf2db39255fe7a9004f47e7960dcc38a8e93597ed7f39453105d65748a430e5",
+    "current/js/encontros/cofre.js": "0e5a46a1e1ff9c1bcaa610e66596ebd3fad40d9ae0a8754674f11a86b77e4d4a",
+    "current/js/encontros/cofre-ficha.js": "924af47407292e1eb69365e724f441215fd3833f0af999083169f9e520f01f05",
+    "current/js/encontros/cofre-textos.js": "42289aa10e5fc000c1f415d3acb1ccc94f398486e1255a46d2569c563044559e",
+    "current/js/encontros/cofre-ui.js": "5d661bf4112e5afd57b9788423a694575131c9eae68a6696a886cdb01a40c510",
+    "current/js/encontros/dica.js": "63d66a95c020581d0604e13f7081a78fc7dff8ff95e0eb19b842086208e04d54",
+    "current/js/academia/licoes.js": "9497e704dac5bf69f0ebb77646a13eac129c375f1633183e0936eb22187aef60",
+    "current/js/academia/ui-licao.js": "58606b01c6752eefb7024a917ca737daf7378fe900c62e354c8af4e3cfbc9336",
+    "current/js/academia/objetivo.js": "a339e05e9c35a85ce68400a6547021b86504e2abec1253d2b361a871390209de",
+    "current/js/investigacao/hospital.js": "b7d28baf914122444c2acdbd4f01008d4b50a16f1c99141333d4706bb387e702",
+    "current/js/investigacao/motor.js": "5042f3100d5ecf87dc71fe163568e5265c473915ce4ba2aec63262b58d5ffc79",
+    "current/js/investigacao/hospital-campo.js": "eec95b848635c84d898b2cb571e4d334b1201c30a178123277f5d4e1e6c2d1d7",
+    "current/js/investigacao/ui-investigacao.js": "28945b8e35c4735c13906c1affaf1efae693d12cc0a365344f904c3688e1b48b",
+    "current/js/investigacao/index.js": "df211e1c9a57e541a2feebac7048a09066952af9625b24d9cdc9960b85be4dc0",
+    "current/js/data/moveis.js": "ce10e3b632f4036d7d792d271cc10c9d11ded3f66874f7e45f745d66f996583f",
+    "current/js/data/shields.js": "5ff0f7b9887c058c9ef4d07f8647bcd0b1cc052ab32f243f511a74df97e32d35",
+    "current/js/data/config.js": "f13d7f797ef49ef80318c2a291103a5e09a87ef361eeeb3052c6f443bc9d3a62",
+    "current/js/data/isotopes.js": "3cae46561bf743093b3c8a32e624361ce24a129d9dba1cf6bb30b61e097a5c3f",
+    "current/js/data/emissoes.js": "100df757a60248156a10e2e6ccf9901946552d0f5008d3a154372046e92a44e1",
+    "current/js/data/encontros/perguntas.js": "9e9d06f2336fc27c9d947c9f9110adbee604c36182eb3fa7e2957a5d3bcf6060",
+    "current/js/data/encontros/conceitos.js": "b7ad58962c6dde0a0dcf420797e31228d6f5eb48b493194b795037353d75de20",
+    "current/js/data/missoes/06-zaragoza.js": "f955550ed1a8307fc82042eedb567be00c2b075f868e0acd85e161e0c9eaecf1",
+    "current/js/data/missoes/08-fukushima.js": "073b582d0fe2946afec5072f754902be3062778cbcbc51a89d8282df735db37c",
+    "current/js/data/missoes/index.js": "d7c1ca673e141895a8bb0815e513f423e9109853bb4e36bb2212beedeb38ad0e",
+    "current/js/data/missoes/05-lia-georgia.js": "02e998685471becd936e445702f6f75a1fdabbeac6b4aa2b216537a65e21ab8c",
+    "current/js/data/missoes/01-treinamento.js": "d2891bfab0eac21c0cb20866104a9689c9e5b8d2bc149e4ec51a26222b8ffdbe",
+    "current/js/data/missoes/02-goiania.js": "6e8024014fa050572b95e35c5e45f8230d00ce96ecf910b242f201041c2f0766",
+    "current/js/data/missoes/04-chernobyl.js": "9484ad2645e8304d1e80adb93e873de5885d4f25f8e35be69cb7103a5603129a",
+    "current/js/data/missoes/03-radium-girls.js": "63924394d0498fbe43e7604f723f79ef0370fb7706f2181733e999443a7cf3ca",
+    "current/js/data/missoes/07-mayapuri.js": "0f3c39b8d48d0686f54e2fd7f5b86cf8caba325758fda80e2f54aae173b94024",
+    "current/js/fisica/poisson.js": "85442911a5382179ace104544bb5363c1d7c0f4dfcffdf51569c1f830bf57c6a",
+    "current/js/fisica/geiger.js": "4f2076b9beb1907996799edca7ea55fd087566c52b6cd7a2c358c762d04f037a",
+    "current/js/fisica/linha-de-visao.js": "17a0459bd3621f0e9b9c7e85367623c03a43b22dfa70ce3a7c1649d186662bf1",
+    "current/js/fisica/componentes.js": "ad2c391deeaf69bd7e3146cead043ae3c44bb9fac05e5d91bdd8fc226982d770",
+    "current/js/fisica/acessibilidade.js": "0b246ce23b2e34a81ce524bc1aec81c3b056f7c17ef397de94439d798848978a",
+    "current/js/i18n/en.js": "a232afed8afc0383a1efaca9c4c2f9783cde079be6c250b5f1a72e0faa5503ec",
+    "current/js/i18n/pt.js": "bddc673698898421f20ae925d22db45b989d4b3ab0beae5e0f5ddc5c5a90499a",
+    "current/js/i18n/index.js": "e3fc5ff0d8c4b6e7ce0cdd65fe6fcdcf7815ab85a0aad0f736d081393aa2be50",
+    "current/js/mapa/temas.js": "e903ee07f7dd37e9d19ddfd71d0c16d2d848b5103c8f7e77ff414f8adf9a0787",
+    "current/js/mapa/gerador.js": "c929b769c4893b330c0b3329955d74031f6f54caa0469541176c4ef8158a7a62",
+    "current/js/mapa/academia.js": "f1fd9306abe567fc78e559e6235522ae3fd7d8d8c86ee72c10c47f65b68e2ed2",
+    "current/js/render/moveis.js": "654dcf242d1dd3d27145f04dd02ffb666592212ce66f53dd18cc726a97937ca7",
+    "current/js/render/terreno.js": "e6911d144a106faeaca16e487a3b47d79f4255311e7eac4d4825128dab074553",
+    "current/js/render/estilo-rpg.js": "69ba9b7f6b6a6c6924021b2a741f9b5e85793dd1fce19f9939b2e03e47e103ee",
+    "current/js/render/npcs-hospital.js": "4b48d2702dffd75cd4ead985f0184148b4f4617ffc09327ab64bfc1a1a7535de",
+    "current/js/render/personagem.js": "cd300a4556e8d707bda2c63db98a1653d4c14b2818aec33ff9570ddff8535c73",
+    "current/js/render/mobiliario-hospital.js": "b13f6bec5d31f9c002524c8820dc579d187278fa2f015a09014934a1a05723a9",
+    "current/js/render/moveis-rpg.js": "93bc0158d62c72f8d359e214accf78b210aafb9203c09d729b45aa7b774f4093",
+    "current/js/render/moveis-rpg-interior.js": "cde19eabf5e06e0aaddcbd80eff97a8202a5ea58f480f59cd29584ae30c2dd7c",
+    "current/js/render/moveis-rpg-ruinas.js": "899a5dc858ad27ac5749484712e07222089321e2da34d3fae42b44c5c27b3fda",
+    "current/js/scenes/GameScene.js": "4213083ff64d60cf184c19979f618ddc170855dc11dd3d41a9a9943a326cc301"
+  },
+  "verificacao": {
+    "testes": 262,
+    "aprovados": 262,
+    "falhas": 0,
+    "cancelados": 0,
+    "ignorados": 0,
+    "duracao_ms": 447606.560459,
+    "exit_code": 0,
+    "fonteAlteradaDuranteRevisao": false
+  }
+}

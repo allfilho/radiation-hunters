@@ -1,0 +1,80 @@
+--- 2.3/current/js/ui.js
++++ 2.4/current/js/ui.js
+@@ -82,11 +82,13 @@
+         
+         // Main menu buttons
+         document.getElementById('btn-new-game').addEventListener('click', () => {
++            this.mostrarAba('missoes');   // do menu principal, as missões vêm primeiro
+             this.showScreen('missionSelect');
+             this.updateMissionsDisplay();
+         });
+         
+         document.getElementById('btn-missions').addEventListener('click', () => {
++            this.mostrarAba('missoes');   // do menu principal, as missões vêm primeiro
+             this.showScreen('missionSelect');
+             this.updateMissionsDisplay();
+         });
+@@ -106,6 +108,7 @@
+         document.getElementById('close-caderno').addEventListener('click', () => this.hideModal('caderno'));
+         
+         // Back button for missions
++        document.querySelectorAll('.mission-tab').forEach((b) => b.addEventListener('click', () => this.mostrarAba(b.dataset.aba)));
+         document.getElementById('btn-back-missions').addEventListener('click', () => {
+             this.showScreen('mainMenu');
+         });
+@@ -184,6 +187,9 @@
+                 window.gameScene.toggleGeiger();
+             }
+         });
++        
++        // Dica de localização das fontes
++        document.getElementById('btn-dica').addEventListener('click', () => { if (window.gameScene) window.gameScene.pedirDica(); });
+         
+         // Identify button
+         document.getElementById('btn-identify').addEventListener('click', () => {
+@@ -423,7 +429,7 @@
+     /** Inventário: `itens` = [{ id, cor }]; `capacidade` slots (vazios aparecem tracejados). Oculto quando capacidade = 0. */
+     /** Academia: os botões do Geiger e de identificação só aparecem depois que o jogador pega o Geiger */
+     mostrarBotoesGeiger(sim) {
+-        for (const id of ['btn-geiger', 'btn-identify']) { const b = document.getElementById(id); if (b) b.hidden = !sim; }
++        for (const id of ['btn-geiger', 'btn-identify', 'btn-dica']) { const b = document.getElementById(id); if (b) b.hidden = !sim; }
+     }
+ 
+     atualizarInventario(itens = [], capacidade = 0) {
+@@ -491,6 +497,19 @@
+             container.appendChild(card);
+         });
+         this.desenharInvestigacoes();
++    }
++
++    /** Seleciona a aba da tela de seleção: 'missoes' (padrão) ou 'investigacoes'. Só alterna a exibição. */
++    mostrarAba(aba) {
++        const inv = aba === 'investigacoes';
++        const tela = document.getElementById('mission-select');
++        tela.classList.toggle('aba-investigacoes', inv);
++        tela.classList.toggle('aba-missoes', !inv);
++        document.querySelectorAll('.mission-tab').forEach((b) => {
++            const ativa = b.dataset.aba === (inv ? 'investigacoes' : 'missoes');
++            b.classList.toggle('active', ativa);
++            b.setAttribute('aria-selected', String(ativa));
++        });
+     }
+ 
+     /** Cartões das investigações (protótipos): sempre liberados, em área própria abaixo das missões. */
+@@ -524,7 +543,7 @@
+         const inv = investigacaoPorId(id);
+         if (!inv) return;
+         this.encerrarJogo();
+-        this.investigacao.abrir(inv, currentLang, () => { this.screens.investigacao.classList.remove('active','inv-em-campo'); this.encerrarJogo(); this.updateMissionsDisplay(); this.showScreen('missionSelect'); }, { revisao: GameState.settings.revisao === true, emCampo: !leitura });
++        this.investigacao.abrir(inv, currentLang, () => { this.screens.investigacao.classList.remove('active','inv-em-campo'); this.encerrarJogo(); this.updateMissionsDisplay(); this.mostrarAba('investigacoes'); this.showScreen('missionSelect'); }, { revisao: GameState.settings.revisao === true, emCampo: !leitura });
+         if(leitura)this.showScreen('investigacao');else document.dispatchEvent(new CustomEvent('rh:investigacao'));
+     }
+     
+@@ -774,6 +793,7 @@
+             document.getElementById('complete-aprov-detalhe').textContent =
+                 t('usageDetail').replace('{0}', f(a.fontes)).replace('{1}', f(a.tempo)).replace('{2}', f(a.encontros)).replace('{3}', f(a.cofre)) +
+                 (a.semTempo ? ' · ' + t('usageStudy') : '') +
++                (a.descontoDicas ? ' · ' + t('usageDica').replace('{0}', a.dicas).replace('{1}', a.descontoDicas) : '') +
+                 (a.maximo < 100 ? ' · ' + t('usageMax').replace('{0}', a.maximo) : '');
+         }
+         

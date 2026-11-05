@@ -1,0 +1,174 @@
+{
+  "m2": {
+    "fonteReal": "Cs-137",
+    "fontes": [
+      "Cs-137",
+      "Cs-137",
+      "Cs-137",
+      "Cs-137",
+      "Cs-137"
+    ],
+    "bt": [
+      [
+        "Am-241",
+        "α alfa",
+        "rgb(255, 204, 0)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "Co-60",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "Cs-137",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "Sr-90",
+        "β beta",
+        "rgb(114, 181, 255)",
+        "rgb(30, 30, 46)"
+      ]
+    ],
+    "mais": [
+      {
+        "txt": "Ainda não dá para concluir",
+        "cls": "modal-btn",
+        "bg": "rgb(239, 239, 239)",
+        "font": "Arial",
+        "h": 19
+      }
+    ],
+    "erros": []
+  },
+  "m4": {
+    "fonteReal": "I-131",
+    "fontes": [
+      "I-131",
+      "Cs-137",
+      "Sr-90",
+      "I-131",
+      "Cs-137"
+    ],
+    "bt": [
+      [
+        "Cs-137",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "I-131",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "Sr-90",
+        "β beta",
+        "rgb(114, 181, 255)",
+        "rgb(30, 30, 46)"
+      ]
+    ],
+    "mais": [
+      {
+        "txt": "Ainda não dá para concluir",
+        "cls": "modal-btn",
+        "bg": "rgb(239, 239, 239)",
+        "font": "Arial",
+        "h": 19
+      }
+    ],
+    "erros": []
+  },
+  "m6": {
+    "fonteReal": "Cs-137",
+    "fontes": [
+      "Cs-137",
+      "Co-60",
+      "Cs-137",
+      "Co-60"
+    ],
+    "bt": [
+      [
+        "Co-60",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "Cs-137",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ]
+    ],
+    "mais": [
+      {
+        "txt": "Ainda não dá para concluir",
+        "cls": "modal-btn",
+        "bg": "rgb(239, 239, 239)",
+        "font": "Arial",
+        "h": 19
+      }
+    ],
+    "erros": []
+  },
+  "m8": {
+    "fonteReal": "I-131",
+    "fontes": [
+      "I-131",
+      "Cs-137",
+      "Sr-90",
+      "I-131",
+      "Cs-137",
+      "Sr-90",
+      "I-131",
+      "Cs-137"
+    ],
+    "bt": [
+      [
+        "Cs-137",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "I-131",
+        "γ+β gama e beta",
+        "rgb(123, 44, 191)",
+        "rgb(30, 30, 46)"
+      ],
+      [
+        "Sr-90",
+        "β beta",
+        "rgb(114, 181, 255)",
+        "rgb(30, 30, 46)"
+      ]
+    ],
+    "mais": [
+      {
+        "txt": "Ainda não dá para concluir",
+        "cls": "modal-btn",
+        "bg": "rgb(239, 239, 239)",
+        "font": "Arial",
+        "h": 19
+      }
+    ],
+    "erros": []
+  },
+  "liveRegion": {
+    "eventos": [
+      "removido",
+      "inserido",
+      "removido",
+      "inserido"
+    ],
+    "mesmoNo": 1,
+    "erros": []
+  }
+}

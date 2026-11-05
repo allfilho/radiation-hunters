@@ -1,0 +1,131 @@
+--- 2.3/current/js/scenes/GameScene.js
++++ 2.4/current/js/scenes/GameScene.js
+@@ -20,6 +20,7 @@
+ import { OBJ_TXT, mapaDeDistancias, pontoAdiante, proximoObjetivo } from '../academia/objetivo.js';
+ import { aproveitamento } from '../encontros/aproveitamento.js';
+ import { modoEstudo } from '../modo.js';
++import { DICA_PEDIDA_S, nivelDicaAuto } from '../encontros/dica.js';
+ import { distance, randomRange, shuffleArray } from '../util.js';
+ 
+ // ============================================
+@@ -65,6 +66,8 @@
+         this.minimapCtx = null;
+         // Estado de fluxo: pausa é só um sinalizador (scene.pause/resume são assíncronos)
+         this.assistenciaAlfa = false;
++        // Dica de localização das fontes (js/encontros/dica.js): sinal de progresso, nível mostrado, usos cobrados
++        this.dica = { sinal: null, desdeMs: 0, nivel: 0, cobrado: false, pedidaAteMs: 0, usos: 0, avisouMini: false, avisouMapa: false, aviso: null };
+         this.elapsedMs = 0;          // tempo de jogo; não conta pausa nem tela de conclusão
+         this.concluindo = false;     // última fonte identificada, aguardando o modal final
+         this.fim = false;            // missão concluída: congela tudo
+@@ -652,6 +655,7 @@
+         this.input.keyboard.on('keydown-G', () => this.toggleGeiger());
+         this.input.keyboard.on('keydown-Q', () => this.handleIdentify());
+         this.input.keyboard.on('keydown-E', () => this.revisarLicao());
++        this.input.keyboard.on('keydown-H', () => this.pedirDica());
+         // Esc é tratado no DOM (ui.aoPressionarEsc): fecha modal, retoma ou pausa conforme o contexto
+         
+         // Shield keys
+@@ -709,6 +713,18 @@
+             }
+         });
+         
++        // Dica de localização (nível 1 ou 2): fontes ainda não identificadas pulsam em vermelho
++        if (this.dica && this.dica.nivel >= 1) {
++            const pulso = 0.5 + 0.5 * Math.sin(this.time.now / 220);
++            this.sources.forEach(source => {
++                if (source.found) return;
++                const fx = Math.floor(source.furniture.centerX / CONFIG.TILE_SIZE);
++                const fy = Math.floor(source.furniture.centerY / CONFIG.TILE_SIZE);
++                ctx.fillStyle = `rgba(255,59,59,${0.55 + 0.45 * pulso})`;
++                ctx.beginPath(); ctx.arc((fx + 0.5) * scale, (fy + 0.5) * scale, scale * (1.1 + 0.8 * pulso), 0, Math.PI * 2); ctx.fill();
++            });
++        }
++
+         // Academia: painéis (ciano = pendente, verde = feito), chaves, Geiger e o alvo do objetivo
+         if (this.paineis && this.paineis.length) {
+             const ponto = (tx, ty, cor, r) => { ctx.fillStyle = cor; ctx.beginPath(); ctx.arc((tx + 0.5) * scale, (ty + 0.5) * scale, Math.max(r, 1.6), 0, Math.PI * 2); ctx.fill(); };
+@@ -799,6 +815,61 @@
+         }
+     }
+ 
++    /** Há fonte ainda por achar e o jogador já pode procurá-las (Academia: depois de pegar o Geiger)? */
++    dicaDisponivel() {
++        return !!(this.sources && this.sources.length && this.temGeiger && this.sources.some(s => !s.found));
++    }
++
++    /** Botão/tecla H: mostra no mapa, por DICA_PEDIDA_S s, onde estão as fontes que faltam. */
++    pedirDica() {
++        if (!this.gameStarted || GameState.paused || GameState.modalAberto || this.concluindo || this.fim || !this.dicaDisponivel()) return;
++        this.dica.pedidaAteMs = this.elapsedMs + DICA_PEDIDA_S * 1000;
++        this.atualizarDica(this.time.now);
++    }
++
++    /** Calcula o nível da dica (0 = nenhuma, 1 = minimapa, 2 = minimapa + mapa) e cobra o uso do nível 2. */
++    atualizarDica() {
++        const d = this.dica;
++        // O aviso espera outra notificação (ex.: assistência do alfa) terminar, para não a apagar
++        if (d.aviso && !document.getElementById('notification').classList.contains('show')) { ui.showNotification(d.aviso, 'info'); d.aviso = null; }
++        if (!this.dicaDisponivel()) { this.definirNivelDica(0); return; }
++        // Progresso: fonte identificada, lição concluída, chave ou Geiger pegos. Zera a contagem e o custo do intervalo.
++        const sinal = this.foundSources.length * 1000 + this.licoesFeitas.length * 10 + (this.chavesItens ? this.chavesItens.length * 100 : 0) + (this.temGeiger ? 1 : 0);
++        if (sinal !== d.sinal) { d.sinal = sinal; d.desdeMs = this.elapsedMs; d.cobrado = false; d.avisouMini = false; d.avisouMapa = false; }
++        const auto = GameState.settings.showHints === false ? 0 : nivelDicaAuto((this.elapsedMs - d.desdeMs) / 1000);
++        const pedida = this.elapsedMs < d.pedidaAteMs ? 2 : 0;
++        this.definirNivelDica(Math.max(auto, pedida));
++    }
++
++    definirNivelDica(n) {
++        const d = this.dica;
++        if (n === d.nivel) return;
++        d.nivel = n;
++        if (n === 1 && !d.avisouMini) { d.avisouMini = true; d.aviso = t('dicaMiniAviso'); }
++        if (n === 2) {
++            if (!d.cobrado) { d.cobrado = true; d.usos++; }
++            if (!d.avisouMapa) { d.avisouMapa = true; d.aviso = t('dicaAviso'); }
++        }
++        if (n < 2 && this.dicaGfx) this.dicaGfx.clear();
++    }
++
++    /** Pulso vermelho em volta dos móveis com fonte ainda não identificada (só no nível 2). */
++    desenharDicaNoMapa(time) {
++        if (this.dica.nivel < 2) return;
++        if (!this.dicaGfx) this.dicaGfx = this.add.graphics().setDepth(7);
++        const g = this.dicaGfx, pulso = 0.5 + 0.5 * Math.sin(time / 220);
++        g.clear();
++        for (const s of this.sources) {
++            if (s.found) continue;
++            const f = s.furniture, w = (f.type?.width || 1) * CONFIG.TILE_SIZE, h = (f.type?.height || 1) * CONFIG.TILE_SIZE;
++            const r = Math.max(w, h) * 0.5 + 8 + pulso * 6;
++            g.lineStyle(3, 0xff3b3b, 0.35 + 0.55 * pulso);
++            g.strokeCircle(f.centerX, f.centerY, r);
++            g.fillStyle(0xff3b3b, 0.10 + 0.15 * pulso);
++            g.fillCircle(f.centerX, f.centerY, r);
++        }
++    }
++
+     update(time, delta) {
+         if (!this.gameStarted || GameState.paused || this.fim) return;
+         
+@@ -807,11 +878,13 @@
+         if (seg !== this.ultimoSegundoHud) { this.ultimoSegundoHud = seg; ui.updateTimer(seg, this.metaTempoS); }
+         
+         if (!this.concluindo) this.verificarAssistencia();
++        if (!this.concluindo && !this.emEncontro) this.atualizarDica(time);
+         if (!this.concluindo && !GameState.modalAberto) { this.verificarPortasEChaves(time); this.verificarLicoes(time); }
+         if (!GameState.modalAberto && !this.concluindo) this.handleMovement(delta);
+         if (!GameState.modalAberto && !this.concluindo && !this.emEncontro) this.encontros.checar(delta);
+         this.atualizarObjetivo(time);
+         this.desenharSeta(time);
++        this.desenharDicaNoMapa(time);
+         this.updateVisionCone();
+         this.updateGeiger(time);
+         this.updateFurnitureInfo();
+@@ -1654,7 +1727,7 @@
+         // Aproveitamento (0-100%): fontes 55% + tempo 20% + encontros 15% + cofre 10%; sem encontros nem cofre o teto é 75%
+         const aprov = aproveitamento({
+             precisao: GameState.attempts > 0 ? GameState.correct / GameState.attempts : 1,
+-            tempo: elapsed, meta, creditos: this.encontros.creditos, cofre: this.encontros.cofreCreditos, encontrosAtivos: this.encontros.ativo, semTempo: modoEstudo(),
++            tempo: elapsed, meta, creditos: this.encontros.creditos, cofre: this.encontros.cofreCreditos, encontrosAtivos: this.encontros.ativo, semTempo: modoEstudo(), dicas: this.dica.usos,
+         });
+         
+         // Desbloqueia a próxima missão, guarda as estrelas e grava no armazenamento
