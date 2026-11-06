@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 jobs:
   suite:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # fixo: o Playwright 1.56 não instala dependências no ubuntu-latest novo (26)
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
