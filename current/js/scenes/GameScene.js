@@ -6,7 +6,7 @@ import { SHIELDS } from '../data/shields.js';
 import { GameState } from '../estado.js';
 import { componentesDe, descreverEmissoes, linhasGamaTexto, nomesDasComponentes } from '../fisica/componentes.js';
 import { candidatosDaMissao, rotuloDoCandidato } from '../data/candidatos.js';
-import { JanelaDeContagem, contar, distanciaAoRetangulo, pontoMaisProximo, taxaEsperada } from '../fisica/geiger.js';
+import { JanelaDeContagem, PARAMETROS as PARAM_GEIGER, SONDA_ALFA_FATOR, contar, distanciaAoRetangulo, pontoMaisProximo, taxaEsperada } from '../fisica/geiger.js';
 import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
 import { foiLevantado } from '../agencia/frota.js';
 import { currentLang, t } from '../i18n/index.js';
@@ -1226,6 +1226,7 @@ export class GameScene extends Phaser.Scene {
             ehParede: this.ehParede,
             blindagem: escudo && escudo.material ? escudo : null,
             alfaAlcanceTiles: this.assistenciaAlfa ? CONFIG.ASSIST_ALFA_TILES : undefined,
+            params: this.temSondaAlfa() ? { ...PARAM_GEIGER, fatorForca: { ...PARAM_GEIGER.fatorForca, alfa: PARAM_GEIGER.fatorForca.alfa * SONDA_ALFA_FATOR } } : undefined,
         };
         const taxa = taxaEsperada(this.sources.map(s => this.fonteFisica(s)), sonda, ctx);
         const dt = CONFIG.GEIGER_PASSO_MS / 1000;
@@ -1755,6 +1756,11 @@ export class GameScene extends Phaser.Scene {
     emCampoAgencia() {
         const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.equipeSaida && ui.agencia.alvo;
         return !!a && ((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida');
+    }
+    /** v3.31: modo Agência com a sonda alfa fabricada na Oficina. */
+    temSondaAlfa() {
+        const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
+        return !!a && (a.equipamentos.sondaAlfa || 0) > 0 && this.emCampoAgencia();
     }
     /** v3.30: modo Agência com a câmara de ionização fabricada na Oficina. */
     temCamara() {

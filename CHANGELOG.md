@@ -4,6 +4,12 @@ Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O históric
 
 <!-- HISTORICO-INICIO -->
 
+## v3.31.0 — 2026-11-06 — Fase C (parte 3): sonda alfa no campo
+- **Sonda alfa:** com uma sonda de cintilação para alfa fabricada na Oficina (`est.equipamentos.sondaAlfa`), a leitura de fontes alfa na missão de campo da Agência fica 3 vezes mais forte (`SONDA_ALFA_FATOR`, hipótese de jogo). O alcance continua de contato e o fundo, gama e beta não mudam: o ganho é de sensibilidade, não de distância.
+- **Teste novo 78:** a física triplica só a parte alfa (razão 3; gama igual; fundo igual) e o jogo liga a sonda só em missão de campo com a sonda no inventário. Suíte completa: 78 arquivos verdes.
+- **Executor de testes:** quando um arquivo falha, o `rodar-testes.sh` tenta uma segunda vez isolado e registra a oscilação (`.log1`). O teste 22 (lições em celular deitado) falhou uma vez sob carga e passou isolado.
+- **Com isso a Fase C está completa** (espectrômetro, erro de identificação, câmara e sonda). Pendente: calibrar os valores em sala (0,3 mSv, fator 3) e registrar as fichas técnicas dos instrumentos reais.
+
 ## v3.30.0 — 2026-11-06 — Fase C (parte 2): câmara de ionização no campo
 - **Câmara de ionização:** com uma câmara fabricada na Oficina (`est.equipamentos.camaraIonizacao`), o HUD de missão de campo da Agência mostra a taxa de dose de quem está à frente (mSv/h) e ela sobe junto à fonte. O valor sai do modelo de dose do jogo (`fisica/dose.js`, hipótese de jogo), por isso o texto diz "estimativa de jogo". Sem a câmara, o painel não aparece.
 - **Não incluído:** a sonda alfa ainda não tem efeito em campo. Mexer na força do alfa afeta a verificação de acessibilidade das fontes e pede decisão sobre o quanto a sonda melhora a detecção.

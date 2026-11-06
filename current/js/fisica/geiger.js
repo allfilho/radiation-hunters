@@ -38,6 +38,9 @@ export const PARAMETROS = {
     alfaAlcanceTiles: 1.0,                          // alcance didático do alfa, medido da superfície [H]
 };
 
+/** v3.31: a sonda de cintilação para alfa (Oficina) multiplica a força do alfa na leitura: mais sensibilidade, mesmo alcance de contato [H]. */
+export const SONDA_ALFA_FATOR = 3;
+
 /** μ/ρ por interpolação log-log; fora de 0,1-1,5 MeV usa o ponto mais próximo (aproximação) */
 export function muRho(material, energiaMeV) {
     const v = MU_RHO[material];

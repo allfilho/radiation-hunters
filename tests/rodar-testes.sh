@@ -24,7 +24,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 HASH=$(cd .. && find current tests -type f ! -path '*/node_modules/*' ! -name '*.log' -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-40)
-if [ "$RESET" = 1 ] || [ "$(cat "$LOGS/.hash" 2>/dev/null)" != "$HASH" ]; then rm -f "$LOGS"/*.ok "$LOGS"/*.fail "$LOGS"/*.log; fi
+if [ "$RESET" = 1 ] || [ "$(cat "$LOGS/.hash" 2>/dev/null)" != "$HASH" ]; then rm -f "$LOGS"/*.ok "$LOGS"/*.fail "$LOGS"/*.log "$LOGS"/*.log1; fi
 echo "$HASH" > "$LOGS/.hash"
 export LOGS; export PRAZO=$(( ORC > 0 ? $(date +%s) + ORC : 0 ))
 rodar() {
@@ -32,7 +32,12 @@ rodar() {
   [ -f "$LOGS/$b.ok" ] && return 0
   rm -f "$LOGS/$b.fail"
   if [ "$PRAZO" -gt 0 ] && [ "$(date +%s)" -ge "$PRAZO" ]; then return 0; fi
-  if timeout 900 node --test "$f" > "$LOGS/$b.log" 2>&1; then touch "$LOGS/$b.ok"; echo "  ok    $b"; else touch "$LOGS/$b.fail"; echo "  FALHOU $b"; fi
+  if timeout 900 node --test "$f" > "$LOGS/$b.log" 2>&1; then touch "$LOGS/$b.ok"; echo "  ok    $b"
+  else
+    # uma segunda tentativa isolada separa falha de verdade de oscilação por carga (a 1ª falha fica registrada em .log1)
+    cp "$LOGS/$b.log" "$LOGS/$b.log1"
+    if timeout 900 node --test "$f" > "$LOGS/$b.log" 2>&1; then touch "$LOGS/$b.ok"; echo "  ok    $b (passou só na 2ª tentativa: oscilação; ver $b.log1)"; else touch "$LOGS/$b.fail"; echo "  FALHOU $b"; fi
+  fi
 }
 export -f rodar
 LISTA=()
