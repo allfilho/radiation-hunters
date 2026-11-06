@@ -12,7 +12,7 @@
 // ============================================
 import { ALERTAS } from './dados.js';
 import { ehRapida, alertaPorId, novaSemente } from './rapidas.js';
-import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas } from './ciencia.js';
+import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas, saneaEntregas } from './ciencia.js';
 import { ESPECIALIDADES, especialidadePorId, equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
 import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
 
@@ -100,6 +100,7 @@ export function sanear(d) {
     e.coleta = (Array.isArray(o.coleta) ? o.coleta : []).filter((c) => c && typeof c.id === 'string' && idValido(c.alertaId)).slice(0, 10).map((c) => ({ id: c.id.slice(0, 12), alertaId: c.alertaId, fontes: inteiro(c.fontes, 1, 20, 1), isotopos: saneaIsotopos(c.isotopos), desde: inteiro(c.desde, 0, 1000000, 0), expira: inteiro(c.expira, 0, 1000000, e.dia + PRAZO_COLETA) }));
     e.levantados = [...new Set((Array.isArray(o.levantados) ? o.levantados : []).filter((id) => idValido(id)))];
     Object.assign(e, saneaCiencia(o, e.dia));
+    saneaEntregas(e);
     e.v = 3;
     return e;
 }

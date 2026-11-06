@@ -240,7 +240,7 @@ Object.assign(TXT.pt, {
     oficinaTexto: 'Os engenheiros fabricam aqui os equipamentos que a pesquisa liberou. Os valores de custo e de dias são de jogo, a calibrar em sala.',
     oficinaSemEng: 'Sem engenheiro: contrate um no alojamento (candidatos chegam no fim do mês).', oficinaSemPesq: 'Nenhum equipamento pesquisado ainda. Conclua uma pesquisa no laboratório.',
     fabricar: 'Fabricar', engenheiros: 'Engenheiros', filaTit: 'Fila de produção', filaVazia: 'Fila vazia.', filaItem: '{nome}: pronto no dia {d}', filaEspera: '{nome}: aguardando engenheiro livre',
-    inventarioTit: 'Equipamentos prontos', inventarioVazio: 'Nenhum equipamento fabricado ainda.', equipNota: 'Por enquanto os equipamentos ficam no inventário; o efeito em campo chega em uma versão futura.',
+    inventarioTit: 'Equipamentos prontos', inventarioVazio: 'Nenhum equipamento fabricado ainda.', equipNota: 'Cada cientista leva 1 equipamento: entregue no Alojamento. Em campo vale o de quem está com o controle (teclas 7, 8, 9, 0 trocam).',
     semDescoberta: 'Ainda não descoberta.', pesqOcupado: 'Já há uma pesquisa em andamento.', pesqBloq: 'Reservada para uma versão futura.', semOficina: 'Construa a oficina.', semPesqEquip: 'Conclua a pesquisa antes.',
     semEngenheiro: 'Contrate um engenheiro.', filaCheia: 'Fila cheia.', maxEngenheiros: 'Número máximo de engenheiros.', jaFeito: 'Já feito.',
     evCiencia: 'Dia {dia}: pesquisa concluída, {nome}.', evFabricado: 'Dia {dia}: equipamento pronto, {nome}.',
@@ -266,7 +266,7 @@ Object.assign(TXT.en, {
     oficinaTexto: 'Engineers build here the equipment that research has unlocked. Cost and day values are game values, to be calibrated in class.',
     oficinaSemEng: 'No engineer: hire one in the quarters (candidates arrive at the end of the month).', oficinaSemPesq: 'No equipment researched yet. Finish a research in the laboratory.',
     fabricar: 'Build', engenheiros: 'Engineers', filaTit: 'Production queue', filaVazia: 'Queue empty.', filaItem: '{nome}: ready on day {d}', filaEspera: '{nome}: waiting for a free engineer',
-    inventarioTit: 'Finished equipment', inventarioVazio: 'No equipment built yet.', equipNota: 'For now, finished equipment stays in the inventory; its effect in the field arrives in a future version.',
+    inventarioTit: 'Finished equipment', inventarioVazio: 'No equipment built yet.', equipNota: 'Each scientist carries 1 item: hand it out in the Quarters. In the field, the one held by whoever has control counts (keys 7, 8, 9, 0 switch).',
     semDescoberta: 'Not discovered yet.', pesqOcupado: 'A research is already under way.', pesqBloq: 'Reserved for a future version.', semOficina: 'Build the workshop.', semPesqEquip: 'Finish the research first.',
     semEngenheiro: 'Hire an engineer.', filaCheia: 'Queue full.', maxEngenheiros: 'Maximum number of engineers.', jaFeito: 'Already done.',
     evCiencia: 'Day {dia}: research complete, {nome}.', evFabricado: 'Day {dia}: equipment ready, {nome}.',
@@ -281,3 +281,7 @@ Object.assign(TXT.en, {
     especialidade: { campo: 'Field', fisica: 'Physics', medicina: 'Medicine' },
     espBonus: { campo: 'handles sources with half the dose during pickup', fisica: 'a wrong identification costs half the extra dose', medicina: 'returns to duty a little earlier' },
 });
+
+// ---------- Inventário individual (v3.33) ----------
+Object.assign(TXT.pt, { leva: 'Leva', nenhumEquip: 'Nenhum', noEstoque: 'no estoque', semEstoque: 'Não há mais desse equipamento no estoque: ele já está com outro cientista.' });
+Object.assign(TXT.en, { leva: 'Carries', nenhumEquip: 'None', noEstoque: 'in stock', semEstoque: 'No more of this item in stock: another scientist already has it.' });

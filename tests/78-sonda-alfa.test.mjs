@@ -19,6 +19,7 @@ test('física: com a sonda, a parte alfa da taxa triplica; gama e beta ficam igu
   assert.equal(g0, g1); assert.equal(G.taxaEsperada([], sonda, com), P.fundoCps);
 });
 
+const COM = (id) => ({ equipamentos: { [id]: 4 }, equipe: [1, 2, 3, 4].map((i) => ({ id: 'c' + i, nome: 'N' + i, retrato: 'lara', especialidade: 'campo', doses: [], equip: id })) });   // v3.33: cada cientista leva o item
 const estado = (extra) => `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], bestStars: { 1: 3, 2: 2 }, settings: { encontros: false } }));
   localStorage.setItem('radiationHuntersAgencia', JSON.stringify(Object.assign({ v: 3, iniciado: true, dia: 3, proximoAlerta: null, creditos: 0, ativos: [{ id: 'm2', desde: 3, expira: 17 }] }, ${JSON.stringify(extra || {})}))); } catch (e) {} `;
 async function entrar(pg) {
@@ -29,7 +30,7 @@ async function entrar(pg) {
   await pg.waitForSelector('#story-continue', { state: 'visible' }); await passarHistoria(pg);
   await pg.waitForFunction(() => window.gameScene && window.gameScene.gameStarted && window.gameScene.sources);
 }
-for (const [rot, extra, esperado] of [['com sonda alfa', { equipamentos: { sondaAlfa: 1 } }, true], ['sem sonda alfa', {}, false]]) {
+for (const [rot, extra, esperado] of [['com sonda alfa', COM('sondaAlfa'), true], ['sem sonda alfa', {}, false]]) {
   test(`em missão de campo ${rot}: temSondaAlfa = ${esperado}`, async () => {
     const srv = await servidor(), nav = await abrirNavegador();
     try {

@@ -12,7 +12,7 @@ import { mesDe, diaDoMes } from './simulacao.js';
 import { NOME_AGENCIA } from './textos.js';
 import { moduloSvg, rochaSvg, pessoaSvg } from './base-svg.js';
 import { planta as plantaSvg } from '../arte/planta.js';
-import { NOS, IDS_NOS, EQUIPAMENTOS, IDS_EQUIPAMENTOS, CIENCIA, estadoNo, iniciarCiencia, enfileirar, engenheirosLivres } from './ciencia.js';
+import { NOS, IDS_NOS, EQUIPAMENTOS, IDS_EQUIPAMENTOS, CIENCIA, estadoNo, iniciarCiencia, enfileirar, engenheirosLivres, equipar, equipDe, estoqueLivre } from './ciencia.js';
 import { especialidadeDe, NORMAS, razao, janelaMaisRestritiva, corCaneta, doseNaJanela, diasParaVoltar, motivoIndisponivel, disponivel } from './equipe.js';
 import {
     CUSTOS, NAVES, TIPOS_NAVE, CONSTRUIVEIS, UNICOS, GRADE_MAX, baiasTotal, camasTotal, modulosProntos, temLaboratorio, temMedico, limiteRetorno, pesquisaPronta, temOficina, camasOcupadas, naveLivre,
@@ -24,7 +24,7 @@ const estrelasTxt = (n) => { const k = Math.max(0, Math.min(3, n | 0)); return '
 const fmt = (n) => (Math.round(n * 100) / 100).toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-US', { maximumFractionDigits: 2 });
 /** Expressão do retrato conforme o estado: dose (caneta) e disponibilidade. */
 const expressaoDe = (cor, mot) => (mot === 'tratamento' || cor === 'vermelho' ? 'preocupado' : cor === 'amarelo' || mot === 'viagem' ? 'neutro' : 'sorriso');
-const MOTIVOS = { creditos: 'semCreditos', baias: 'semBaias', pesquisa: 'exigePesquisa', unico: 'moduloUnico', laboratorio: 'semLaboratorio', camas: 'semCamas', nave: 'semResgate', equipe: 'semEquipe', maximo: 'baseMaxima', descoberta: 'semDescoberta', ocupado: 'pesqOcupado', bloqueada: 'pesqBloq', oficina: 'semOficina', pesquisaEquip: 'semPesqEquip', engenheiro: 'semEngenheiro', fila: 'filaCheia', maxEng: 'maxEngenheiros', ja: 'jaFeito' };
+const MOTIVOS = { creditos: 'semCreditos', baias: 'semBaias', pesquisa: 'exigePesquisa', unico: 'moduloUnico', laboratorio: 'semLaboratorio', camas: 'semCamas', nave: 'semResgate', equipe: 'semEquipe', maximo: 'baseMaxima', descoberta: 'semDescoberta', ocupado: 'pesqOcupado', bloqueada: 'pesqBloq', oficina: 'semOficina', pesquisaEquip: 'semPesqEquip', engenheiro: 'semEngenheiro', semEstoque: 'semEstoque', fila: 'filaCheia', maxEng: 'maxEngenheiros', ja: 'jaFeito' };
 
 export const metodosBase = {
     txtMotivo(m) { const L = this.L; return L[MOTIVOS[m]] || m; },
@@ -43,7 +43,17 @@ export const metodosBase = {
             + `<p class="ag-fala-nome">${m.nome}${extra}</p><p class="ag-nota" data-esp="${especialidadeDe(m)}"><strong>${L.especialidade[especialidadeDe(m)]}</strong> · ${L.espBonus[especialidadeDe(m)]}</p>`
             + `<div class="ag-vida" role="img" aria-label="${preencher(L.doseRel, { p: pct })}"><span class="ag-vida-cheia ag-c-${cor}" style="width:${Math.min(100, pct)}%"></span></div>`
             + `<p class="ag-nota"><strong>${preencher(L.doseRel, { p: pct })}</strong>${pct > 0 && jan ? ' (' + L.janela[jan.id] + ')' : ''} · ${L.caneta}: <span class="ag-caneta ag-c-${cor}">${corTxt}</span></p>`
-            + `<p class="ag-nota">${doses}</p><p class="ag-nota"><strong>${estado}</strong></p></div></div>`;
+            + `<p class="ag-nota">${doses}</p><p class="ag-nota"><strong>${estado}</strong></p>${this.htmlEquipDe(m)}</div></div>`;
+    },
+
+    /** v3.33: o que o cientista leva e botões para trocar (só o que há no estoque). */
+    htmlEquipDe(m) {
+        const L = this.L, e = this.est, atual = equipDe(m);
+        const fabricados = IDS_EQUIPAMENTOS.filter((id) => (e.equipamentos[id] || 0) > 0);
+        if (!fabricados.length) return '';
+        const bt = (id, rot, on, off) => `<button type="button" class="menu-btn ag-mini${on ? ' primary' : ''}" data-ag="equipar" data-m="${m.id}" data-id="${id}" aria-pressed="${on}" ${off ? 'disabled' : ''}>${rot}</button>`;
+        const botoes = bt('', L.nenhumEquip, !atual, false) + fabricados.map((id) => bt(id, L.equip[id].nome + ' (' + estoqueLivre(e, id) + ')', atual === id, atual !== id && estoqueLivre(e, id) < 1)).join('');
+        return `<p class="ag-nota" data-equip-de="${atual || ''}"><strong>${L.leva}:</strong> ${atual ? L.equip[atual].nome : L.nenhumEquip}</p><div class="ag-linha-acao">${botoes}</div>`;
     },
 
     // ---------- Base em grade (cena em corte, v3.7) ----------
@@ -243,7 +253,7 @@ export const metodosBase = {
             return `<div class="ag-cartao" data-equip="${id}"><h4 class="ag-sub">${T.nome}</h4><p>${T.desc}</p><p class="ag-nota">${q.dias} ${L.dias}</p>` + this.botaoCusto('fabricar', L.fabricar, q.custo, mot, `data-id="${id}"`) + '</div>';
         }).join('');
         const fila = e.fila.map((f) => `<li>${f.eng ? preencher(L.filaItem, { nome: L.equip[f.equip].nome, d: f.pronto }) : preencher(L.filaEspera, { nome: L.equip[f.equip].nome })}</li>`).join('');
-        const inv = Object.entries(e.equipamentos).map(([k, v]) => `<li>${L.equip[k].nome} ×${v}</li>`).join('');
+        const inv = Object.entries(e.equipamentos).map(([k, v]) => `<li>${L.equip[k].nome} ×${v} (${estoqueLivre(e, k)} ${L.noEstoque})</li>`).join('');
         const eng = e.engenheiros.length ? `<p class="ag-nota">${L.engenheiros}: ${e.engenheiros.map((g) => g.nome).join(', ')} (${engenheirosLivres(e).length}/${e.engenheiros.length} ${L.livres})</p>` : `<p class="ag-nota">${L.oficinaSemEng}</p>`;
         return `<div class="ag-cartao"><h3>${L.sala.oficina}</h3><p>${L.oficinaTexto}</p>${eng}</div>` + (ok ? '' : '')
             + (lista || `<div class="ag-cartao"><p class="ag-nota">${L.oficinaSemPesq}</p></div>`)
@@ -344,6 +354,7 @@ export const metodosBase = {
         if (k === 'comprar-nave') return feito(comprarNave(e, b.dataset.tipo));
         if (k === 'pesquisar') return feito(iniciarPesquisa(e, b.dataset.id));
         if (k === 'ciencia') return feito(iniciarCiencia(e, b.dataset.id, temLaboratorio(e)));
+        if (k === 'equipar') return feito(equipar(e, b.dataset.m, b.dataset.id));
         if (k === 'fabricar') return feito(enfileirar(e, b.dataset.id, temOficina(e)));
         if (k === 'contratar') return feito(contratar(e, b.dataset.id));
         if (k === 'levantar') return feito(enviarLevantamento(e, b.dataset.id));

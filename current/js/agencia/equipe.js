@@ -46,7 +46,7 @@ export const especialidadeDe = (m) => (m && ESPECIALIDADES.includes(m.especialid
 export const bonusDe = (m, chave) => (BONUS[especialidadeDe(m)] || {})[chave] ?? 1;
 
 export function novoCientista(id, nome, retrato, especialidade) {
-    return { id, nome, retrato, especialidade: ESPECIALIDADES.includes(especialidade) ? especialidade : especialidadePorId(id), doses: [], tratamento: false, ocupadoAte: 0 };
+    return { id, nome, retrato, especialidade: ESPECIALIDADES.includes(especialidade) ? especialidade : especialidadePorId(id), doses: [], tratamento: false, ocupadoAte: 0, equip: null };
 }
 
 /** Equipe inicial: 4 cientistas (decisão do Arnaldo, 28/10/2026). */
@@ -157,7 +157,7 @@ export function saneaEquipe(lista) {
         ok.push({
             id: o.id.slice(0, 12), nome: o.nome.slice(0, 24), retrato: RETRATOS_POOL.includes(o.retrato) ? o.retrato : 'lara', especialidade: ESPECIALIDADES.includes(o.especialidade) ? o.especialidade : especialidadePorId(o.id),
             doses: (Array.isArray(o.doses) ? o.doses : []).filter((d) => d && Number.isFinite(d.dia) && Number.isFinite(d.msv)).slice(-60).map((d) => ({ dia: inteiro(d.dia, 0, 1000000, 0), msv: num(d.msv, 0, 1000, 0) })),
-            tratamento: o.tratamento === true, ocupadoAte: inteiro(o.ocupadoAte, 0, 1000000, 0),
+            tratamento: o.tratamento === true, ocupadoAte: inteiro(o.ocupadoAte, 0, 1000000, 0), equip: typeof o.equip === 'string' ? o.equip.slice(0, 20) : null,
         });
     }
     return ok.length ? ok : equipeInicial();

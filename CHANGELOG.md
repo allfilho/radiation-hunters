@@ -3,6 +3,15 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.33.0 — 2026-11-06 — Fase D (parte 2): inventário individual
+- **Cada cientista leva 1 equipamento.** O que a Oficina fabrica vai para o estoque da Base; no Alojamento, cada ficha tem botões para entregar, trocar ou devolver (mostram quantos restam no estoque; sem estoque o botão fica desabilitado). Trocar devolve o item anterior ao estoque.
+- **Em campo vale o equipamento de quem está com o controle** (espectrômetro, câmara de ionização ou sonda alfa); as teclas 7, 8, 9, 0 trocam de cientista e, junto, de equipamento. Isso dá peso à escolha da equipe e às especialidades.
+- **Saves antigos:** os itens já fabricados ficam no estoque, sem dono; é preciso entregá-los na nova tela. Entregas além do total ou com item inválido são corrigidas ao carregar.
+- Oficina: a lista de equipamentos mostra o total e quantos estão no estoque; nota explica a regra (pt/en).
+- **Teste novo 80** (lógica de entrega, saneamento do save, telas pt/en); testes 76, 77 e 78 passam a dar o item a cada cientista. Suíte completa: 80 arquivos verdes.
+- Pendente: retratos próprios dos engenheiros; calibração em sala.
+
+
 ## v3.32.0 — 2026-11-06 — Fase D (parte 1): especialidades dos cientistas
 - **Especialidades:** cada cientista tem uma de três: Campo (manuseia a fonte na coleta com metade da dose), Física (identificar errado custa metade da dose extra de 0,3 mSv) e Medicina (volta ao serviço com 5 pontos percentuais a mais no limite de retorno). Todos os valores são hipóteses de jogo [H], a calibrar em sala.
 - **Equipe inicial e candidatos:** a equipe inicial tem Campo, Física, Medicina e Campo; candidatos novos sorteiam uma especialidade. O alojamento e os cartões de candidato mostram a especialidade e o bônus (pt/en).

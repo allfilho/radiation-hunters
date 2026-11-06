@@ -10,6 +10,7 @@ import { JanelaDeContagem, PARAMETROS as PARAM_GEIGER, SONDA_ALFA_FATOR, contar,
 import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
 import { foiLevantado } from '../agencia/frota.js';
 import { bonusDe } from '../agencia/equipe.js';
+import { equipDe } from '../agencia/ciencia.js';
 import { currentLang, t } from '../i18n/index.js';
 import { MapGenerator } from '../mapa/gerador.js';
 import { FurnitureRenderer } from '../render/moveis.js';
@@ -1758,15 +1759,21 @@ export class GameScene extends Phaser.Scene {
         const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.equipeSaida && ui.agencia.alvo;
         return !!a && ((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida');
     }
+    /** v3.33: o equipamento que o cientista à frente carrega (cada um leva 1; vem do estoque da Base). */
+    equipAtivo() {
+        const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
+        if (!a) return null;
+        return equipDe(a.equipe.find((m) => m.id === ui.agencia.cientistaAtivo()));
+    }
     /** v3.31: modo Agência com a sonda alfa fabricada na Oficina. */
     temSondaAlfa() {
         const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
-        return !!a && (a.equipamentos.sondaAlfa || 0) > 0 && this.emCampoAgencia();
+        return !!a && this.equipAtivo() === 'sondaAlfa' && this.emCampoAgencia();
     }
     /** v3.30: modo Agência com a câmara de ionização fabricada na Oficina. */
     temCamara() {
         const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
-        return !!a && (a.equipamentos.camaraIonizacao || 0) > 0 && this.emCampoAgencia();
+        return !!a && this.equipAtivo() === 'camaraIonizacao' && this.emCampoAgencia();
     }
     /** Mostra a taxa de dose (mSv/h de jogo, do modelo de dose [H]) no HUD; some sem a câmara. */
     mostrarCamara(taxaMsvH) {
@@ -1781,7 +1788,7 @@ export class GameScene extends Phaser.Scene {
     /** v3.29: modo Agência com o espectrômetro gama fabricado na Oficina (inventário `est.equipamentos`). */
     temEspectrometro() {
         const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
-        return !!a && (a.equipamentos.espectrometro || 0) > 0 && this.emCampoAgencia();
+        return !!a && this.equipAtivo() === 'espectrometro' && this.emCampoAgencia();
     }
     /** Lê as linhas gama da fonte à frente (dados LNHB); conta como leitura com sinal, como uma placa. */
     usarEspectrometro() {

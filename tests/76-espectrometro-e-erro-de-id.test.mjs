@@ -15,6 +15,7 @@ test('linhasGamaTexto: Cs-137 uma linha, Co-60 duas, Sr-90 nenhuma, desconhecido
   assert.equal(C.linhasGamaTexto({ name: 'Xx-1' }), null);
 });
 
+const COM = (id) => ({ equipamentos: { [id]: 4 }, equipe: [1, 2, 3, 4].map((i) => ({ id: 'c' + i, nome: 'N' + i, retrato: 'lara', especialidade: 'campo', doses: [], equip: id })) });   // v3.33: cada cientista leva o item
 const estado = (extra) => `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], bestStars: { 1: 3, 2: 2 }, settings: { encontros: false } }));
   localStorage.setItem('radiationHuntersAgencia', JSON.stringify(Object.assign({ v: 3, iniciado: true, dia: 3, proximoAlerta: null, creditos: 0, ativos: [{ id: 'm2', desde: 3, expira: 17 }] }, ${JSON.stringify(extra || {})}))); } catch (e) {} `;
 
@@ -33,7 +34,7 @@ for (const lang of ['pt', 'en']) {
   test(`com espectrômetro (${lang}): botão aparece, mostra a linha gama do Cs-137; erro de identificação custa 0,3 mSv`, async () => {
     const srv = await servidor(), nav = await abrirNavegador();
     try {
-      const { pg, erros } = await novaPagina(nav, srv.url, { idioma: lang, antes: estado({ equipamentos: { espectrometro: 1 } }) });
+      const { pg, erros } = await novaPagina(nav, srv.url, { idioma: lang, antes: estado(COM('espectrometro')) });
       await entrarNaMissao(pg);
       const nome = await aoLado(pg); assert.equal(nome, 'Cs-137');
       await pg.waitForSelector('#identify-modal.active');

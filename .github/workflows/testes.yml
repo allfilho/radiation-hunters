@@ -1,13 +1,13 @@
-# Roda a suíte completa a cada push em desenvolvimento (e em pull requests para main), para não depender do computador de ninguém.
-# Os resultados aparecem na aba Actions do GitHub. Uma rodada leva em torno de 25 a 40 minutos.
+# Roda a suíte completa só quando você pedir (aba Actions > Testes > Run workflow, escolhendo a branch) ou em pull request para main.
+# Não roda mais a cada push: cada rodada leva 25 a 40 minutos e gasta os minutos do plano do GitHub. A suíte local (tests/rodar-testes.sh) é a verificação do dia a dia.
 name: Testes
 on:
-  push:
-    branches: [desenvolvimento]
-    paths: ['current/**', 'tests/**', '.github/workflows/testes.yml']
   pull_request:
     branches: [main]
   workflow_dispatch:
+concurrency:
+  group: testes-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   suite:
     runs-on: ubuntu-24.04   # fixo: o Playwright 1.56 não instala dependências no ubuntu-latest novo (26)

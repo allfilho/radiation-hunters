@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url';
 import { RAIZ_JOGO, servidor, abrirNavegador, novaPagina, novoJogo, passarHistoria } from './helpers/navegador.mjs';
 const mod = (f) => import(pathToFileURL(path.join(RAIZ_JOGO, 'js', f)).href);
 
+const COM = (id) => ({ equipamentos: { [id]: 4 }, equipe: [1, 2, 3, 4].map((i) => ({ id: 'c' + i, nome: 'N' + i, retrato: 'lara', especialidade: 'campo', doses: [], equip: id })) });   // v3.33: cada cientista leva o item
 const estado = (extra) => `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], bestStars: { 1: 3, 2: 2 }, settings: { encontros: false } }));
   localStorage.setItem('radiationHuntersAgencia', JSON.stringify(Object.assign({ v: 3, iniciado: true, dia: 3, proximoAlerta: null, creditos: 0, ativos: [{ id: 'm2', desde: 3, expira: 17 }] }, ${JSON.stringify(extra || {})}))); } catch (e) {} `;
 
@@ -25,7 +26,7 @@ for (const lang of ['pt', 'en']) {
   test(`com câmara de ionização (${lang}): a taxa de dose aparece no HUD e sobe perto da fonte`, async () => {
     const srv = await servidor(), nav = await abrirNavegador();
     try {
-      const { pg, erros } = await novaPagina(nav, srv.url, { idioma: lang, antes: estado({ equipamentos: { camaraIonizacao: 1 } }) });
+      const { pg, erros } = await novaPagina(nav, srv.url, { idioma: lang, antes: estado(COM('camaraIonizacao')) });
       await entrarNaMissao(pg);
       const longe = await pg.evaluate(() => { const s = window.gameScene; s.player.x = s.mapData.playerStart.x * 32 + 16; s.player.y = s.mapData.playerStart.y * 32 + 16; return true; });
       await pg.waitForTimeout(900);

@@ -138,6 +138,29 @@ export function avancarCiencia(est, temOficina = true) {
     return ev;
 }
 
+// ---------- inventário individual (v3.33) ----------
+// `est.equipamentos` guarda o total fabricado. Cada cientista pode levar 1 item (`m.equip`); o que ninguém leva fica no estoque da Base.
+export const equipDe = (m) => (m && IDS_EQUIPAMENTOS.includes(m.equip) ? m.equip : null);
+export const comQuem = (est, id) => est.equipe.filter((m) => equipDe(m) === id).length;
+export const estoqueLivre = (est, id) => Math.max(0, (est.equipamentos[id] || 0) - comQuem(est, id));
+/** Entrega um item do estoque a um cientista (`id` vazio devolve o que ele leva). Trocar devolve o anterior ao estoque. */
+export function equipar(est, membroId, id) {
+    const m = est.equipe.find((x) => x.id === membroId); if (!m) return falha('membro');
+    if (!id) { m.equip = null; return { ok: true }; }
+    if (!EQUIPAMENTOS[id]) return falha('equipamento');
+    if (equipDe(m) === id) return { ok: true };
+    if (estoqueLivre(est, id) < 1) return falha('semEstoque');
+    m.equip = id; return { ok: true };
+}
+/** Corrige entregas inconsistentes (item que não existe mais ou mais entregas que o total): tira dos últimos da equipe. */
+export function saneaEntregas(est) {
+    for (const m of est.equipe) if (m.equip != null && !IDS_EQUIPAMENTOS.includes(m.equip)) m.equip = null;
+    for (const id of IDS_EQUIPAMENTOS) {
+        const donos = est.equipe.filter((m) => equipDe(m) === id), sobra = donos.length - (est.equipamentos[id] || 0);
+        for (let i = 0; i < sobra; i++) donos[donos.length - 1 - i].equip = null;
+    }
+}
+
 // ---------- saneamento do save ----------
 export function saneaCiencia(o, dia = 0) {
     const int = (v, lo, hi, p) => { const n = Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, Math.round(n))) : p; };
