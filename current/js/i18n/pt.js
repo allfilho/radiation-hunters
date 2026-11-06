@@ -353,6 +353,7 @@ Fonte: BASE (Alemanha), "Fukushima ten years later"; AIEA, Fukushima Daiichi Acc
         evidNoShield: "leitura sem placa",
         evidWithShield: "leitura com placa",
         needMoreData: "Ainda não dá para concluir",
+        camaraAria: "Câmara de ionização: taxa de dose estimada no jogo", camaraRot: "Câmara: {0} mSv/h (estimativa de jogo)",
         useSpectro: "Usar o espectrômetro", spectroGamma: "Espectrômetro: linha(s) gama em {0}.", spectroNoGamma: "Espectrômetro: nenhuma linha gama; a fonte não emite gama.", spectroNoData: "Espectrômetro: sem dados de emissão para esta fonte.", wrongIdDose: "A demora junto à fonte custou {0} mSv ao cientista.",
         moreDataMissing: "Boa decisão: ainda faltam dados. Meça a mesma fonte, à mesma distância, sem placa e com alumínio, acrílico e chumbo, e compare.",
         moreDataEnough: "Você já tem leituras sem placa e com placa. Compare as quedas, elimine os candidatos incompatíveis e decida.",

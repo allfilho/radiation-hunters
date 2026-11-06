@@ -972,12 +972,14 @@ export class GameScene extends Phaser.Scene {
         const T = CONFIG.TILE_SIZE;
         const ctx = { tileM: this.missionData.tileM ?? CONFIG.TILE_M, paredeCm: CONFIG.PAREDE_CM, ehParede: this.ehParede };
         const fontes = this.sources.map((s) => this.fonteFisica(s)), q = ui.agencia.equipeSaida, ativo = ui.agencia.cientistaAtivo();
-        let dd = 0;
+        let dd = 0, taxaMsvH = null;
         for (const id of q.ids) {   // cada cientista recebe a dose do ponto onde está (v3.17)
             const pos = id === ativo || !this.colegas || !this.colegas[id] ? this.player : this.colegas[id];
             const d1 = doseDe(taxaGamaCps(fontes, { x: pos.x / T, y: pos.y / T }, ctx), dt);
             ui.agencia.registrarDoseCampo(d1, id); dd += d1;
+            if (id === ativo || taxaMsvH === null) taxaMsvH = d1 / dt * 3600;   // v3.30: câmara de ionização mostra a taxa de quem está à frente
         }
+        this.mostrarCamara(taxaMsvH);
         q.exato = true;
         GameState.doseMissao = (GameState.doseMissao || 0) + dd;
         ui.atualizarCaneta(ui.agencia.penDoLider(ui.agencia.doseDoAtivo()));
@@ -1753,6 +1755,21 @@ export class GameScene extends Phaser.Scene {
     emCampoAgencia() {
         const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.equipeSaida && ui.agencia.alvo;
         return !!a && ((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida');
+    }
+    /** v3.30: modo Agência com a câmara de ionização fabricada na Oficina. */
+    temCamara() {
+        const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
+        return !!a && (a.equipamentos.camaraIonizacao || 0) > 0 && this.emCampoAgencia();
+    }
+    /** Mostra a taxa de dose (mSv/h de jogo, do modelo de dose [H]) no HUD; some sem a câmara. */
+    mostrarCamara(taxaMsvH) {
+        const el = document.getElementById('camara-display'), rot = document.getElementById('camara-rot');
+        if (!el || !rot) return;
+        const ver = this.temCamara() && taxaMsvH !== null;
+        el.hidden = !ver;
+        if (!ver) return;
+        const v = taxaMsvH < 0.01 ? '< 0,01' : (taxaMsvH < 10 ? taxaMsvH.toFixed(2) : String(Math.round(taxaMsvH)));
+        rot.textContent = t('camaraRot').replace('{0}', currentLang === 'pt' ? v.replace('.', ',') : v.replace(',', '.'));
     }
     /** v3.29: modo Agência com o espectrômetro gama fabricado na Oficina (inventário `est.equipamentos`). */
     temEspectrometro() {

@@ -4,6 +4,11 @@ Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O históric
 
 <!-- HISTORICO-INICIO -->
 
+## v3.30.0 — 2026-11-06 — Fase C (parte 2): câmara de ionização no campo
+- **Câmara de ionização:** com uma câmara fabricada na Oficina (`est.equipamentos.camaraIonizacao`), o HUD de missão de campo da Agência mostra a taxa de dose de quem está à frente (mSv/h) e ela sobe junto à fonte. O valor sai do modelo de dose do jogo (`fisica/dose.js`, hipótese de jogo), por isso o texto diz "estimativa de jogo". Sem a câmara, o painel não aparece.
+- **Não incluído:** a sonda alfa ainda não tem efeito em campo. Mexer na força do alfa afeta a verificação de acessibilidade das fontes e pede decisão sobre o quanto a sonda melhora a detecção.
+- **Teste novo 77:** painel em pt e en, valor maior perto da fonte, ausência sem a câmara. Teste 01 passa a esperar 218 chaves de idioma. Suíte completa: 77 arquivos verdes.
+
 ## v3.29.0 — 2026-11-06 — Fase C (parte 1): espectrômetro e dose por erro de identificação
 - **Espectrômetro no campo:** com um espectrômetro gama fabricado na Oficina (`est.equipamentos.espectrometro`), o modal de identificação ganha o botão "Usar o espectrômetro". Ele mostra as linhas gama da fonte à frente, com os dados LNHB de `data/emissoes.js` (ex.: Cs-137, 661,7 keV; Co-60, 1173,2 e 1332,5 keV). Fonte só alfa ou beta: avisa que não há linha gama. Só vale em missão de campo da Agência.
 - **Erro de identificação:** em missão de campo da Agência, identificar errado custa 0,3 mSv ao cientista à frente (hipótese de jogo: 20 % do limite diário de 1,5 mSv) e a mensagem informa o valor. A perda de estrela já vinha da taxa de acertos.
