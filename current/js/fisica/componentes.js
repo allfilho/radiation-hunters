@@ -56,3 +56,15 @@ export function descreverEmissoes(iso, lang = 'pt') {
         return `${SIMBOLO[c.tipo]} (${energia}; ${num(r[c.tipo], L)} ${em100})`;
     }).join(' + ');
 }
+
+/**
+ * Espectrômetro gama (v3.29): linhas gama do nuclídeo, dos dados LNHB de `emissoes.js` (rendimento >= 10 por 100).
+ * Devolve "661,7 keV" / "1173,2 e 1332,5 keV"; '' se o nuclídeo não emite gama; null se não há dados de emissão.
+ */
+export function linhasGamaTexto(iso, lang = 'pt') {
+    const L = lang === 'en' ? 'en' : 'pt', e = EMISSOES[iso.name];
+    if (!e) return null;
+    const ls = e.linhas.filter((l) => l.tipo === 'gama' && l.y >= 10).sort((a, b) => a.keV - b.keV);
+    if (!ls.length) return '';
+    return ls.map((l) => num(l.keV, L)).join(L === 'pt' ? ' e ' : ' and ') + ' keV';
+}

@@ -4,6 +4,13 @@ Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O históric
 
 <!-- HISTORICO-INICIO -->
 
+## v3.29.0 — 2026-11-06 — Fase C (parte 1): espectrômetro e dose por erro de identificação
+- **Espectrômetro no campo:** com um espectrômetro gama fabricado na Oficina (`est.equipamentos.espectrometro`), o modal de identificação ganha o botão "Usar o espectrômetro". Ele mostra as linhas gama da fonte à frente, com os dados LNHB de `data/emissoes.js` (ex.: Cs-137, 661,7 keV; Co-60, 1173,2 e 1332,5 keV). Fonte só alfa ou beta: avisa que não há linha gama. Só vale em missão de campo da Agência.
+- **Erro de identificação:** em missão de campo da Agência, identificar errado custa 0,3 mSv ao cientista à frente (hipótese de jogo: 20 % do limite diário de 1,5 mSv) e a mensagem informa o valor. A perda de estrela já vinha da taxa de acertos.
+- **Sem mudança de física:** as placas continuam separando cada isótopo dos distratores (testes 36 e 53); o espectrômetro é um atalho exato, que reduz o tempo junto da fonte. As missões e a progressão de fontes (Cs-137 e Co-60 juntos) ficam como estavam; a primeira entrega dos dois já abre a pesquisa de espectrometria (v3.28).
+- **Teste novo 76:** linhas gama em pt/en, botão e leitura em missão real (pt e en), dose extra no erro, sem dose ao acertar, sem botão sem espectrômetro. Teste 01 passa a esperar 216 chaves de idioma.
+- **Pendente:** efeitos da sonda alfa e da câmara de ionização em campo; calibrar a dose de 0,3 mSv em sala; fichas técnicas dos instrumentos reais.
+
 ## v3.28.0 — 2026-11-05 — Fase B: pesquisa em árvore, engenheiros e Oficina
 - **Pedido:** a pesquisa nasce das fontes coletadas (Cs-137 e Co-60 coletados → espectrometria gama) e engenheiros fabricam os equipamentos na Oficina.
 - **Inventário de materiais:** a coleta agora guarda quais isótopos foram entregues (antes só a contagem). Ao chegar a nave de resgate, os isótopos entram em `est.colhidas`. Missões antigas sem lista continuam válidas.

@@ -861,6 +861,12 @@ export class UIManager {
                 ev.textContent = `${marca(evidencia.semPlaca)} ${t('evidNoShield')}   ${marca(evidencia.placas > 0)} ${t('evidWithShield')}`;
             }
         }
+        const esp = document.getElementById('btn-espectro'), espOut = document.getElementById('identify-espectro');
+        if (espOut) { espOut.hidden = true; espOut.textContent = ''; }
+        if (esp) {
+            esp.hidden = !(evidencia && evidencia.espectro);
+            esp.onclick = evidencia && evidencia.espectro ? () => { const msg = evidencia.espectro(); if (espOut && msg) { espOut.textContent = msg; espOut.hidden = false; } } : null;
+        }
         if (mais) {
             mais.hidden = !(evidencia && evidencia.aoPedirDados);
             mais.onclick = evidencia && evidencia.aoPedirDados ? () => evidencia.aoPedirDados() : null;

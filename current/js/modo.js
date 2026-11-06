@@ -6,7 +6,7 @@
 //   ?investigacao=hospital   abre direto a investigação do hospital (protótipo em teste)
 // Funções puras sobre a string de busca, para poderem ser testadas sem navegador.
 // ============================================
-export const VERSAO = '3.28.0 · 2026-11-05';
+export const VERSAO = '3.29.0 · 2026-11-06';
 
 /** @param {string} busca  ex.: "?missao=3&estudo=1" (padrão: o endereço atual) */
 export function lerParametros(busca = (globalThis.location && globalThis.location.search) || '', totalMissoes = 8) {

@@ -353,6 +353,7 @@ Source: BASE (Germany), "Fukushima ten years later"; IAEA, Fukushima Daiichi Acc
         evidNoShield: "reading without a plate",
         evidWithShield: "reading with a plate",
         needMoreData: "Not enough data yet",
+        useSpectro: "Use the spectrometer", spectroGamma: "Spectrometer: gamma line(s) at {0}.", spectroNoGamma: "Spectrometer: no gamma lines; the source does not emit gamma.", spectroNoData: "Spectrometer: no emission data for this source.", wrongIdDose: "The delay next to the source cost the scientist {0} mSv.",
         moreDataMissing: "Good call: data is still missing. Measure the same source, at the same distance, with no plate and with aluminum, acrylic and lead, and compare.",
         moreDataEnough: "You already have readings without and with a plate. Compare the drops, rule out the incompatible candidates and decide.",
         methodNote: "Method note: you identified the source without comparing readings with and without a plate. Here the choice is among known candidates; in the real world a single Geiger reading does not identify a source.",

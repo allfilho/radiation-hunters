@@ -100,3 +100,7 @@ Os testes 07/08 também aceitam RH_ROOT ausente. A consolidação 2.1.1 passou 2
 - `27-hospital-campo`: reutilização da GameScene e mapa hospitalar, movimento, NPCs/objetos, percurso até ficha, limpeza ao sair e foco/tela pequena.
 
 No percurso por NPCs, o robô é posicionado junto aos pontos de interação; não se apresenta esse atalho como travessia manual de todas as salas. Há teste separado de movimentação por teclado e verificações dos pontos alcançáveis. Resultados da 2.2 no relatório de conferência.
+
+## Rodar a suíte inteira (v3.29)
+
+`bash rodar-testes.sh` roda tudo em primeiro plano, 2 arquivos por vez, com orçamento de 540 s por chamada. Se faltar teste, rode de novo e ele continua; arquivos que falharam são refeitos. Se qualquer arquivo de `current/` ou `tests/` mudar, os resultados antigos são descartados sozinhos. Opções: nomes ou números de arquivos (`72 73`), `-j N`, `--orcamento 0`, `--reset`. Resultados em `../logs/`. No GitHub, o fluxo `.github/workflows/testes.yml` roda a suíte a cada push em `desenvolvimento`. Tempo medido: cerca de 20 minutos para os 76 arquivos com 2 em paralelo.

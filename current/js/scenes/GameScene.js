@@ -4,7 +4,7 @@ import { ISOTOPES } from '../data/isotopes.js';
 import { MISSIONS } from '../data/missoes/index.js';
 import { SHIELDS } from '../data/shields.js';
 import { GameState } from '../estado.js';
-import { componentesDe, descreverEmissoes, nomesDasComponentes } from '../fisica/componentes.js';
+import { componentesDe, descreverEmissoes, linhasGamaTexto, nomesDasComponentes } from '../fisica/componentes.js';
 import { candidatosDaMissao, rotuloDoCandidato } from '../data/candidatos.js';
 import { JanelaDeContagem, contar, distanciaAoRetangulo, pontoMaisProximo, taxaEsperada } from '../fisica/geiger.js';
 import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
@@ -1631,6 +1631,7 @@ export class GameScene extends Phaser.Scene {
         }, {
             semPlaca: ev.semPlaca, placas: ev.placas.size,
             aoPedirDados: () => this.pedirMaisDados(),
+            espectro: this.temEspectrometro() ? () => this.usarEspectrometro() : null,
         });
     }
     
@@ -1739,13 +1740,41 @@ export class GameScene extends Phaser.Scene {
             audioManager.playError();
             if (GameState.settings.screenShake) this.cameras.main.shake(200, 0.004);
             ui.marcarTentativa(selected.name);
-            ui.showIdentifyFeedback(false, t('wrongIsotope') + (hint ? '\n💡 ' + hint : ''));
+            const doseErro = this.doseDoErroDeIdentificacao();
+            const txtDose = doseErro > 0 ? '\n☢ ' + t('wrongIdDose').replace('{0}', String(doseErro).replace('.', currentLang === 'pt' ? ',' : '.')) : '';
+            ui.showIdentifyFeedback(false, t('wrongIsotope') + txtDose + (hint ? '\n💡 ' + hint : ''));
             ui.showNotification(t('wrongIsotope'), 'error');
             ui.updateCombo(1);
             this.time.delayedCall(hint ? 3500 : 1800, () => ui.liberarEscolhas());
         }
     }
     
+    /** Missão de campo (ou chamado rápido) aberta pela Agência com equipe a bordo. */
+    emCampoAgencia() {
+        const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.equipeSaida && ui.agencia.alvo;
+        return !!a && ((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida');
+    }
+    /** v3.29: modo Agência com o espectrômetro gama fabricado na Oficina (inventário `est.equipamentos`). */
+    temEspectrometro() {
+        const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
+        return !!a && (a.equipamentos.espectrometro || 0) > 0 && this.emCampoAgencia();
+    }
+    /** Lê as linhas gama da fonte à frente (dados LNHB); conta como leitura com sinal, como uma placa. */
+    usarEspectrometro() {
+        const f = this.selectedFurniture, s = f && f.source; if (!s) return '';
+        this.evidencia.espectro = true;
+        const lin = linhasGamaTexto(s, currentLang);
+        return lin === null ? t('spectroNoData') : (lin === '' ? t('spectroNoGamma') : t('spectroGamma').replace('{0}', lin));
+    }
+    /** v3.29: identificar errado custa dose ao cientista que está à frente (só em missão de campo da Agência). */
+    doseDoErroDeIdentificacao() {
+        if (!this.emCampoAgencia()) return 0;
+        const d = DOSE.erroIdMsv;
+        ui.agencia.registrarDoseCampo(d); GameState.doseMissao = (GameState.doseMissao || 0) + d;
+        ui.atualizarCaneta(ui.agencia.penDoLider(ui.agencia.doseDoAtivo()));
+        return d;
+    }
+
     /** "Ainda não dá para concluir": não conta como tentativa nem tira pontos; orienta conforme a evidência já reunida. */
     pedirMaisDados() {
         const ev = this.evidencia;

@@ -24,10 +24,10 @@ test('i18n: todos os idiomas têm exatamente as mesmas chaves', async () => {
   }
 });
 
-test('i18n (caracterização): hoje existem exatamente en e pt, com 211 chaves cada', async () => {
+test('i18n (caracterização): hoje existem exatamente en e pt, com 216 chaves cada', async () => {
   const r = await pg.evaluate(() => ({ langs: Object.keys(i18n), n: Object.keys(i18n.en).length }));
   assert.deepEqual(r.langs, ['en', 'pt']);
-  assert.equal(r.n, 211);   // v3.27.1 acrescentou agenciaAria, equipeCampoAria e incertezaAria
+  assert.equal(r.n, 216);   // v3.27.1 acrescentou agenciaAria, equipeCampoAria e incertezaAria; v3.29 acrescentou 5 do espectrômetro
 });
 
 test('i18n: toda chave data-i18n do HTML existe em todos os idiomas', async () => {

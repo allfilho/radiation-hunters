@@ -14,6 +14,7 @@ import { taxaFonte } from './geiger.js';
 export const DOSE = {
     kMsvPorCpsS: 5e-5,   // mSv por (cps·s) de jogo [H]; calibrado em 28/10/2026 (ver abaixo)
     passoS: 0.25,        // a dose é somada a cada 250 ms de jogo
+    erroIdMsv: 0.3,      // dose extra ao cientista que identifica errado (demora junto à fonte) [H], v3.29: 20 % do limite diário de 1,5 mSv
 };
 
 /** cps gama (fundo excluído) no ponto `sonda`, de todas as fontes ainda NÃO achadas; sem blindagem e sem direção. */
