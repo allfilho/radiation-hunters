@@ -64,8 +64,8 @@ function boca(ex, pele) {
   return `<path d="M43 58.2 Q48 60.2 53 58.2" fill="none" stroke="${lab}" stroke-width="1.8" stroke-linecap="round"/>`;
 }
 
-/** SVG de um busto 96×96. `expressao`: neutro | sorriso | preocupado | surpreso. Retorna '' se o personagem não tem paleta. */
-export function retratoSvg(npc, expressao = 'neutro') {
+/** SVG de um busto 96×96. `expressao`: neutro | sorriso | preocupado | surpreso. `opcoes.engenheiro` (v3.34) põe capacete e colete refletivo. Retorna '' se o personagem não tem paleta. */
+export function retratoSvg(npc, expressao = 'neutro', opcoes = {}) {
   const p = P[npc]; if (!p) return '';
   const ex = EXPRESSOES.includes(expressao) ? expressao : 'neutro';
   const id = `rt-${npc}`, pele = p.pele, c = p.cabelo;
@@ -75,18 +75,21 @@ export function retratoSvg(npc, expressao = 'neutro') {
   const jaleco = p.jaleco
     ? `<path d="M10 96 C10 80 24 72 36 70 L48 88 L60 70 C72 72 86 80 86 96Z" fill="#f2f6f8" stroke="#0b1820" stroke-width="1.2"/><path d="M36 70 L48 88 L44 96 L26 96Z" fill="#dfe8ee"/><path d="M60 70 L48 88 L52 96 L70 96Z" fill="#e8f0f4"/><path d="M44 74 L48 88 L52 74 L48 70Z" fill="${p.blusa}"/><rect x="62" y="82" width="9" height="9" rx="1" fill="#d8e2e8"/><rect x="66" y="79" width="1.6" height="8" fill="#00c46a"/>`
     : `<path d="M10 96 C10 80 24 72 36 70 C42 74 54 74 60 70 C72 72 86 80 86 96Z" fill="${p.blusa}" stroke="#0b1820" stroke-width="1.2"/><path d="M36 70 C42 78 54 78 60 70 L56 68 C52 72 44 72 40 68Z" fill="${tomC(p.blusa, -.3)}"/><path d="M62 74 C76 78 86 86 86 96 L70 96 C70 86 66 80 62 74Z" fill="#000" opacity=".2"/>`;
+  const eng = opcoes && opcoes.engenheiro === true;
+  const colete = eng ? '<g data-colete="1"><path d="M26 96 L34 71 L40 68 L38 96Z" fill="#ff7a1a" stroke="#0b1820" stroke-width="1"/><path d="M70 96 L62 71 L56 68 L58 96Z" fill="#ff7a1a" stroke="#0b1820" stroke-width="1"/><path d="M29.5 90 L38 88.4 M31 82 L38.6 80.6 M66.5 90 L58 88.4 M65 82 L57.4 80.6" stroke="#e8f1f4" stroke-width="1.8" stroke-linecap="round"/></g>' : '';
+  const capacete = eng ? '<g data-capacete="1"><path d="M27 32 C27 14 37 10 48 10 C59 10 69 14 69 32 Q48 27.5 27 32Z" fill="#f2b01e" stroke="#0b1820" stroke-width="1.2"/><path d="M48 10 V28.2" stroke="#c98a00" stroke-width="2.2"/><path d="M34 15 Q40 11.5 46 11.4" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round"/><path d="M24.5 32.6 Q48 27 71.5 32.6 L71.5 35 Q48 29.6 24.5 35Z" fill="#d9951a" stroke="#0b1820" stroke-width="1.1"/></g>' : '';
   const bochecha = ex === 'sorriso' ? '<ellipse cx="35" cy="52" rx="4" ry="2.4" fill="#e0675a" opacity=".22"/><ellipse cx="61" cy="52" rx="4" ry="2.4" fill="#e0675a" opacity=".22"/>' : '';
-  return `<svg viewBox="0 0 96 96" class="inv-retrato-svg" aria-hidden="true" focusable="false">`
+  return `<svg viewBox="0 0 96 96" class="inv-retrato-svg"${eng ? ' data-retrato-eng="1"' : ''} aria-hidden="true" focusable="false">`
     + `<defs><linearGradient id="${id}-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${tomC(pele, .18)}"/><stop offset=".6" stop-color="${pele}"/><stop offset="1" stop-color="${tomC(pele, -.28)}"/></linearGradient>`
     + `<radialGradient id="${id}-b" cx=".3" cy=".25" r=".95"><stop offset="0" stop-color="#3d6a82"/><stop offset=".6" stop-color="#1c3a4b"/><stop offset="1" stop-color="#0a1822"/></radialGradient></defs>`
     + `<rect width="96" height="96" rx="14" fill="url(#${id}-b)"/><path d="M0 70 H96 M0 76 H96" stroke="#9fd8ff" stroke-width=".6" opacity=".08"/><rect x="6" y="8" width="26" height="30" rx="3" fill="#9fd8ff" opacity=".05"/>`
-    + cabeloAtras(p) + jaleco
+    + cabeloAtras(p) + jaleco + colete
     + `<path d="M40 58 L40 72 Q48 78 56 72 L56 58Z" fill="${tomC(pele, -.22)}"/><path d="M40 70 Q48 76 56 70 L56 66 Q48 72 40 66Z" fill="#000" opacity=".25"/>`
     + `<ellipse cx="29.5" cy="46" rx="3" ry="5" fill="${tomC(pele, -.08)}"/><ellipse cx="66.5" cy="46" rx="3" ry="5" fill="${tomC(pele, -.25)}"/>`
     + `<path d="M29 40 C29 24 37 21 48 21 C59 21 67 24 67 40 C67 56 59 66 48 66 C37 66 29 56 29 40Z" fill="url(#${id}-f)" stroke="#0b1820" stroke-width="1.2"/>`
     + `<path d="M66 44 C66 58 58 66 48 66 C55 62 61 54 62 42Z" fill="#000" opacity=".12"/>`
     + `<path d="M48 44 Q45.5 51 47 52.4 Q48.6 53 51 52" fill="none" stroke="${tomC(pele, -.35)}" stroke-width="1.5" stroke-linecap="round"/>`
-    + bochecha + cabeloFrente(p) + sobrancelhas(ex, c) + olhos(ex) + barba + boca(ex, pele) + bigode + oculos
+    + bochecha + cabeloFrente(p) + sobrancelhas(ex, c) + olhos(ex) + barba + boca(ex, pele) + bigode + oculos + capacete
     + `<rect x=".6" y=".6" width="94.8" height="94.8" rx="13.4" fill="none" stroke="#9fd8ff" stroke-opacity=".25" stroke-width="1.2"/></svg>`;
 }
 export const temRetrato = (npc) => Boolean(npc && P[npc]);

@@ -3,6 +3,12 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.34.0 — 2026-11-06 — Fase D (parte 3): retratos dos engenheiros
+- **Retratos próprios:** engenheiros e candidatos a engenheiro aparecem com capacete amarelo e colete refletivo laranja (`retratoSvg(npc, expressao, { engenheiro: true })`), para se distinguirem dos cientistas à primeira vista no Alojamento. Cientistas ficam como antes; o retrato sem a opção é idêntico ao anterior.
+- **Teste novo 81:** a opção só liga capacete e colete para engenheiros, o SVG continua bem formado para todos os personagens, e o Alojamento mostra o capacete só nos engenheiros (contratado e candidato). A suíte pegou um conflito de nome de atributo (`data-engenheiro`) com o teste 75 e foi corrigido (`data-retrato-eng`). Suíte completa: 81 arquivos verdes.
+- **Com isso a Fase D está completa** (especialidades, inventário individual e retratos). Pendente: calibração em sala (roteiro em docs/calibracao-fases-b-d.md).
+
+
 ## v3.33.0 — 2026-11-06 — Fase D (parte 2): inventário individual
 - **Cada cientista leva 1 equipamento.** O que a Oficina fabrica vai para o estoque da Base; no Alojamento, cada ficha tem botões para entregar, trocar ou devolver (mostram quantos restam no estoque; sem estoque o botão fica desabilitado). Trocar devolve o item anterior ao estoque.
 - **Em campo vale o equipamento de quem está com o controle** (espectrômetro, câmara de ionização ou sonda alfa); as teclas 7, 8, 9, 0 trocam de cientista e, junto, de equipamento. Isso dá peso à escolha da equipe e às especialidades.

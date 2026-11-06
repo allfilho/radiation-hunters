@@ -207,11 +207,11 @@ export const metodosBase = {
     htmlAlojamento() {
         const L = this.L, e = this.est;
         const eq = e.equipe.map((m) => this.htmlMembro(m)).join('');
-        const engs = e.engenheiros.map((g) => `<div class="ag-membro" data-engenheiro="${g.id}"><div class="inv-retrato" aria-hidden="true">${retratoSvg(g.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${g.nome}</p><p class="ag-nota">${L.papel.engenheiro}</p></div></div>`).join('');
+        const engs = e.engenheiros.map((g) => `<div class="ag-membro" data-engenheiro="${g.id}"><div class="inv-retrato" aria-hidden="true">${retratoSvg(g.retrato, 'sorriso', { engenheiro: true })}</div><div class="ag-membro-info"><p class="ag-fala-nome">${g.nome}</p><p class="ag-nota">${L.papel.engenheiro}</p></div></div>`).join('');
         const cands = e.candidatos.map((c) => {
             const eng = c.funcao === 'engenheiro', custo = eng ? CIENCIA.contratarEngenheiro : CUSTOS.contratar;
             const mot = camasOcupadas(e) >= camasTotal(e) ? 'camas' : (e.creditos < custo ? 'creditos' : null);
-            return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p><p class="ag-nota">${L.papel[eng ? 'engenheiro' : 'cientista']}${eng ? '' : ' · ' + L.especialidade[especialidadeDe(c)] + ': ' + L.espBonus[especialidadeDe(c)]}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), custo, mot, `data-id="${c.id}"`)}</div></div>`;
+            return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso', { engenheiro: eng })}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p><p class="ag-nota">${L.papel[eng ? 'engenheiro' : 'cientista']}${eng ? '' : ' · ' + L.especialidade[especialidadeDe(c)] + ': ' + L.espBonus[especialidadeDe(c)]}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), custo, mot, `data-id="${c.id}"`)}</div></div>`;
         }).join('');
         return `<div class="ag-cartao"><h3>${L.sala.alojamento} · ${preencher(L.camas, { n: camasOcupadas(e), k: camasTotal(e) })}</h3>${eq}${engs}</div>`
             + (temMedico(e) ? '' : `<div class="ag-cartao"><p class="ag-nota">${L.semMedicoDica}</p></div>`) + `<div class="ag-cartao"><h3>${L.contratarTit}</h3>${cands || `<p class="ag-nota">${L.semCandidatos}</p>`}</div>`
