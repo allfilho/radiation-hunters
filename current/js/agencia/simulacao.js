@@ -13,7 +13,7 @@
 import { ALERTAS } from './dados.js';
 import { ehRapida, alertaPorId, novaSemente } from './rapidas.js';
 import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas } from './ciencia.js';
-import { equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
+import { ESPECIALIDADES, especialidadePorId, equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
 import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
 
 export const PARAMETROS = {
@@ -95,7 +95,7 @@ export function sanear(d) {
         naves.push({ id: n.id.slice(0, 12), tipo: n.tipo, livreEm: inteiro(n.livreEm, 0, 1000000, 0), missao: mi });
     }
     if (naves.length) e.naves = naves;
-    e.candidatos = (Array.isArray(o.candidatos) ? o.candidatos : []).filter((c) => c && typeof c.id === 'string' && typeof c.nome === 'string').slice(0, 6).map((c) => ({ id: c.id.slice(0, 12), nome: c.nome.slice(0, 24), retrato: typeof c.retrato === 'string' ? c.retrato.slice(0, 12) : 'lara', expira: inteiro(c.expira, 0, 1000000, e.dia + 30), funcao: c.funcao === 'engenheiro' ? 'engenheiro' : 'cientista' }));
+    e.candidatos = (Array.isArray(o.candidatos) ? o.candidatos : []).filter((c) => c && typeof c.id === 'string' && typeof c.nome === 'string').slice(0, 6).map((c) => ({ id: c.id.slice(0, 12), nome: c.nome.slice(0, 24), retrato: typeof c.retrato === 'string' ? c.retrato.slice(0, 12) : 'lara', especialidade: ESPECIALIDADES.includes(c.especialidade) ? c.especialidade : especialidadePorId(c.id), expira: inteiro(c.expira, 0, 1000000, e.dia + 30), funcao: c.funcao === 'engenheiro' ? 'engenheiro' : 'cientista' }));
     if (o.pesquisa && typeof o.pesquisa === 'object') for (const k of Object.keys(CUSTOS.pesquisa)) if (o.pesquisa[k]) e.pesquisa[k] = { pronto: inteiro(o.pesquisa[k].pronto, 0, 1000000, 0) };
     e.coleta = (Array.isArray(o.coleta) ? o.coleta : []).filter((c) => c && typeof c.id === 'string' && idValido(c.alertaId)).slice(0, 10).map((c) => ({ id: c.id.slice(0, 12), alertaId: c.alertaId, fontes: inteiro(c.fontes, 1, 20, 1), isotopos: saneaIsotopos(c.isotopos), desde: inteiro(c.desde, 0, 1000000, 0), expira: inteiro(c.expira, 0, 1000000, e.dia + PRAZO_COLETA) }));
     e.levantados = [...new Set((Array.isArray(o.levantados) ? o.levantados : []).filter((id) => idValido(id)))];
@@ -155,7 +155,7 @@ export function avancarDia(est, rand = Math.random) {
             else {
                 const ganho = (mi.fontes || 0) * CUSTOS.valorColetaPorFonte; est.creditos += ganho; est.nota += 1;
                 registrarColhidas(est, mi.isotopos);
-                const doses = distribuirDoseMissao(est.equipe, mi.ids, mi.ids[0], (mi.fontes || 0) * NORMAS.doseColeta * 1.5, est.dia);
+                const doses = distribuirDoseMissao(est.equipe, mi.ids, mi.ids[0], (mi.fontes || 0) * NORMAS.doseColeta * 1.5, est.dia, null, false, { coleta: true });
                 const e = { tipo: 'entrega', dia: est.dia, valor: ganho, fontes: mi.fontes || 0, tratamento: doses.filter((d) => d.tratamento).length }; ev.push(e); registrar(est, e);
             }
         }

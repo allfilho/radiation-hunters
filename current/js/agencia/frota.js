@@ -117,7 +117,7 @@ export function contratar(est, candidatoId) {
     }
     if (!gasta(est, CUSTOS.contratar)) return falha('creditos');
     const c = est.candidatos.splice(i, 1)[0];
-    est.equipe.push({ id: novoId(est, 'c'), nome: c.nome, retrato: c.retrato, doses: [], tratamento: false, ocupadoAte: 0 });
+    const idN = novoId(est, 'c'); est.equipe.push({ id: idN, nome: c.nome, retrato: c.retrato, especialidade: c.especialidade, doses: [], tratamento: false, ocupadoAte: 0 });
     return { ok: true };
 }
 /** No fim do mês chegam 2 candidatos; os antigos que passaram do prazo saem. */

@@ -13,7 +13,7 @@ import { NOME_AGENCIA } from './textos.js';
 import { moduloSvg, rochaSvg, pessoaSvg } from './base-svg.js';
 import { planta as plantaSvg } from '../arte/planta.js';
 import { NOS, IDS_NOS, EQUIPAMENTOS, IDS_EQUIPAMENTOS, CIENCIA, estadoNo, iniciarCiencia, enfileirar, engenheirosLivres } from './ciencia.js';
-import { NORMAS, razao, janelaMaisRestritiva, corCaneta, doseNaJanela, diasParaVoltar, motivoIndisponivel, disponivel } from './equipe.js';
+import { especialidadeDe, NORMAS, razao, janelaMaisRestritiva, corCaneta, doseNaJanela, diasParaVoltar, motivoIndisponivel, disponivel } from './equipe.js';
 import {
     CUSTOS, NAVES, TIPOS_NAVE, CONSTRUIVEIS, UNICOS, GRADE_MAX, baiasTotal, camasTotal, modulosProntos, temLaboratorio, temMedico, limiteRetorno, pesquisaPronta, temOficina, camasOcupadas, naveLivre,
     primeiraNaveLivre, comprarNave, construirModulo, expandirBase, iniciarPesquisa, contratar, enviarResgate, enviarLevantamento, foiLevantado,
@@ -40,7 +40,7 @@ export const metodosBase = {
         const [j1, j7, j30] = NORMAS.janelas;
         const doses = preencher(L.doseJanelas, { d: fmt(doseNaJanela(m, dia, 1)), s: fmt(doseNaJanela(m, dia, 7)), m: fmt(doseNaJanela(m, dia, 30)), ld: j1.limite, ls: j7.limite, lm: j30.limite });
         return `<div class="ag-membro ag-dossie ag-estado-${mot || 'ok'}" data-membro="${m.id}"><div class="ag-foto ag-borda-${cor}" aria-hidden="true"><span class="ag-foto-cab">${L.ficha} ${String(m.id).replace(/\D/g, '').padStart(2, '0')}</span><div class="inv-retrato">${retratoSvg(m.retrato, expressaoDe(cor, mot))}</div></div><div class="ag-membro-info">`
-            + `<p class="ag-fala-nome">${m.nome}${extra}</p>`
+            + `<p class="ag-fala-nome">${m.nome}${extra}</p><p class="ag-nota" data-esp="${especialidadeDe(m)}"><strong>${L.especialidade[especialidadeDe(m)]}</strong> · ${L.espBonus[especialidadeDe(m)]}</p>`
             + `<div class="ag-vida" role="img" aria-label="${preencher(L.doseRel, { p: pct })}"><span class="ag-vida-cheia ag-c-${cor}" style="width:${Math.min(100, pct)}%"></span></div>`
             + `<p class="ag-nota"><strong>${preencher(L.doseRel, { p: pct })}</strong>${pct > 0 && jan ? ' (' + L.janela[jan.id] + ')' : ''} · ${L.caneta}: <span class="ag-caneta ag-c-${cor}">${corTxt}</span></p>`
             + `<p class="ag-nota">${doses}</p><p class="ag-nota"><strong>${estado}</strong></p></div></div>`;
@@ -201,7 +201,7 @@ export const metodosBase = {
         const cands = e.candidatos.map((c) => {
             const eng = c.funcao === 'engenheiro', custo = eng ? CIENCIA.contratarEngenheiro : CUSTOS.contratar;
             const mot = camasOcupadas(e) >= camasTotal(e) ? 'camas' : (e.creditos < custo ? 'creditos' : null);
-            return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p><p class="ag-nota">${L.papel[eng ? 'engenheiro' : 'cientista']}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), custo, mot, `data-id="${c.id}"`)}</div></div>`;
+            return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p><p class="ag-nota">${L.papel[eng ? 'engenheiro' : 'cientista']}${eng ? '' : ' · ' + L.especialidade[especialidadeDe(c)] + ': ' + L.espBonus[especialidadeDe(c)]}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), custo, mot, `data-id="${c.id}"`)}</div></div>`;
         }).join('');
         return `<div class="ag-cartao"><h3>${L.sala.alojamento} · ${preencher(L.camas, { n: camasOcupadas(e), k: camasTotal(e) })}</h3>${eq}${engs}</div>`
             + (temMedico(e) ? '' : `<div class="ag-cartao"><p class="ag-nota">${L.semMedicoDica}</p></div>`) + `<div class="ag-cartao"><h3>${L.contratarTit}</h3>${cands || `<p class="ag-nota">${L.semCandidatos}</p>`}</div>`

@@ -31,13 +31,28 @@ export const RETRATOS_POOL = ['lara', 'caio', 'dora', 'ines', 'nelson', 'leo', '
 export const inteiro = (v, lo, hi, padrao) => { const n = typeof v === 'number' ? v : Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, Math.round(n))) : padrao; };
 const num = (v, lo, hi, padrao) => { const n = typeof v === 'number' ? v : Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : padrao; };
 
-export function novoCientista(id, nome, retrato) {
-    return { id, nome, retrato, doses: [], tratamento: false, ocupadoAte: 0 };
+// ---------- especialidades (v3.32, Fase D) ----------
+// Cada cientista tem uma especialidade com um bônus pequeno. Valores [H], a calibrar em sala.
+export const ESPECIALIDADES = ['campo', 'fisica', 'medicina'];
+export const BONUS = {
+    campo: { coleta: 0.5 },      // manuseia fontes na coleta com metade da dose
+    fisica: { erroId: 0.5 },     // identificar errado custa metade da dose extra
+    medicina: { retorno: 0.05 }, // volta ao serviço com 5 pontos percentuais a mais no limite de retorno
+};
+/** Especialidade de saves antigos: derivada do id, sempre a mesma. */
+export const especialidadePorId = (id) => { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return ESPECIALIDADES[h % ESPECIALIDADES.length]; };
+export const especialidadeDe = (m) => (m && ESPECIALIDADES.includes(m.especialidade) ? m.especialidade : especialidadePorId(m && m.id));
+/** Fator do bônus da especialidade de `m` para `chave` (1 = sem bônus). */
+export const bonusDe = (m, chave) => (BONUS[especialidadeDe(m)] || {})[chave] ?? 1;
+
+export function novoCientista(id, nome, retrato, especialidade) {
+    return { id, nome, retrato, especialidade: ESPECIALIDADES.includes(especialidade) ? especialidade : especialidadePorId(id), doses: [], tratamento: false, ocupadoAte: 0 };
 }
 
 /** Equipe inicial: 4 cientistas (decisão do Arnaldo, 28/10/2026). */
 export function equipeInicial() {
-    return NOMES_POOL.slice(0, 4).map((n, i) => novoCientista('c' + (i + 1), n, RETRATOS_POOL[i]));
+    const esp = ['campo', 'fisica', 'medicina', 'campo'];   // [H] equipe inicial
+    return NOMES_POOL.slice(0, 4).map((n, i) => novoCientista('c' + (i + 1), n, RETRATOS_POOL[i], esp[i]));
 }
 
 /** Soma das doses (mSv) recebidas nos últimos `dias` dias (dias = 1: só hoje). */
@@ -85,14 +100,15 @@ export function registrarDose(m, dia, msv) {
 
 /** A cada dia: quem está em tratamento volta ao serviço quando r < 0,75. Devolve true se voltou. */
 export function verificarRetorno(m, dia, limite = NORMAS.retorno) {
-    if (m.tratamento && razao(m, dia) < limite) { m.tratamento = false; return true; }
+    if (m.tratamento && razao(m, dia) < limite + (BONUS[especialidadeDe(m)].retorno || 0)) { m.tratamento = false; return true; }
     return false;
 }
 
 /** Quantos dias faltam para voltar (só com as doses que ainda estão nas janelas; sem novas doses). null se não está em tratamento. */
 export function diasParaVoltar(m, dia, limite = NORMAS.retorno) {
     if (!m.tratamento) return null;
-    for (let t = 0; t <= 60; t++) if (razao(m, dia + t) < limite) return t;
+    const lim = limite + (BONUS[especialidadeDe(m)].retorno || 0);
+    for (let t = 0; t <= 60; t++) if (razao(m, dia + t) < lim) return t;
     return 60;
 }
 
@@ -109,7 +125,7 @@ export function motivoIndisponivel(m, dia) {
  * Dose da missão repartida pela equipe: o líder recebe `doseLider` × dose; os outros, `doseApoio` × dose.
  * Devolve [{id, msv, tratamento}] (e registra no cientista).
  */
-export function distribuirDoseMissao(equipe, ids, liderId, doseMsv, dia, acum = null, exato = false) {
+export function distribuirDoseMissao(equipe, ids, liderId, doseMsv, dia, acum = null, exato = false, opcoes = {}) {
     const saida = [];
     for (const id of ids) {
         const m = equipe.find((x) => x.id === id); if (!m) continue;
@@ -117,8 +133,9 @@ export function distribuirDoseMissao(equipe, ids, liderId, doseMsv, dia, acum = 
         const campo = acum && Number.isFinite(acum[id]) ? Math.min(doseMsv, Math.max(0, acum[id])) : (id === liderId ? doseMsv : 0);
         // exato (v3.17): cada cientista recebeu a dose do lugar onde esteve; não há fração de apoio
         const msv = exato && acum ? Math.max(0, Number(acum[id]) || 0) : campo * NORMAS.doseLider + (doseMsv - campo) * NORMAS.doseApoio;
-        const r = registrarDose(m, dia, msv);
-        saida.push({ id, msv, tratamento: r.tratamento });
+        const msvFinal = msv * (opcoes.coleta ? bonusDe(m, 'coleta') : 1);   // v3.32: especialidade campo na coleta
+        const r = registrarDose(m, dia, msvFinal);
+        saida.push({ id, msv: msvFinal, tratamento: r.tratamento });
     }
     return saida;
 }
@@ -128,7 +145,7 @@ export function gerarCandidato(rand, usados, dia, idNum, funcao = 'cientista') {
     const livres = NOMES_POOL.filter((n) => !usados.includes(n));
     const nome = (livres.length ? livres : NOMES_POOL)[Math.floor(rand() * (livres.length || NOMES_POOL.length))];
     const retrato = RETRATOS_POOL[Math.floor(rand() * RETRATOS_POOL.length)];
-    return { id: 'k' + idNum, nome, retrato, expira: dia + 30, funcao };
+    return { id: 'k' + idNum, nome, retrato, expira: dia + 30, funcao, especialidade: ESPECIALIDADES[Math.floor(rand() * ESPECIALIDADES.length)] };
 }
 
 /** Aceita qualquer coisa vinda do armazenamento. */
@@ -138,7 +155,7 @@ export function saneaEquipe(lista) {
         if (!o || typeof o.id !== 'string' || vistos.has(o.id) || typeof o.nome !== 'string' || ok.length >= 40) continue;
         vistos.add(o.id);
         ok.push({
-            id: o.id.slice(0, 12), nome: o.nome.slice(0, 24), retrato: RETRATOS_POOL.includes(o.retrato) ? o.retrato : 'lara',
+            id: o.id.slice(0, 12), nome: o.nome.slice(0, 24), retrato: RETRATOS_POOL.includes(o.retrato) ? o.retrato : 'lara', especialidade: ESPECIALIDADES.includes(o.especialidade) ? o.especialidade : especialidadePorId(o.id),
             doses: (Array.isArray(o.doses) ? o.doses : []).filter((d) => d && Number.isFinite(d.dia) && Number.isFinite(d.msv)).slice(-60).map((d) => ({ dia: inteiro(d.dia, 0, 1000000, 0), msv: num(d.msv, 0, 1000, 0) })),
             tratamento: o.tratamento === true, ocupadoAte: inteiro(o.ocupadoAte, 0, 1000000, 0),
         });

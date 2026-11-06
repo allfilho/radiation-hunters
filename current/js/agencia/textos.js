@@ -271,3 +271,13 @@ Object.assign(TXT.en, {
     semEngenheiro: 'Hire an engineer.', filaCheia: 'Queue full.', maxEngenheiros: 'Maximum number of engineers.', jaFeito: 'Already done.',
     evCiencia: 'Day {dia}: research complete, {nome}.', evFabricado: 'Day {dia}: equipment ready, {nome}.',
 });
+
+// ---------- Especialidades (v3.32) ----------
+Object.assign(TXT.pt, {
+    especialidade: { campo: 'Campo', fisica: 'Física', medicina: 'Medicina' },
+    espBonus: { campo: 'manuseia fontes com metade da dose na coleta', fisica: 'identificar errado custa metade da dose extra', medicina: 'volta ao serviço um pouco mais cedo' },
+});
+Object.assign(TXT.en, {
+    especialidade: { campo: 'Field', fisica: 'Physics', medicina: 'Medicine' },
+    espBonus: { campo: 'handles sources with half the dose during pickup', fisica: 'a wrong identification costs half the extra dose', medicina: 'returns to duty a little earlier' },
+});

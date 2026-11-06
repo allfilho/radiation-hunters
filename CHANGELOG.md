@@ -3,6 +3,14 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.32.0 — 2026-11-06 — Fase D (parte 1): especialidades dos cientistas
+- **Especialidades:** cada cientista tem uma de três: Campo (manuseia a fonte na coleta com metade da dose), Física (identificar errado custa metade da dose extra de 0,3 mSv) e Medicina (volta ao serviço com 5 pontos percentuais a mais no limite de retorno). Todos os valores são hipóteses de jogo [H], a calibrar em sala.
+- **Equipe inicial e candidatos:** a equipe inicial tem Campo, Física, Medicina e Campo; candidatos novos sorteiam uma especialidade. O alojamento e os cartões de candidato mostram a especialidade e o bônus (pt/en).
+- **Saves antigos:** quem não tem especialidade recebe uma derivada do id, sempre a mesma; valores inválidos são corrigidos.
+- **Teste novo 79** (5 subtestes: migração, medicina, campo, física, telas pt/en). Suíte completa: 79 arquivos verdes.
+- Engenheiros continuam separados e o equipamento continua valendo para a Base toda. Pendente: tela de inventário individual, retratos de engenheiros e calibração em sala.
+
+
 
 ## v3.31.0 — 2026-11-06 — Fase C (parte 3): sonda alfa no campo
 - **Sonda alfa:** com uma sonda de cintilação para alfa fabricada na Oficina (`est.equipamentos.sondaAlfa`), a leitura de fontes alfa na missão de campo da Agência fica 3 vezes mais forte (`SONDA_ALFA_FATOR`, hipótese de jogo). O alcance continua de contato e o fundo, gama e beta não mudam: o ganho é de sensibilidade, não de distância.

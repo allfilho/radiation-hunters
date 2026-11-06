@@ -9,6 +9,7 @@ import { candidatosDaMissao, rotuloDoCandidato } from '../data/candidatos.js';
 import { JanelaDeContagem, PARAMETROS as PARAM_GEIGER, SONDA_ALFA_FATOR, contar, distanciaAoRetangulo, pontoMaisProximo, taxaEsperada } from '../fisica/geiger.js';
 import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
 import { foiLevantado } from '../agencia/frota.js';
+import { bonusDe } from '../agencia/equipe.js';
 import { currentLang, t } from '../i18n/index.js';
 import { MapGenerator } from '../mapa/gerador.js';
 import { FurnitureRenderer } from '../render/moveis.js';
@@ -1792,7 +1793,8 @@ export class GameScene extends Phaser.Scene {
     /** v3.29: identificar errado custa dose ao cientista que está à frente (só em missão de campo da Agência). */
     doseDoErroDeIdentificacao() {
         if (!this.emCampoAgencia()) return 0;
-        const d = DOSE.erroIdMsv;
+        const quem = ui.agencia.est.equipe.find((m) => m.id === ui.agencia.cientistaAtivo());
+        const d = DOSE.erroIdMsv * (quem ? bonusDe(quem, 'erroId') : 1);   // v3.32: especialidade física
         ui.agencia.registrarDoseCampo(d); GameState.doseMissao = (GameState.doseMissao || 0) + d;
         ui.atualizarCaneta(ui.agencia.penDoLider(ui.agencia.doseDoAtivo()));
         return d;
