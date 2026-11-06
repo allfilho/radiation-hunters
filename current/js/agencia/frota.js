@@ -6,6 +6,7 @@
 // As ações recebem o estado `est` (de simulacao.js) e devolvem { ok: true, ... } ou { ok: false, motivo }.
 // ============================================
 import { disponivel, gerarCandidato, NORMAS } from './equipe.js';
+import { saneaIsotopos, contratarEngenheiro, CIENCIA } from './ciencia.js';
 
 // Calibrados em 28/10/2026 com tests/ferramentas/calibrar-economia.mjs (200 anos simulados, jogador que atende 85 % dos alertas):
 // laboratório por volta do dia 30, pesquisa do detector aéreo pronta por volta do dia 70, 2º hangar por volta do dia 120,
@@ -50,6 +51,10 @@ const novoId = (est, p) => { est.proxId += 1; return p + est.proxId; };
 export const modulosProntos = (est, tipo) => est.modulos.filter((m) => m.tipo === tipo && m.pronto <= est.dia);
 export const baiasTotal = (est) => modulosProntos(est, 'hangar').length * BAIAS_POR_HANGAR;
 export const camasTotal = (est) => modulosProntos(est, 'alojamento').length * CAMAS_POR_ALOJAMENTO;
+/** Camas ocupadas: cientistas e engenheiros (v3.28). */
+export const camasOcupadas = (est) => est.equipe.length + est.engenheiros.length;
+export const camasLivres = (est) => Math.max(0, camasTotal(est) - camasOcupadas(est));
+export const temOficina = (est) => modulosProntos(est, 'oficina').length > 0;
 export const temMedico = (est) => modulosProntos(est, 'medico').length > 0;
 /** Limite de dose relativa para dar alta: mais folgado com o Departamento médico (reavaliação clínica) [H]. */
 export const limiteRetorno = (est) => (temMedico(est) ? NORMAS.retornoMedico : NORMAS.retorno);
@@ -104,7 +109,12 @@ export function iniciarPesquisa(est, id) {
 export function contratar(est, candidatoId) {
     const i = est.candidatos.findIndex((c) => c.id === candidatoId);
     if (i < 0) return falha('candidato');
-    if (est.equipe.length >= camasTotal(est)) return falha('camas');
+    if (camasOcupadas(est) >= camasTotal(est)) return falha('camas');
+    if (est.candidatos[i].funcao === 'engenheiro') {
+        const r = contratarEngenheiro(est, est.candidatos[i], camasLivres(est));
+        if (r.ok) est.candidatos.splice(i, 1);
+        return r;
+    }
     if (!gasta(est, CUSTOS.contratar)) return falha('creditos');
     const c = est.candidatos.splice(i, 1)[0];
     est.equipe.push({ id: novoId(est, 'c'), nome: c.nome, retrato: c.retrato, doses: [], tratamento: false, ocupadoAte: 0 });
@@ -114,8 +124,11 @@ export function contratar(est, candidatoId) {
 export function renovarCandidatos(est, rand) {
     est.candidatos = est.candidatos.filter((c) => c.expira > est.dia);
     const usados = [...est.equipe.map((m) => m.nome), ...est.candidatos.map((c) => c.nome)];
-    for (let k = 0; k < 2 && est.candidatos.length < 4; k++) {
-        const c = gerarCandidato(rand, usados, est.dia, ++est.proxId);
+    // v3.28 [H]: se não há engenheiro à vista (candidato ou contratado), chega um engenheiro além dos 2 cientistas
+    const precisaEng = !est.engenheiros.length && !est.candidatos.some((x) => x.funcao === 'engenheiro');
+    for (const funcao of precisaEng ? ['engenheiro', 'cientista', 'cientista'] : ['cientista', 'cientista']) {
+        if (est.candidatos.length >= 4) break;
+        const c = gerarCandidato(rand, usados, est.dia, ++est.proxId, funcao);
         usados.push(c.nome); est.candidatos.push(c);
     }
 }
@@ -125,10 +138,10 @@ export const equipeDisponivel = (est) => est.equipe.filter((m) => disponivel(m, 
 
 // ---------- coleta de fontes e levantamento aéreo ----------
 /** Depois de uma missão cumprida com fontes organizadas no ponto de coleta. */
-export function registrarColeta(est, alertaId, fontes) {
+export function registrarColeta(est, alertaId, fontes, isotopos = []) {
     const n = Math.max(0, Math.min(20, Math.round(fontes) || 0));
     if (!n || est.coleta.some((c) => c.alertaId === alertaId)) return false;
-    est.coleta.push({ id: novoId(est, 'k'), alertaId, fontes: n, desde: est.dia, expira: est.dia + PRAZO_COLETA });
+    est.coleta.push({ id: novoId(est, 'k'), alertaId, fontes: n, isotopos: saneaIsotopos(isotopos), desde: est.dia, expira: est.dia + PRAZO_COLETA });
     return true;
 }
 /** Envia uma nave de resgate com 2 cientistas disponíveis. */
@@ -141,7 +154,7 @@ export function enviarResgate(est, coletaId, ids) {
     const membros = [...new Set(ids)].map((id) => est.equipe.find((m) => m.id === id));
     if (membros.length < 1 || membros.length > cap || membros.some((m) => !m || !disponivel(m, est.dia))) return falha('equipe');
     const chega = est.dia + DIAS_VIAGEM.resgate;
-    nave.missao = { tipo: 'coleta', saiuEm: est.dia, coletaId, fontes: c.fontes, alertaId: c.alertaId, chegaEm: chega, ids: membros.map((m) => m.id) };
+    nave.missao = { tipo: 'coleta', saiuEm: est.dia, coletaId, fontes: c.fontes, isotopos: c.isotopos || [], alertaId: c.alertaId, chegaEm: chega, ids: membros.map((m) => m.id) };
     for (const m of membros) m.ocupadoAte = chega;
     est.coleta = est.coleta.filter((x) => x.id !== coletaId);
     return { ok: true, chega };

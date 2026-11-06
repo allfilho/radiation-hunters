@@ -1,6 +1,6 @@
 /**
  * RADIATION HUNTERS - The Isotope Chronicles
- * Version 3.27.1
+ * Version 3.28.0
  * 
  * A gamified physics education tool for teaching about radioactive decay,
  * radiation types, and shielding materials.

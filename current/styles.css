@@ -2054,6 +2054,7 @@ span.ag-caneta { background: transparent; font-weight: 700; }
     .ag-geo { height: auto; min-height: 100%; }
     .ag-corpo { display: flex; flex-direction: column; }
     .ag-painel { border-left: 0; border-top: 2px solid #1f3a52; overflow: visible; }
+    .ag-janela.ag-painel { overflow-y: auto; overscroll-behavior: contain; }   /* v3.28: janelas longas (Laboratório, Oficina) rolam em vez de vazar */
     .ag-mapa { width: 100%; }
     .ag-palco { padding: 6px; }
 }

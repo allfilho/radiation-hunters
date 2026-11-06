@@ -12,8 +12,9 @@
 // ============================================
 import { ALERTAS } from './dados.js';
 import { ehRapida, alertaPorId, novaSemente } from './rapidas.js';
+import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas } from './ciencia.js';
 import { equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
-import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno } from './frota.js';
+import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
 
 export const PARAMETROS = {
     diasPorMes: 30,
@@ -40,9 +41,10 @@ const idValido = (id) => ID_VALIDOS.has(id) || ehRapida(id);
 
 export function novoEstado() {
     return {
-        v: 2, iniciado: false, dia: 0, fator: PARAMETROS.fatorInicial, creditos: 0, nota: 0, proximoAlerta: null, proximaRapida: null, rapidasFeitas: 0, ativos: [], usados: [], concluidos: {}, expirados: 0, historico: [],
+        v: 3, iniciado: false, dia: 0, fator: PARAMETROS.fatorInicial, creditos: 0, nota: 0, proximoAlerta: null, proximaRapida: null, rapidasFeitas: 0, ativos: [], usados: [], concluidos: {}, expirados: 0, historico: [],
         equipe: equipeInicial(), candidatos: [], naves: naveInicial(), modulos: modulosIniciais(), grade: { ...GRADE_INICIAL },
         pesquisa: {}, coleta: [], levantados: [], proxId: 10,
+        colhidas: {}, ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
     };
 }
 
@@ -89,15 +91,16 @@ export function sanear(d) {
     for (const n of Array.isArray(o.naves) ? o.naves : []) {
         if (!n || !TIPOS_NAVE.includes(n.tipo) || typeof n.id !== 'string' || naves.length >= 30) continue;
         const mi = n.missao && typeof n.missao === 'object' && ['coleta', 'levantamento', 'retorno'].includes(n.missao.tipo)
-            ? { tipo: n.missao.tipo, coletaId: typeof n.missao.coletaId === 'string' ? n.missao.coletaId.slice(0, 12) : undefined, alertaId: idValido(n.missao.alertaId) ? n.missao.alertaId : undefined, chegaEm: inteiro(n.missao.chegaEm, 0, 1000000, e.dia), saiuEm: inteiro(n.missao.saiuEm, 0, 1000000, Math.max(0, e.dia - 1)), fontes: inteiro(n.missao.fontes, 0, 20, 0), ids: (Array.isArray(n.missao.ids) ? n.missao.ids : []).filter((i) => idsEq.has(i)).slice(0, 4) } : null;
+            ? { tipo: n.missao.tipo, coletaId: typeof n.missao.coletaId === 'string' ? n.missao.coletaId.slice(0, 12) : undefined, alertaId: idValido(n.missao.alertaId) ? n.missao.alertaId : undefined, chegaEm: inteiro(n.missao.chegaEm, 0, 1000000, e.dia), saiuEm: inteiro(n.missao.saiuEm, 0, 1000000, Math.max(0, e.dia - 1)), fontes: inteiro(n.missao.fontes, 0, 20, 0), isotopos: saneaIsotopos(n.missao.isotopos), ids: (Array.isArray(n.missao.ids) ? n.missao.ids : []).filter((i) => idsEq.has(i)).slice(0, 4) } : null;
         naves.push({ id: n.id.slice(0, 12), tipo: n.tipo, livreEm: inteiro(n.livreEm, 0, 1000000, 0), missao: mi });
     }
     if (naves.length) e.naves = naves;
-    e.candidatos = (Array.isArray(o.candidatos) ? o.candidatos : []).filter((c) => c && typeof c.id === 'string' && typeof c.nome === 'string').slice(0, 6).map((c) => ({ id: c.id.slice(0, 12), nome: c.nome.slice(0, 24), retrato: typeof c.retrato === 'string' ? c.retrato.slice(0, 12) : 'lara', expira: inteiro(c.expira, 0, 1000000, e.dia + 30) }));
+    e.candidatos = (Array.isArray(o.candidatos) ? o.candidatos : []).filter((c) => c && typeof c.id === 'string' && typeof c.nome === 'string').slice(0, 6).map((c) => ({ id: c.id.slice(0, 12), nome: c.nome.slice(0, 24), retrato: typeof c.retrato === 'string' ? c.retrato.slice(0, 12) : 'lara', expira: inteiro(c.expira, 0, 1000000, e.dia + 30), funcao: c.funcao === 'engenheiro' ? 'engenheiro' : 'cientista' }));
     if (o.pesquisa && typeof o.pesquisa === 'object') for (const k of Object.keys(CUSTOS.pesquisa)) if (o.pesquisa[k]) e.pesquisa[k] = { pronto: inteiro(o.pesquisa[k].pronto, 0, 1000000, 0) };
-    e.coleta = (Array.isArray(o.coleta) ? o.coleta : []).filter((c) => c && typeof c.id === 'string' && idValido(c.alertaId)).slice(0, 10).map((c) => ({ id: c.id.slice(0, 12), alertaId: c.alertaId, fontes: inteiro(c.fontes, 1, 20, 1), desde: inteiro(c.desde, 0, 1000000, 0), expira: inteiro(c.expira, 0, 1000000, e.dia + PRAZO_COLETA) }));
+    e.coleta = (Array.isArray(o.coleta) ? o.coleta : []).filter((c) => c && typeof c.id === 'string' && idValido(c.alertaId)).slice(0, 10).map((c) => ({ id: c.id.slice(0, 12), alertaId: c.alertaId, fontes: inteiro(c.fontes, 1, 20, 1), isotopos: saneaIsotopos(c.isotopos), desde: inteiro(c.desde, 0, 1000000, 0), expira: inteiro(c.expira, 0, 1000000, e.dia + PRAZO_COLETA) }));
     e.levantados = [...new Set((Array.isArray(o.levantados) ? o.levantados : []).filter((id) => idValido(id)))];
-    e.v = 2;
+    Object.assign(e, saneaCiencia(o, e.dia));
+    e.v = 3;
     return e;
 }
 
@@ -151,11 +154,14 @@ export function avancarDia(est, rand = Math.random) {
             else if (mi.tipo === 'retorno') { const e = { tipo: 'pouso', dia: est.dia, id: mi.alertaId }; ev.push(e); registrar(est, e); }
             else {
                 const ganho = (mi.fontes || 0) * CUSTOS.valorColetaPorFonte; est.creditos += ganho; est.nota += 1;
+                registrarColhidas(est, mi.isotopos);
                 const doses = distribuirDoseMissao(est.equipe, mi.ids, mi.ids[0], (mi.fontes || 0) * NORMAS.doseColeta * 1.5, est.dia);
                 const e = { tipo: 'entrega', dia: est.dia, valor: ganho, fontes: mi.fontes || 0, tratamento: doses.filter((d) => d.tratamento).length }; ev.push(e); registrar(est, e);
             }
         }
     }
+    // pesquisa da árvore e produção da Oficina (v3.28)
+    for (const x of avancarCiencia(est, temOficina(est))) { ev.push(x); registrar(est, x); }
     // obras e pesquisas concluídas
     for (const m of est.modulos) if (m.pronto === est.dia) { const e = { tipo: 'obra', dia: est.dia, modulo: m.tipo }; ev.push(e); registrar(est, e); }
     for (const [k, p] of Object.entries(est.pesquisa)) if (p.pronto === est.dia) { const e = { tipo: 'pesquisa', dia: est.dia, id: k }; ev.push(e); registrar(est, e); }

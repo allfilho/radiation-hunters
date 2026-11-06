@@ -60,7 +60,7 @@ export class UIManager {
         this.origem = null;   // 'agencia' quando a missão ou a investigação foi aberta pela Base
         this.agencia = new AgenciaUI(this.screens.agencia, {
             sair: () => { this.origem = null; this.showScreen('mainMenu'); },
-            iniciarMissao: (m) => { this.origem = 'agencia'; GameState.ultimaConclusao = null; GameState.doseMissao = 0; GameState.fontesColeta = 0; this.atualizarCaneta(null); this.startMission(m); this.atualizarEquipeHud(); },
+            iniciarMissao: (m) => { this.origem = 'agencia'; GameState.ultimaConclusao = null; GameState.doseMissao = 0; GameState.fontesColeta = 0; GameState.isotoposColeta = []; this.atualizarCaneta(null); this.startMission(m); this.atualizarEquipeHud(); },
             abrirInvestigacao: (id) => { this.origem = 'agencia'; this.abrirInvestigacao(id); },
             desbloqueadas: () => GameState.unlockedMissions,
             estrelas: (id) => this.getMissionStars(id),
@@ -80,7 +80,7 @@ export class UIManager {
         if (n != null && !this.slots.ativar(n, { novo })) return;
         carregar();
         this.agencia.est = this.agencia.carregar();
-        GameState.ultimaConclusao = null; GameState.doseMissao = 0; GameState.fontesColeta = 0;
+        GameState.ultimaConclusao = null; GameState.doseMissao = 0; GameState.fontesColeta = 0; GameState.isotoposColeta = [];
         this.updateMissionsDisplay(); this.atualizarContinuar();
         if (n != null) { this.origem = 'agencia'; this.agencia.abrir(); this.showScreen('agencia'); this.agencia.focar(); }
     }
@@ -684,8 +684,8 @@ export class UIManager {
         if (a && a.tipo === 'rapida' && a.falso) r = { concluida: !!(this.investigacao.ficha && this.investigacao.ficha.concluida), estrelas: 2 };   // v3.21: falso alarme é investigação curta; 2 estrelas pelo balanço
         else if (a && (a.tipo === 'missao' || a.tipo === 'treino' || a.tipo === 'rapida')) { const u = GameState.ultimaConclusao; r = { concluida: concluida && !!u && u.id === a.missaoId, estrelas: u ? u.estrelas : 0 }; }
         else if (a && a.tipo === 'investigacao') r = { concluida: !!(this.investigacao.ficha && this.investigacao.ficha.concluida), estrelas: 0 };
-        r.dose = GameState.doseMissao || 0; r.fontes = GameState.fontesColeta || 0;
-        GameState.doseMissao = 0; GameState.fontesColeta = 0; this.atualizarCaneta(null);
+        r.dose = GameState.doseMissao || 0; r.fontes = GameState.fontesColeta || 0; r.isotopos = GameState.isotoposColeta || [];
+        GameState.doseMissao = 0; GameState.fontesColeta = 0; GameState.isotoposColeta = []; this.atualizarCaneta(null);
         this.agencia.retornar(r);
         this.showScreen('agencia');
         this.agencia.focar();

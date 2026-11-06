@@ -67,8 +67,9 @@ test('contratação: camas, créditos e candidatos no fim do mês', async () => 
   for (let d = 0; d < 30; d++) S.avancarDia(e, r);
   assert.ok(e.candidatos.length >= 1 && e.candidatos.length <= 4);
   e.creditos = 1000;
-  assert.equal(F.contratar(e, e.candidatos[0].id).ok, true); assert.equal(e.equipe.length, 5); assert.equal(e.creditos, 1000 - F.CUSTOS.contratar);
-  F.contratar(e, e.candidatos[0].id); assert.equal(e.equipe.length, 6);
+  const cient = () => e.candidatos.find((c) => c.funcao !== 'engenheiro');   // v3.28: um dos candidatos pode ser engenheiro (lista própria)
+  assert.equal(F.contratar(e, cient().id).ok, true); assert.equal(e.equipe.length, 5); assert.equal(e.creditos, 1000 - F.CUSTOS.contratar);
+  F.contratar(e, cient().id); assert.equal(e.equipe.length, 6);
   assert.equal(F.contratar(e, e.candidatos[0] && e.candidatos[0].id || 'zz').ok, false, 'camas cheias (6)');
 });
 

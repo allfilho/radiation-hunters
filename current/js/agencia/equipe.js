@@ -124,11 +124,11 @@ export function distribuirDoseMissao(equipe, ids, liderId, doseMsv, dia, acum = 
 }
 
 /** Candidato novo (contratação). Não repete nomes já usados. */
-export function gerarCandidato(rand, usados, dia, idNum) {
+export function gerarCandidato(rand, usados, dia, idNum, funcao = 'cientista') {
     const livres = NOMES_POOL.filter((n) => !usados.includes(n));
     const nome = (livres.length ? livres : NOMES_POOL)[Math.floor(rand() * (livres.length || NOMES_POOL.length))];
     const retrato = RETRATOS_POOL[Math.floor(rand() * RETRATOS_POOL.length)];
-    return { id: 'k' + idNum, nome, retrato, expira: dia + 30 };
+    return { id: 'k' + idNum, nome, retrato, expira: dia + 30, funcao };
 }
 
 /** Aceita qualquer coisa vinda do armazenamento. */

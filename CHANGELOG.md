@@ -4,6 +4,18 @@ Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O históric
 
 <!-- HISTORICO-INICIO -->
 
+## v3.28.0 — 2026-11-05 — Fase B: pesquisa em árvore, engenheiros e Oficina
+- **Pedido:** a pesquisa nasce das fontes coletadas (Cs-137 e Co-60 coletados → espectrometria gama) e engenheiros fabricam os equipamentos na Oficina.
+- **Inventário de materiais:** a coleta agora guarda quais isótopos foram entregues (antes só a contagem). Ao chegar a nave de resgate, os isótopos entram em `est.colhidas`. Missões antigas sem lista continuam válidas.
+- **Árvore de pesquisa** (`js/agencia/ciencia.js`): espectrometria gama (exige Cs-137 e Co-60), sonda de cintilação para alfa (qualquer fonte alfa), câmara de ionização (Co-60 ou Ir-192) e detector de nêutrons (reservado, sem fonte de nêutrons no jogo). Uma pesquisa por vez, no Laboratório. Custos e dias são hipóteses de jogo. O detector aéreo continua como era.
+- **Engenheiros:** nova lista própria (não vão a campo, não recebem dose), contratados como candidatos no alojamento, ocupam cama. No fim do mês, se não há engenheiro, um dos dois novos candidatos é engenheiro.
+- **Oficina:** deixa de ser "em breve". Lista os equipamentos pesquisados, tem fila de produção (um item por engenheiro livre) e inventário. Os equipamentos prontos só ficam no inventário; o efeito em missão vem na Fase C.
+- **Save v3:** `colhidas`, `ciencia`, `engenheiros`, `fila`, `equipamentos`; saves v2 abrem sem perda; lixo é saneado.
+- **Correção:** janelas longas da Base no celular (390×844) não rolavam e o botão ficava fora da tela; agora rolam.
+- **Teste novo 75** (10 casos): isótopos na entrega, gatilhos, pesquisa por dia, engenheiros e fila (1 e 2 em paralelo), cama e créditos, save v2→v3 e lixo, telas em 1280×720 e 390×844, em português e inglês.
+- **Testes ajustados:** 01 (211 chaves de idioma, desde a v3.27.1), 42 (texto da Oficina), 46 (um candidato do mês é engenheiro: agora chegam 3), 55 (rótulo das naves segue o idioma). Suíte completa: 75 arquivos verdes.
+- **Pendente:** retratos próprios para engenheiros (usam os retratos existentes), calibrar custos em sala, revisar com especialista a redação dos nós (fichas técnicas dos instrumentos reais ainda a registrar em `docs/parametros-fisicos.json`).
+
 ## Licenças — 2026-11-05
 - **Código:** MIT (`LICENSE`), copyright do Grupo de Cronologia (IFGW/Unicamp) e Arnaldo Filho.
 - **Conteúdo educacional:** CC BY-NC-SA 4.0 (`LICENSE-CONTEUDO.md`), com escopo por pastas; nomes "Radiation Hunters" e "Agência Chronos" fora das duas licenças; Phaser e fontes mantêm as licenças originais.

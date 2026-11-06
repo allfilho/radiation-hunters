@@ -39,7 +39,7 @@ test('superfície, rocha, nave e pessoa', async () => {
   const { naveSvg, COR_NAVE } = await carregar('js/arte/nave.js');
   const { pessoaSvg } = await carregar('js/arte/pessoa.js');
   const sup = superficieSvg([{ tipo: 'tripulacao' }, { tipo: 'resgate', missao: { id: 1 } }, { tipo: 'levantamento' }], 3);
-  bemFormado(sup); assert.match(sup, /EM VOO|RESGATE/);
+  bemFormado(sup); assert.match(sup, /EM VOO|IN FLIGHT|RESGATE|RESCUE/);   // o rótulo segue o idioma (v3.27.1)
   bemFormado(superficieSvg([], 1));
   bemFormado(rochaSvg());
   for (const t of Object.keys(COR_NAVE)) bemFormado(`<g>${naveSvg(t)}</g>`);

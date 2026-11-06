@@ -219,3 +219,55 @@ Object.assign(TXT.en, {
     fechar: 'Close',
     naveCheia: 'The ship is full: tap a seat to choose who leaves, then the scientist who boards.',
 });
+
+// ---------- Pesquisa em árvore, engenheiros e Oficina (v3.28) ----------
+Object.assign(TXT.pt, {
+    cienciaTit: 'Pesquisa científica', colhidasTit: 'Materiais coletados', colhidasVazio: 'nenhum entregue ainda',
+    cienciaSemNada: 'Sem novas linhas de pesquisa por enquanto. Colete e entregue fontes de tipos diferentes para abrir novas pesquisas.',
+    cienciaDescoberta: 'Descoberta: o material coletado abriu esta linha', cienciaBloq: 'Reservada: o jogo ainda não tem fonte correspondente.',
+    pesquisarCurto: 'Pesquisar', dias: 'dias', livres: 'livres', papel: { cientista: 'Cientista', engenheiro: 'Engenheiro' },
+    nos: {
+        espectrometriaGama: { nome: 'Espectrometria gama', desc: 'O Cs-137 e o Co-60 emitem gama e o Geiger não os distingue bem. Um espectrômetro mede a energia dos fótons e ajuda a identificar o isótopo. Libera o espectrômetro gama portátil.' },
+        sondaAlfa: { nome: 'Sonda de cintilação para alfa', desc: 'Detecta partículas alfa com fundo muito baixo, mas só de contato: poeira e umidade podem dar leitura falsa. Libera a sonda alfa.' },
+        camaraIonizacao: { nome: 'Câmara de ionização', desc: 'Mede a taxa de dose gama com exatidão, até em campos intensos, mas é menos sensível e mais lenta que o Geiger. Libera a câmara de ionização.' },
+        detectorNeutrons: { nome: 'Detector de nêutrons', desc: 'Reservado para uma versão futura: o jogo ainda não tem fontes de nêutrons.' },
+    },
+    equip: {
+        espectrometro: { nome: 'Espectrômetro gama portátil', desc: 'Lê a energia do gama para identificar o isótopo.' },
+        sondaAlfa: { nome: 'Sonda alfa de cintilação', desc: 'Sensível a alfa, só de contato.' },
+        camaraIonizacao: { nome: 'Câmara de ionização', desc: 'Taxa de dose gama exata em campos intensos.' },
+    },
+    oficinaTexto: 'Os engenheiros fabricam aqui os equipamentos que a pesquisa liberou. Os valores de custo e de dias são de jogo, a calibrar em sala.',
+    oficinaSemEng: 'Sem engenheiro: contrate um no alojamento (candidatos chegam no fim do mês).', oficinaSemPesq: 'Nenhum equipamento pesquisado ainda. Conclua uma pesquisa no laboratório.',
+    fabricar: 'Fabricar', engenheiros: 'Engenheiros', filaTit: 'Fila de produção', filaVazia: 'Fila vazia.', filaItem: '{nome}: pronto no dia {d}', filaEspera: '{nome}: aguardando engenheiro livre',
+    inventarioTit: 'Equipamentos prontos', inventarioVazio: 'Nenhum equipamento fabricado ainda.', equipNota: 'Por enquanto os equipamentos ficam no inventário; o efeito em campo chega em uma versão futura.',
+    semDescoberta: 'Ainda não descoberta.', pesqOcupado: 'Já há uma pesquisa em andamento.', pesqBloq: 'Reservada para uma versão futura.', semOficina: 'Construa a oficina.', semPesqEquip: 'Conclua a pesquisa antes.',
+    semEngenheiro: 'Contrate um engenheiro.', filaCheia: 'Fila cheia.', maxEngenheiros: 'Número máximo de engenheiros.', jaFeito: 'Já feito.',
+    evCiencia: 'Dia {dia}: pesquisa concluída, {nome}.', evFabricado: 'Dia {dia}: equipamento pronto, {nome}.',
+});
+
+// ---------- Research tree, engineers and Workshop (v3.28) ----------
+Object.assign(TXT.en, {
+    cienciaTit: 'Scientific research', colhidasTit: 'Collected materials', colhidasVazio: 'none delivered yet',
+    cienciaSemNada: 'No new lines of research for now. Collect and deliver sources of different kinds to open new research.',
+    cienciaDescoberta: 'Discovery: the collected material opened this line', cienciaBloq: 'Reserved: the game has no matching source yet.',
+    pesquisarCurto: 'Research', dias: 'days', livres: 'free', papel: { cientista: 'Scientist', engenheiro: 'Engineer' },
+    nos: {
+        espectrometriaGama: { nome: 'Gamma spectrometry', desc: 'Cs-137 and Co-60 both emit gamma and the Geiger counter cannot tell them apart well. A spectrometer measures photon energy and helps identify the isotope. Unlocks the portable gamma spectrometer.' },
+        sondaAlfa: { nome: 'Scintillation probe for alpha', desc: 'Detects alpha particles with very low background, but only by contact: dust and moisture can give false readings. Unlocks the alpha probe.' },
+        camaraIonizacao: { nome: 'Ionization chamber', desc: 'Measures gamma dose rate accurately, even in intense fields, but it is less sensitive and slower than the Geiger counter. Unlocks the ionization chamber.' },
+        detectorNeutrons: { nome: 'Neutron detector', desc: 'Reserved for a future version: the game has no neutron sources yet.' },
+    },
+    equip: {
+        espectrometro: { nome: 'Portable gamma spectrometer', desc: 'Reads the gamma energy to identify the isotope.' },
+        sondaAlfa: { nome: 'Alpha scintillation probe', desc: 'Sensitive to alpha, contact only.' },
+        camaraIonizacao: { nome: 'Ionization chamber', desc: 'Accurate gamma dose rate in intense fields.' },
+    },
+    oficinaTexto: 'Engineers build here the equipment that research has unlocked. Cost and day values are game values, to be calibrated in class.',
+    oficinaSemEng: 'No engineer: hire one in the quarters (candidates arrive at the end of the month).', oficinaSemPesq: 'No equipment researched yet. Finish a research in the laboratory.',
+    fabricar: 'Build', engenheiros: 'Engineers', filaTit: 'Production queue', filaVazia: 'Queue empty.', filaItem: '{nome}: ready on day {d}', filaEspera: '{nome}: waiting for a free engineer',
+    inventarioTit: 'Finished equipment', inventarioVazio: 'No equipment built yet.', equipNota: 'For now, finished equipment stays in the inventory; its effect in the field arrives in a future version.',
+    semDescoberta: 'Not discovered yet.', pesqOcupado: 'A research is already under way.', pesqBloq: 'Reserved for a future version.', semOficina: 'Build the workshop.', semPesqEquip: 'Finish the research first.',
+    semEngenheiro: 'Hire an engineer.', filaCheia: 'Queue full.', maxEngenheiros: 'Maximum number of engineers.', jaFeito: 'Already done.',
+    evCiencia: 'Day {dia}: research complete, {nome}.', evFabricado: 'Day {dia}: equipment ready, {nome}.',
+});

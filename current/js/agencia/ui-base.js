@@ -12,9 +12,10 @@ import { mesDe, diaDoMes } from './simulacao.js';
 import { NOME_AGENCIA } from './textos.js';
 import { moduloSvg, rochaSvg, pessoaSvg } from './base-svg.js';
 import { planta as plantaSvg } from '../arte/planta.js';
+import { NOS, IDS_NOS, EQUIPAMENTOS, IDS_EQUIPAMENTOS, CIENCIA, estadoNo, iniciarCiencia, enfileirar, engenheirosLivres } from './ciencia.js';
 import { NORMAS, razao, janelaMaisRestritiva, corCaneta, doseNaJanela, diasParaVoltar, motivoIndisponivel, disponivel } from './equipe.js';
 import {
-    CUSTOS, NAVES, TIPOS_NAVE, CONSTRUIVEIS, UNICOS, GRADE_MAX, baiasTotal, camasTotal, modulosProntos, temLaboratorio, temMedico, limiteRetorno, pesquisaPronta, naveLivre,
+    CUSTOS, NAVES, TIPOS_NAVE, CONSTRUIVEIS, UNICOS, GRADE_MAX, baiasTotal, camasTotal, modulosProntos, temLaboratorio, temMedico, limiteRetorno, pesquisaPronta, temOficina, camasOcupadas, naveLivre,
     primeiraNaveLivre, comprarNave, construirModulo, expandirBase, iniciarPesquisa, contratar, enviarResgate, enviarLevantamento, foiLevantado,
 } from './frota.js';
 
@@ -23,7 +24,7 @@ const estrelasTxt = (n) => { const k = Math.max(0, Math.min(3, n | 0)); return '
 const fmt = (n) => (Math.round(n * 100) / 100).toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-US', { maximumFractionDigits: 2 });
 /** Expressão do retrato conforme o estado: dose (caneta) e disponibilidade. */
 const expressaoDe = (cor, mot) => (mot === 'tratamento' || cor === 'vermelho' ? 'preocupado' : cor === 'amarelo' || mot === 'viagem' ? 'neutro' : 'sorriso');
-const MOTIVOS = { creditos: 'semCreditos', baias: 'semBaias', pesquisa: 'exigePesquisa', unico: 'moduloUnico', laboratorio: 'semLaboratorio', camas: 'semCamas', nave: 'semResgate', equipe: 'semEquipe', maximo: 'baseMaxima' };
+const MOTIVOS = { creditos: 'semCreditos', baias: 'semBaias', pesquisa: 'exigePesquisa', unico: 'moduloUnico', laboratorio: 'semLaboratorio', camas: 'semCamas', nave: 'semResgate', equipe: 'semEquipe', maximo: 'baseMaxima', descoberta: 'semDescoberta', ocupado: 'pesqOcupado', bloqueada: 'pesqBloq', oficina: 'semOficina', pesquisaEquip: 'semPesqEquip', engenheiro: 'semEngenheiro', fila: 'filaCheia', maxEng: 'maxEngenheiros', ja: 'jaFeito' };
 
 export const metodosBase = {
     txtMotivo(m) { const L = this.L; return L[MOTIVOS[m]] || m; },
@@ -75,7 +76,7 @@ export const metodosBase = {
                     const viz = { n: !!modEm(x, y - 1), s: !!modEm(x, y + 1), o: !!modEm(x - 1, y), l: !!modEm(x + 1, y) };
                     const k = hangares.indexOf(m.id), naves = m.tipo === 'hangar' ? e.naves.slice(k * 2, k * 2 + 2).map((n) => (n && !n.missao ? n.tipo : null)) : [];
                     const gente = (pessoas[m.id] || []).map((q) => ({ cor: corCaneta(razao(q, e.dia)), i: q.id }));
-                    cel += `<button type="button" class="ag-cel${sel ? ' sel' : ''}${obra ? ' obra' : ''}" ${pos} data-sala="${m.tipo}" data-mod="${m.id}" aria-pressed="${sel}" aria-label="${nome}. ${obra ? preencher(L.obraPronta, { d: m.pronto - e.dia }) : L.salaDesc[m.tipo] || ''}${m.tipo === 'oficina' ? ' (' + L.emBreve + ')' : ''}">${plantaSvg(m.tipo, { obra, viz, naves, pessoas: gente })}<span class="ag-sala-rot">${nome}${obra ? ' · ' + (m.pronto - e.dia) + 'd' : ''}</span></button>`;
+                    cel += `<button type="button" class="ag-cel${sel ? ' sel' : ''}${obra ? ' obra' : ''}" ${pos} data-sala="${m.tipo}" data-mod="${m.id}" aria-pressed="${sel}" aria-label="${nome}. ${obra ? preencher(L.obraPronta, { d: m.pronto - e.dia }) : L.salaDesc[m.tipo] || ''}">${plantaSvg(m.tipo, { obra, viz, naves, pessoas: gente })}<span class="ag-sala-rot">${nome}${obra ? ' · ' + (m.pronto - e.dia) + 'd' : ''}</span></button>`;
                 } else {
                     const sel = this.vazio && this.vazio.x === x && this.vazio.y === y;
                     const viz = { n: !!modEm(x, y - 1), s: !!modEm(x, y + 1), o: !!modEm(x - 1, y), l: !!modEm(x + 1, y) };
@@ -100,7 +101,7 @@ export const metodosBase = {
             if (!m) return `<button type="button" class="ag-menu-bt" disabled><span>${rot}</span><em>${L.menuNaoConstruido}</em></button>`;
             const obra = m.pronto > e.dia, sel = this.sala === tipo;
             if (obra) return `<button type="button" class="ag-menu-bt" disabled><span>${rot}</span><em>${m.pronto - e.dia}d</em></button>`;
-            return `<button type="button" class="ag-menu-bt${sel ? ' sel' : ''}" data-sala="${tipo}" data-mod="${m.id}" aria-pressed="${sel}"><span>${rot}</span>${tipo === 'oficina' ? `<em>${L.emBreve}</em>` : ''}</button>`;
+            return `<button type="button" class="ag-menu-bt${sel ? ' sel' : ''}" data-sala="${tipo}" data-mod="${m.id}" aria-pressed="${sel}"><span>${rot}</span></button>`;
         };
         let livre = null;
         for (let y = 0; y < e.grade.rows && !livre; y++) for (let x = 0; x < e.grade.cols && !livre; x++) if (!e.modulos.some((q) => q.x === x && q.y === y)) livre = `${x},${y}`;
@@ -178,7 +179,7 @@ export const metodosBase = {
                 : `<p>${L.cofreVazio}</p>`;
             return rel + this.fala('yara', L.yara, L.yaraFala) + `<div class="ag-cartao">${corpo}</div>`;
         }
-        if (s === 'oficina') return rel + `<div class="ag-cartao"><h3>${L.sala.oficina} <em>(${L.emBreve})</em></h3><p>${L.oficinaTexto}</p></div>`;
+        if (s === 'oficina') return rel + this.htmlOficina();
         if (s === 'biblioteca') return rel + `<div class="ag-cartao"><h3>${L.sala.biblioteca}</h3><p>${L.bibliotecaTexto}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="caderno">${L.abrirCaderno}</button></div></div>`;
         return rel;
     },
@@ -196,11 +197,13 @@ export const metodosBase = {
     htmlAlojamento() {
         const L = this.L, e = this.est;
         const eq = e.equipe.map((m) => this.htmlMembro(m)).join('');
+        const engs = e.engenheiros.map((g) => `<div class="ag-membro" data-engenheiro="${g.id}"><div class="inv-retrato" aria-hidden="true">${retratoSvg(g.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${g.nome}</p><p class="ag-nota">${L.papel.engenheiro}</p></div></div>`).join('');
         const cands = e.candidatos.map((c) => {
-            const mot = e.equipe.length >= camasTotal(e) ? 'camas' : (e.creditos < CUSTOS.contratar ? 'creditos' : null);
-            return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), CUSTOS.contratar, mot, `data-id="${c.id}"`)}</div></div>`;
+            const eng = c.funcao === 'engenheiro', custo = eng ? CIENCIA.contratarEngenheiro : CUSTOS.contratar;
+            const mot = camasOcupadas(e) >= camasTotal(e) ? 'camas' : (e.creditos < custo ? 'creditos' : null);
+            return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso')}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p><p class="ag-nota">${L.papel[eng ? 'engenheiro' : 'cientista']}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), custo, mot, `data-id="${c.id}"`)}</div></div>`;
         }).join('');
-        return `<div class="ag-cartao"><h3>${L.sala.alojamento} · ${preencher(L.camas, { n: e.equipe.length, k: camasTotal(e) })}</h3>${eq}</div>`
+        return `<div class="ag-cartao"><h3>${L.sala.alojamento} · ${preencher(L.camas, { n: camasOcupadas(e), k: camasTotal(e) })}</h3>${eq}${engs}</div>`
             + (temMedico(e) ? '' : `<div class="ag-cartao"><p class="ag-nota">${L.semMedicoDica}</p></div>`) + `<div class="ag-cartao"><h3>${L.contratarTit}</h3>${cands || `<p class="ag-nota">${L.semCandidatos}</p>`}</div>`
             + `<div class="ag-cartao"><h3>${L.normasTit}</h3><p class="ag-nota">${L.normasTxt}</p></div>`;
     },
@@ -211,7 +214,41 @@ export const metodosBase = {
         if (p && p.pronto <= e.dia) acao = `<p><strong>${L.pesquisaOk}</strong></p>`;
         else if (p) acao = `<p>${preencher(L.pesquisando, { d: p.pronto })}</p>`;
         else acao = this.botaoCusto('pesquisar', L.pesquisar.replace(/ \(.*\)$/, ''), CUSTOS.pesquisa.detectorAereo.custo, e.creditos < CUSTOS.pesquisa.detectorAereo.custo ? 'creditos' : null, 'data-id="detectorAereo"');
-        return `<div class="ag-cartao"><h3>${L.labTit}</h3><h4 class="ag-sub">${L.pesqDetector}</h4><p>${L.pesqDetectorDesc}</p><p class="ag-nota">${preencher(L.pesquisar.match(/\(.*\)/)[0].replace('{v}', CUSTOS.pesquisa.detectorAereo.custo).replace('{d}', CUSTOS.pesquisa.detectorAereo.dias), {})}</p>${acao}</div>`;
+        return `<div class="ag-cartao"><h3>${L.labTit}</h3><h4 class="ag-sub">${L.pesqDetector}</h4><p>${L.pesqDetectorDesc}</p><p class="ag-nota">${preencher(L.pesquisar.match(/\(.*\)/)[0].replace('{v}', CUSTOS.pesquisa.detectorAereo.custo).replace('{d}', CUSTOS.pesquisa.detectorAereo.dias), {})}</p>${acao}</div>` + this.htmlArvore();
+    },
+
+    /** Pesquisas novas (v3.28): cada nó mostra o estado e, se disponível, o botão de pesquisar. */
+    htmlArvore() {
+        const L = this.L, e = this.est, lang = currentLang, lab = temLaboratorio(e);
+        const cartoes = IDS_NOS.map((id) => {
+            const no = NOS[id], st = estadoNo(e, id), T = L.nos[id];
+            if (st === 'oculta') return '';
+            let corpo;
+            if (st === 'concluida') corpo = `<p><strong>${L.pesquisaOk}</strong></p>`;
+            else if (st === 'andamento') corpo = `<p>${preencher(L.pesquisando, { d: e.ciencia.andamento[id].pronto })}</p>`;
+            else if (st === 'bloqueada') corpo = `<p class="ag-nota">${L.cienciaBloq}</p>`;
+            else corpo = `<p class="ag-nota">${L.cienciaDescoberta} (${no.dias} ${L.dias})</p>` + this.botaoCusto('ciencia', L.pesquisarCurto, no.custo, !lab ? 'laboratorio' : (Object.keys(e.ciencia.andamento).length ? 'ocupado' : (e.creditos < no.custo ? 'creditos' : null)), `data-id="${id}"`);
+            return `<div class="ag-cartao" data-no="${id}" data-estado="${st}"><h4 class="ag-sub">${T.nome}</h4><p>${T.desc}</p>${corpo}</div>`;
+        }).join('');
+        const col = Object.entries(e.colhidas).map(([k, v]) => `${k} ×${v}`).join(', ');
+        return `<div class="ag-cartao"><h3>${L.cienciaTit}</h3><p class="ag-nota">${L.colhidasTit}: ${col || L.colhidasVazio}</p></div>` + (cartoes || `<div class="ag-cartao"><p class="ag-nota">${L.cienciaSemNada}</p></div>`);
+    },
+
+    htmlOficina() {
+        const L = this.L, e = this.est, ok = temOficina(e);
+        const feitas = IDS_EQUIPAMENTOS.filter((id) => estadoNo(e, EQUIPAMENTOS[id].no) === 'concluida');
+        const lista = feitas.map((id) => {
+            const q = EQUIPAMENTOS[id], T = L.equip[id];
+            const mot = !e.engenheiros.length ? 'engenheiro' : (e.fila.length >= CIENCIA.filaMax ? 'fila' : (e.creditos < q.custo ? 'creditos' : null));
+            return `<div class="ag-cartao" data-equip="${id}"><h4 class="ag-sub">${T.nome}</h4><p>${T.desc}</p><p class="ag-nota">${q.dias} ${L.dias}</p>` + this.botaoCusto('fabricar', L.fabricar, q.custo, mot, `data-id="${id}"`) + '</div>';
+        }).join('');
+        const fila = e.fila.map((f) => `<li>${f.eng ? preencher(L.filaItem, { nome: L.equip[f.equip].nome, d: f.pronto }) : preencher(L.filaEspera, { nome: L.equip[f.equip].nome })}</li>`).join('');
+        const inv = Object.entries(e.equipamentos).map(([k, v]) => `<li>${L.equip[k].nome} ×${v}</li>`).join('');
+        const eng = e.engenheiros.length ? `<p class="ag-nota">${L.engenheiros}: ${e.engenheiros.map((g) => g.nome).join(', ')} (${engenheirosLivres(e).length}/${e.engenheiros.length} ${L.livres})</p>` : `<p class="ag-nota">${L.oficinaSemEng}</p>`;
+        return `<div class="ag-cartao"><h3>${L.sala.oficina}</h3><p>${L.oficinaTexto}</p>${eng}</div>` + (ok ? '' : '')
+            + (lista || `<div class="ag-cartao"><p class="ag-nota">${L.oficinaSemPesq}</p></div>`)
+            + `<div class="ag-cartao"><h4 class="ag-sub">${L.filaTit}</h4>${fila ? `<ul class="ag-lista-simples">${fila}</ul>` : `<p class="ag-nota">${L.filaVazia}</p>`}</div>`
+            + `<div class="ag-cartao"><h4 class="ag-sub">${L.inventarioTit}</h4>${inv ? `<ul class="ag-lista-simples">${inv}</ul>` : `<p class="ag-nota">${L.inventarioVazio}</p>`}<p class="ag-nota">${L.equipNota}</p></div>`;
     },
 
     htmlHangar() {
@@ -306,6 +343,8 @@ export const metodosBase = {
         if (k === 'normas') { this.sala = null; this.mod = null; this.vazio = null; this.normas = true; this.desenhar(false); return true; }
         if (k === 'comprar-nave') return feito(comprarNave(e, b.dataset.tipo));
         if (k === 'pesquisar') return feito(iniciarPesquisa(e, b.dataset.id));
+        if (k === 'ciencia') return feito(iniciarCiencia(e, b.dataset.id, temLaboratorio(e)));
+        if (k === 'fabricar') return feito(enfileirar(e, b.dataset.id, temOficina(e)));
         if (k === 'contratar') return feito(contratar(e, b.dataset.id));
         if (k === 'levantar') return feito(enviarLevantamento(e, b.dataset.id));
         if (k === 'resgate') { this.iniciarPreparo('resgate', { coletaId: b.dataset.id }); this.desenhar(false); return true; }

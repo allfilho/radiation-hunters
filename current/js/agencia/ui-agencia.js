@@ -80,7 +80,7 @@ export class AgenciaUI {
                 const pts = emCampo(a) ? Math.max(1, Math.min(3, r.estrelas | 0)) : PARAMETROS.pontosInvestigacao;
                 const ganho = concluir(this.est, a.id, pts);
                 this.relatorio = emCampo(a) ? preencher(L.relatorioMissao, { titulo: d.titulo, estrelas: estrelasTxt(pts), valor: ganho }) : preencher(L.relatorioInv, { titulo: d.titulo, valor: ganho });
-                if (((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida') && r.fontes > 0 && registrarColeta(this.est, a.id, r.fontes)) this.relatorio += ' ' + L.aguardandoColeta;
+                if (((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida') && r.fontes > 0 && registrarColeta(this.est, a.id, r.fontes, r.isotopos)) this.relatorio += ' ' + L.aguardandoColeta;
             } else if (ativo) this.relatorio = preencher(L.relatorioAbandono, { titulo: d.titulo });
             else if (a.missaoId === 1 && r.concluida) this.relatorio = null;
         }
@@ -183,6 +183,8 @@ export class AgenciaUI {
         if (e.tipo === 'retorno') return preencher(L.evRetorno, { dia: e.dia, quem: e.quem });
         if (e.tipo === 'obra') return preencher(L.evObra, { dia: e.dia, modulo: L.sala[e.modulo] || e.modulo });
         if (e.tipo === 'pesquisa') return preencher(L.evPesquisa, { dia: e.dia });
+        if (e.tipo === 'ciencia') return L.nos[e.id] ? preencher(L.evCiencia, { dia: e.dia, nome: L.nos[e.id].nome }) : '';
+        if (e.tipo === 'fabricado') return L.equip[e.id] ? preencher(L.evFabricado, { dia: e.dia, nome: L.equip[e.id].nome }) : '';
         if (e.tipo === 'pouso') return preencher(L.evPouso, { dia: e.dia });
         if (e.tipo === 'entrega') return preencher(L.evEntrega, { dia: e.dia, n: e.fontes, valor: e.valor }) + (e.tratamento ? preencher(L.evTratamento, { n: e.tratamento }) : '');
         const a = alertaPorId(e.id); if (!a) return '';

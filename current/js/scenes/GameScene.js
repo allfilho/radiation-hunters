@@ -1920,6 +1920,7 @@ export class GameScene extends Phaser.Scene {
         if (Math.hypot(this.pontoColeta.x - this.player.x / T, this.pontoColeta.y - this.player.y / T) > 1.4) return;
         this.faseColeta = false;
         GameState.fontesColeta = this.foundSources.length;
+        GameState.isotoposColeta = this.foundSources.map((s) => s.name);
         this.completeMission();
     }
     

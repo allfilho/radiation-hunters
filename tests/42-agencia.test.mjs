@@ -166,7 +166,7 @@ test('Base em corte: 7 salas clicáveis com o painel de cada uma; cofre derivado
     await pg.click('[data-ag="trocar"]'); await pg.waitForSelector('.ag-planta');
     assert.equal(await pg.$$eval('.ag-cel[data-sala]', (e) => e.length), 7); assert.equal(await pg.$$eval('.ag-cel.vazio', (e) => e.length), 1);
     assert.equal(await pg.evaluate(() => document.activeElement.id), 'ag-titulo');
-    for (const [sala, esperado] of [['hangar', /jato está abastecido/], ['comando', /Alertas ativos: 0/], ['academia', /Refazer treinamento/], ['cofre', /Missões concluídas: 2 de 8/], ['alojamento', /Camas: 4 de 6/], ['oficina', /em obras/], ['biblioteca', /caderno de campo/]]) {
+    for (const [sala, esperado] of [['hangar', /jato está abastecido/], ['comando', /Alertas ativos: 0/], ['academia', /Refazer treinamento/], ['cofre', /Missões concluídas: 2 de 8/], ['alojamento', /Camas: 4 de 6/], ['oficina', /Os engenheiros fabricam/], ['biblioteca', /caderno de campo/]]) {
       await pg.click(`[data-sala="${sala}"]`);
       assert.match(await pg.textContent('.ag-painel'), esperado, sala);
       assert.equal(await pg.getAttribute(`[data-sala="${sala}"]`, 'aria-pressed'), 'true');
