@@ -3,6 +3,13 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.37.1 · 2026-11-09 — Correções do teste no site publicado (Perícia de Laboratório)
+
+- Ato 1 e Ato 2 passam a mostrar na tela do chamado o aviso do bônus opcional e o prêmio (Ato 1: bônus de 2500 créditos ao final; Ato 2: 2500 com 2 estrelas, até 3250 com 3). pt/en.
+- Cartão da pesquisa "Geocronologia" no Laboratório: texto próprio ("Disponível: a pesquisa anterior abriu esta linha"), sem dizer que "o material coletado abriu esta linha" (nós sem `descoberta`).
+- Teste 84: +2 subtestes de tela (pt/en). Suíte: 84/84.
+- Pendente (decisão do usuário): tema do mapa do Ato 1 (hoje rua/`factory`).
+
 ## v3.37.0 — 2026-11-09 — Perícia de Laboratório (Ato 1 + bônus da datação)
 - **Nova categoria "Perícia de Laboratório"** no mapa da Agência: a investigação do Laboratório de Cronologia deixa de ser sorteada sozinha (`soPericia`) e passa a ser o **Ato 2, um bônus**, que só abre depois do Ato 1.
 - **Pesquisa "Geocronologia: o decaimento como relógio"** (1800 créditos, 10 dias, exige o espectrômetro concluído, sem equipamento): é ela que libera as Perícias [H].

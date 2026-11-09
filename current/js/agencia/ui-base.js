@@ -237,7 +237,7 @@ export const metodosBase = {
             if (st === 'concluida') corpo = `<p><strong>${L.pesquisaOk}</strong></p>`;
             else if (st === 'andamento') corpo = `<p>${preencher(L.pesquisando, { d: e.ciencia.andamento[id].pronto })}</p>`;
             else if (st === 'bloqueada') corpo = `<p class="ag-nota">${L.cienciaBloq}</p>`;
-            else corpo = `<p class="ag-nota">${L.cienciaDescoberta} (${no.dias} ${L.dias})</p>` + this.botaoCusto('ciencia', L.pesquisarCurto, no.custo, !lab ? 'laboratorio' : (Object.keys(e.ciencia.andamento).length ? 'ocupado' : (e.creditos < no.custo ? 'creditos' : null)), `data-id="${id}"`);
+            else corpo = `<p class="ag-nota">${no.descoberta.length ? L.cienciaDescoberta : L.cienciaLiberada} (${no.dias} ${L.dias})</p>` + this.botaoCusto('ciencia', L.pesquisarCurto, no.custo, !lab ? 'laboratorio' : (Object.keys(e.ciencia.andamento).length ? 'ocupado' : (e.creditos < no.custo ? 'creditos' : null)), `data-id="${id}"`);
             return `<div class="ag-cartao" data-no="${id}" data-estado="${st}"><h4 class="ag-sub">${T.nome}</h4><p>${T.desc}</p>${corpo}</div>`;
         }).join('');
         const col = Object.entries(e.colhidas).map(([k, v]) => `${k} ×${v}`).join(', ');

@@ -127,3 +127,30 @@ for (const lang of ['pt', 'en']) {
     } finally { await nav.close(); await srv.fechar(); }
   });
 }
+
+// v3.37.1: a tela do Ato 2 explica o bônus e o prêmio; a pesquisa de geocronologia não diz "o material coletado abriu esta linha".
+const estadoUi = `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], bestStars: { 1: 3, 2: 2 }, settings: { encontros: false } }));
+  localStorage.setItem('radiationHuntersAgencia', JSON.stringify({ v: 3, iniciado: true, dia: 40, creditos: 9000, proximoAlerta: null, proximaRapida: 99,
+    modulos: [{id:'b1',tipo:'hangar',x:0,y:0,pronto:0},{id:'b2',tipo:'comando',x:1,y:0,pronto:0},{id:'b3',tipo:'academia',x:2,y:0,pronto:0},{id:'b4',tipo:'cofre',x:3,y:0,pronto:0},{id:'b5',tipo:'alojamento',x:0,y:1,pronto:0},{id:'b6',tipo:'oficina',x:1,y:1,pronto:0},{id:'b7',tipo:'biblioteca',x:2,y:1,pronto:0},{id:'b8',tipo:'laboratorio',x:3,y:1,pronto:0}],
+    ativos: [{ id: 'q980000001', desde: 40, expira: 50 }, { id: 'i-tempo', desde: 40, expira: 70 }],
+    ciencia: { concluidas: { espectrometriaGama: 1 }, andamento: {} } })); } catch (e) {} `;
+for (const lang of ['pt', 'en']) {
+  test(`telas (${lang}): pesquisa de geocronologia com texto próprio; Ato 1 e Ato 2 explicam o bônus e o prêmio`, async () => {
+    const srv = await servidor(), nav = await abrirNavegador();
+    try {
+      const { pg, erros } = await novaPagina(nav, srv.url, { idioma: lang, antes: estadoUi });
+      await novoJogo(pg); await pg.waitForSelector('.ag-pino');
+      await pg.click('.ag-item[data-alerta="q980000001"]');
+      assert.match(await pg.textContent('.ag-janela, .ag-painel'), lang === 'pt' ? /bônus opcional de 2500 créditos/ : /optional bonus of 2500 credits/);
+      await pg.click('.ag-item[data-alerta="i-tempo"]');
+      const t2 = await pg.textContent('.ag-janela, .ag-painel');
+      assert.match(t2, lang === 'pt' ? /Bônus opcional da Perícia: a datação completa paga 2500 créditos \(com 2 estrelas; até 3250 com 3\)/ : /Optional Expertise bonus: the full dating work pays 2500 credits \(with 2 stars; up to 3250 with 3\)/);
+      if (lang === 'en') assert.doesNotMatch(t2, /Bônus|créditos|penalidade/);
+      await pg.click('[data-ag="trocar"]'); await pg.waitForSelector('.ag-cena'); await pg.click('[data-sala="laboratorio"]'); await pg.waitForSelector('.ag-janela');
+      const cartao = await pg.textContent('[data-no="geocronologia"]');
+      assert.match(cartao, lang === 'pt' ? /Disponível: a pesquisa anterior abriu esta linha/ : /Available: the previous research opened this line/);
+      assert.doesNotMatch(cartao, /material coletado|collected material/);
+      assert.deepEqual(erros, []);
+    } finally { await nav.close(); await srv.fechar(); }
+  });
+}

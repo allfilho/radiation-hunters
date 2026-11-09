@@ -224,7 +224,7 @@ Object.assign(TXT.en, {
 Object.assign(TXT.pt, {
     cienciaTit: 'Pesquisa científica', colhidasTit: 'Materiais coletados', colhidasVazio: 'nenhum entregue ainda',
     cienciaSemNada: 'Sem novas linhas de pesquisa por enquanto. Colete e entregue fontes de tipos diferentes para abrir novas pesquisas.',
-    cienciaDescoberta: 'Descoberta: o material coletado abriu esta linha', cienciaBloq: 'Reservada: o jogo ainda não tem fonte correspondente.',
+    cienciaDescoberta: 'Descoberta: o material coletado abriu esta linha', cienciaLiberada: 'Disponível: a pesquisa anterior abriu esta linha', notaAto1: 'Ao concluir esta perícia, a datação no laboratório fica disponível como bônus opcional de {v} créditos.', notaAto2: 'Bônus opcional da Perícia: a datação completa paga {v} créditos (com 2 estrelas; até {m} com 3). Quem não fizer não sofre penalidade, e o prazo se renova.', cienciaBloq: 'Reservada: o jogo ainda não tem fonte correspondente.',
     pesquisarCurto: 'Pesquisar', dias: 'dias', livres: 'livres', papel: { cientista: 'Cientista', engenheiro: 'Engenheiro' },
     nos: {
         espectrometriaGama: { nome: 'Espectrometria gama', desc: 'O Cs-137 e o Co-60 emitem gama e o Geiger não os distingue bem. Um espectrômetro mede a energia dos fótons e ajuda a identificar o isótopo. Libera o espectrômetro gama portátil.' },
@@ -252,7 +252,7 @@ Object.assign(TXT.pt, {
 Object.assign(TXT.en, {
     cienciaTit: 'Scientific research', colhidasTit: 'Collected materials', colhidasVazio: 'none delivered yet',
     cienciaSemNada: 'No new lines of research for now. Collect and deliver sources of different kinds to open new research.',
-    cienciaDescoberta: 'Discovery: the collected material opened this line', cienciaBloq: 'Reserved: the game has no matching source yet.',
+    cienciaDescoberta: 'Discovery: the collected material opened this line', cienciaLiberada: 'Available: the previous research opened this line', notaAto1: 'When this expertise case is done, the dating work in the laboratory becomes available as an optional bonus of {v} credits.', notaAto2: 'Optional Expertise bonus: the full dating work pays {v} credits (with 2 stars; up to {m} with 3). There is no penalty for skipping it, and the deadline renews.', cienciaBloq: 'Reserved: the game has no matching source yet.',
     pesquisarCurto: 'Research', dias: 'days', livres: 'free', papel: { cientista: 'Scientist', engenheiro: 'Engineer' },
     nos: {
         espectrometriaGama: { nome: 'Gamma spectrometry', desc: 'Cs-137 and Co-60 both emit gamma and the Geiger counter cannot tell them apart well. A spectrometer measures photon energy and helps identify the isotope. Unlocks the portable gamma spectrometer.' },

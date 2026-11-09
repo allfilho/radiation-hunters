@@ -312,10 +312,19 @@ export class AgenciaUI {
             + `<p class="ag-item-local">${a.local[lang]}${a.quando ? ' · ' + a.quando[lang] : ''} · ${this.textoPrazo(at)}</p>${dif}`
             + this.htmlBoletim(a, lang)
             + `<p>${d.desc}</p>`
+            + this.notaPericia(a)
             + `<p class="ag-nota">${preencher(L.distancia, { km: km.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), h })}</p>`
             + `<p class="ag-nota">${a.tipo === 'rapida' ? L.ficticioRapida : a.ficticio ? L.ficticio : (a.tipo === 'missao' ? L.recriacao : '')}</p>`
             + (a.tipo === 'missao' && foiLevantado(this.est, a.id) ? `<p class="ag-nota">✓ ${L.levTit}: ${L.jaLevantado}</p>` : '')
             + `<button type="button" class="menu-btn primary" data-ag="enviar">${L.enviar}</button>`;
+    }
+
+    /** v3.37.1: a Perícia explica o bônus da datação (Ato 2) e o prêmio, para o jogador saber por que vale a pena. */
+    notaPericia(a) {
+        const L = this.L, P = PARAMETROS.premioMissao;
+        if (a.pericia) return `<p class="ag-nota">${preencher(L.notaAto1, { v: P.pericia })}</p>`;
+        if (a.nivel === 'pericia') return `<p class="ag-nota">${preencher(L.notaAto2, { v: P.pericia, m: Math.round(P.pericia * PARAMETROS.fatorEstrelas[3]) })}</p>`;
+        return '';
     }
 
     /** v3.21: chamado rápido chega como notícia (TV, rádio ou jornal): veículo, manchete e a fala de quem está com receio. */
