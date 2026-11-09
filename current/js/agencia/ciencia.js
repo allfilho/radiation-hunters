@@ -5,7 +5,7 @@
 // `est.pesquisa` (frota.js) para não quebrar saves antigos; aqui ficam os nós novos, em `est.ciencia`.
 // Nada neste arquivo afirma propriedade física de instrumento: os nós só liberam um equipamento no inventário; o efeito em missão é da Fase C.
 // ============================================
-import { ISOTOPES, AMBE } from '../data/isotopes.js';
+import { ISOTOPES, AMBE, NA24 } from '../data/isotopes.js';
 
 export const NOS = {
     espectrometriaGama: {
@@ -27,6 +27,11 @@ export const NOS = {
         id: 'detectorNeutrons', custo: 2400, dias: 14, requer: ['espectrometriaGama'],            // [H] só depois do espectrômetro (decisão do Arnaldo, 06/11/2026)
         descoberta: [{ iso: ['Am-241/Be'] }],                                                       // fonte de nêutrons coletada (missões na v3.36)
         equipamento: 'detectorNeutrons',
+    },
+    // v3.37: pesquisa de conhecimento (sem equipamento): libera as Perícias de Laboratório e a lição "o decaimento como relógio" [H custo e dias]
+    geocronologia: {
+        id: 'geocronologia', custo: 1800, dias: 10, requer: ['espectrometriaGama'],
+        descoberta: [],
     },
 };
 export const IDS_NOS = Object.keys(NOS);
@@ -50,6 +55,7 @@ export function tipoDoIsotopo(nome) {
     const i = ISOTOPES.find((x) => x.name === nome);
     if (i) return i.type;
     if (nome === AMBE.name) return 'neutron';
+    if (nome === NA24.name) return 'gama';
     return nome === 'Ra-226' ? 'alfa' : null;
 }
 /** Soma os isótopos entregues ao inventário. Aceita qualquer lista; ignora o que não for nome de isótopo. */

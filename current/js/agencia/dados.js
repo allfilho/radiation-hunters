@@ -41,7 +41,7 @@ export const ALERTAS = [
     { id: 'm8', liberaMes: 4, nivel: 'insane', tipo: 'missao', missaoId: 8, lat: 37.4, lon: 141, local: T('Fukushima Daiichi, Japão', 'Fukushima Daiichi, Japan'), quando: T('11 de março de 2011', '11 March 2011') },
     { id: 'i-hospital', liberaMes: 0, nivel: 'investigacao', tipo: 'investigacao', invId: 'hospital-imagem', lat: 47, lon: 12, ficticio: true, local: T('Hospital (local fictício)', 'Hospital (fictional location)'), quando: null },
     { id: 'i-nuclear', liberaMes: 1, nivel: 'investigacao', tipo: 'investigacao', invId: 'medicina-nuclear', lat: 38, lon: -95, ficticio: true, local: T('Serviço de medicina nuclear (local fictício)', 'Nuclear medicine service (fictional location)'), quando: null },
-    { id: 'i-tempo', liberaMes: 1, nivel: 'investigacao', tipo: 'investigacao', invId: 'arquivo-tempo', lat: -22.9, lon: -47.1, local: T('Laboratório de Cronologia (parceiro)', 'Chronology Laboratory (partner)'), quando: null },
+    { id: 'i-tempo', liberaMes: 1, soPericia: true, nivel: 'pericia', tipo: 'investigacao', invId: 'arquivo-tempo', lat: -22.9, lon: -47.1, local: T('Laboratório de Cronologia (parceiro)', 'Chronology Laboratory (partner)'), quando: null },
     { id: 'i-radonio', liberaMes: 2, nivel: 'investigacao', tipo: 'investigacao', invId: 'radonio-escola', lat: -26, lon: 28, ficticio: true, local: T('Escola (local fictício)', 'School (fictional location)'), quando: null },
 ];
 

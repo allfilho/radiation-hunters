@@ -3,6 +3,19 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.37.0 — 2026-11-09 — Perícia de Laboratório (Ato 1 + bônus da datação)
+- **Nova categoria "Perícia de Laboratório"** no mapa da Agência: a investigação do Laboratório de Cronologia deixa de ser sorteada sozinha (`soPericia`) e passa a ser o **Ato 2, um bônus**, que só abre depois do Ato 1.
+- **Pesquisa "Geocronologia: o decaimento como relógio"** (1800 créditos, 10 dias, exige o espectrômetro concluído, sem equipamento): é ela que libera as Perícias [H].
+- **Ato 1 (chamado de perícia, semente fixa `q980000001`):** um pacote de vidro vulcânico voltou do reator de pesquisa com atividade induzida. A equipe identifica o que ativou (**Na-24**, meia-vida de cerca de 15 h, gamas de 1,37 e 2,75 MeV; distratores Co-60 e Cs-137) e isola as 2 fontes. Prêmio 500 créditos. Se vencer, volta a ser oferecido.
+- **Ato 2 (a datação, bônus):** prêmio de **2500 créditos** (investigação comum paga 600), prazo de 30 dias que se renova sem punir; só uma vez. Enredo e física do reator seguem a investigação existente (a irradiação com nêutrons térmicos em reator de pesquisa; a fonte Am-Be não é usada, o fluxo seria incomparável).
+- **Na-24** entra como `NA24` em `data/isotopes.js` (fora de `ISOTOPES`, via `addIsotope`). Meia-vida da tabela D-1 da IAEA-NDS [V]; linhas gama e força de jogo [H].
+- **Lição N16 "O decaimento como relógio"** (4 perguntas, fatos em docs/referencias-5c/busca/pericia-v3-37.md). Ficha e dica de campo do Na-24 em pt/en.
+- **Reserva de sementes:** os chamados comuns agora ficam abaixo de 980.000.000 (a faixa 980.000.000–989.999.999 é da perícia; 990.000.000 em diante, de poço). Antes, cerca de 1 % dos sorteios comuns caía na faixa de poço.
+- **Saves antigos:** `est.pericia` {feita, ato2} entra com valores neutros; `i-tempo` ativo ou concluído continua válido.
+- **Testes:** novo 84 (9 subtestes, com o campo em pt/en); 09 (23 conceitos) e 69 (prêmios) ajustados. Suíte completa: 84 arquivos verdes.
+- Pendente: calibração em sala (docs/calibracao-fases-b-d.md, seção 8); confirmar as linhas gama do Na-24 no LNHB; revisão do Arnaldo sobre os isótopos de ativação e a espera de amostras irradiadas.
+
+
 ## v3.36.0 — 2026-11-06 — Fase E (parte 2): chamados de poço de petróleo e lição de nêutrons
 - **Chamados de poço:** depois de concluir a pesquisa do espectrômetro, 30 % dos chamados rápidos novos (hipótese de jogo) são de pátio de campo de petróleo, com 1 ou 2 fontes **Am-241/Be**. Relato, manchete e fala fictícios, três regiões (Texas, interior da Austrália, estepe do Cazaquistão), mapa industrial. Distratores: Tc-99m, Sr-90 e Am-241. Sem a pesquisa nenhum sorteio novo é feito, então o fluxo antigo e os saves não mudam.
 - **Sementes de poço** são as de `q990000000` em diante (`POCO_MIN`). Um erro do sorteio (o `find` consumia o gerador) foi pego pela suíte; o teste 83 varre 3000 sementes.

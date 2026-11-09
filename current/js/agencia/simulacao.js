@@ -11,7 +11,7 @@
 // Não existe game over: a verba tem piso.
 // ============================================
 import { ALERTAS } from './dados.js';
-import { ehRapida, alertaPorId, novaSemente, PROB_POCO } from './rapidas.js';
+import { ehRapida, alertaPorId, novaSemente, PROB_POCO, PERICIA_ID } from './rapidas.js';
 import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas, saneaEntregas } from './ciencia.js';
 import { ESPECIALIDADES, especialidadePorId, equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
 import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
@@ -21,7 +21,7 @@ export const PARAMETROS = {
     maxAtivos: 3,
     intervaloMin: 10, intervaloMax: 16,      // dias entre um alerta e o próximo (v3.16: era 3 a 6; o relógio parava a cada 1 a 4 dias)
     primeiroAlertaEm: 5,                   // dias depois de começar
-    prazoDias: { easy: 14, normal: 14, hard: 12, insane: 10, investigacao: 21 },
+    prazoDias: { easy: 14, normal: 14, hard: 12, insane: 10, investigacao: 21, pericia: 30 },
     verbaBase: 1500,                       // créditos de pesquisa por mês a 100 %
     fatorInicial: 100, fatorMin: 50, fatorMax: 150,
     passoMin: 5, passoMax: 20,             // variação mensal da verba (em pontos percentuais)
@@ -29,7 +29,7 @@ export const PARAMETROS = {
     pontosExpirou: -2,                     // nota por alerta que venceu
     pontosInvestigacao: 2,                 // "estrelas" equivalentes de uma investigação concluída
     creditosPorPonto: 50,   // legado (sem uso desde a v3.6.3)
-    premioMissao: { rapida: 180, easy: 400, normal: 600, hard: 900, insane: 1400, investigacao: 600 },   // [H] pago ao concluir, com 2 estrelas (v3.24: dobrado a pedido do Arnaldo; marcos recalibrados com tests/ferramentas/calibrar-economia.mjs: laboratório dia ~14, 2º hangar ~60, Base completa ~251)
+    premioMissao: { rapida: 180, easy: 400, normal: 600, hard: 900, insane: 1400, investigacao: 600, pericia1: 500, pericia: 2500 },   // v3.37 [H]: Ato 1 da Perícia 500; Ato 2 (datação, bônus) 2500, ~4× uma investigação, a calibrar em sala.    // [H] pago ao concluir, com 2 estrelas (v3.24: dobrado a pedido do Arnaldo; marcos recalibrados com tests/ferramentas/calibrar-economia.mjs: laboratório dia ~14, 2º hangar ~60, Base completa ~251)
     fatorEstrelas: { 1: 0.7, 2: 1, 3: 1.3 },
     historicoMax: 12,
     // v3.10: chamados de cidadãos (missões rápidas), valores [H] a calibrar em sala
@@ -44,7 +44,7 @@ export function novoEstado() {
         v: 3, iniciado: false, dia: 0, fator: PARAMETROS.fatorInicial, creditos: 0, nota: 0, proximoAlerta: null, proximaRapida: null, rapidasFeitas: 0, ativos: [], usados: [], concluidos: {}, expirados: 0, historico: [],
         equipe: equipeInicial(), candidatos: [], naves: naveInicial(), modulos: modulosIniciais(), grade: { ...GRADE_INICIAL },
         pesquisa: {}, coleta: [], levantados: [], proxId: 10,
-        colhidas: {}, ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
+        colhidas: {}, pericia: { feita: false, ato2: false }, ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
     };
 }
 
@@ -99,6 +99,7 @@ export function sanear(d) {
     if (o.pesquisa && typeof o.pesquisa === 'object') for (const k of Object.keys(CUSTOS.pesquisa)) if (o.pesquisa[k]) e.pesquisa[k] = { pronto: inteiro(o.pesquisa[k].pronto, 0, 1000000, 0) };
     e.coleta = (Array.isArray(o.coleta) ? o.coleta : []).filter((c) => c && typeof c.id === 'string' && idValido(c.alertaId)).slice(0, 10).map((c) => ({ id: c.id.slice(0, 12), alertaId: c.alertaId, fontes: inteiro(c.fontes, 1, 20, 1), isotopos: saneaIsotopos(c.isotopos), desde: inteiro(c.desde, 0, 1000000, 0), expira: inteiro(c.expira, 0, 1000000, e.dia + PRAZO_COLETA) }));
     e.levantados = [...new Set((Array.isArray(o.levantados) ? o.levantados : []).filter((id) => idValido(id)))];
+    e.pericia = { feita: !!(o.pericia && o.pericia.feita), ato2: !!(o.pericia && o.pericia.ato2) };   // v3.37
     Object.assign(e, saneaCiencia(o, e.dia));
     saneaEntregas(e);
     e.v = 3;
@@ -122,7 +123,7 @@ export function iniciar(est, dotacao = 0) {
 /** Sorteia um alerta elegível. Sem repetir até esvaziar a lista (o "baralho" é reposto); respeita o mês de liberação. */
 export function sortear(est, rand = Math.random) {
     const mes = mesDe(est.dia);
-    const livres = () => ALERTAS.filter((a) => a.liberaMes <= mes && (!a.depois || (est.concluidos[a.depois] || 0) > 0) && !est.ativos.some((x) => x.id === a.id) && !est.usados.includes(a.id));
+    const livres = () => ALERTAS.filter((a) => !a.soPericia && a.liberaMes <= mes && (!a.depois || (est.concluidos[a.depois] || 0) > 0) && !est.ativos.some((x) => x.id === a.id) && !est.usados.includes(a.id));
     let lista = livres();
     if (!lista.length) { est.usados = []; lista = livres(); }
     if (!lista.length) return null;
@@ -169,6 +170,7 @@ export function avancarDia(est, rand = Math.random) {
     // coleta que ninguém buscou a tempo
     for (const c of [...est.coleta]) if (est.dia >= c.expira) { est.coleta = est.coleta.filter((x) => x.id !== c.id); est.nota -= 1; const e = { tipo: 'coleta-perdida', dia: est.dia, id: c.alertaId }; ev.push(e); registrar(est, e); }
     for (const a of [...est.ativos]) {
+        if (est.dia >= a.expira && a.id === 'i-tempo' && est.pericia.feita) { a.expira += PARAMETROS.prazoDias.pericia; continue; }   // v3.37: o bônus da datação não vence nem derruba a nota
         if (est.dia >= a.expira) {
             est.ativos = est.ativos.filter((x) => x.id !== a.id);
             est.nota += ehRapida(a.id) ? PARAMETROS.rapidas.pontosExpirou : PARAMETROS.pontosExpirou; est.expirados += 1;
@@ -197,6 +199,15 @@ export function avancarDia(est, rand = Math.random) {
             est.proximaRapida = est.dia + inteiroAleatorio(rand, PARAMETROS.rapidas.intervaloMin, PARAMETROS.rapidas.intervaloMax);
         } else est.proximaRapida = est.dia + 1;
     }
+    // v3.37: Perícia de Laboratório. Ato 1: um chamado depois da pesquisa de geocronologia (volta a ser oferecido se vencer); Ato 2: bônus da datação, depois do Ato 1
+    if (est.ciencia.concluidas.geocronologia && !est.pericia.feita && !est.ativos.some((x) => x.id === PERICIA_ID) && est.ativos.filter((x) => ehRapida(x.id)).length < PARAMETROS.rapidas.max) {
+        est.ativos.push({ id: PERICIA_ID, desde: est.dia, expira: est.dia + PARAMETROS.rapidas.prazo });
+        const e = { tipo: 'novo', dia: est.dia, id: PERICIA_ID }; ev.push(e); registrar(est, e);
+    }
+    if (est.pericia.feita && !est.pericia.ato2 && !est.ativos.some((x) => x.id === 'i-tempo')) {
+        est.ativos.push({ id: 'i-tempo', desde: est.dia, expira: est.dia + PARAMETROS.prazoDias.pericia });
+        const e = { tipo: 'novo', dia: est.dia, id: 'i-tempo' }; ev.push(e); registrar(est, e);
+    }
     if (est.dia % PARAMETROS.diasPorMes === 0) {
         const pagamento = Math.round(PARAMETROS.verbaBase * est.fator / 100);
         est.creditos += pagamento;
@@ -223,6 +234,8 @@ export function concluir(est, id, pontos) {
     const ganho = Math.round(base * PARAMETROS.fatorEstrelas[p]);
     est.creditos += ganho;
     if (ehRapida(id)) est.rapidasFeitas += 1; else est.concluidos[id] = (est.concluidos[id] || 0) + 1;
+    if (id === PERICIA_ID) est.pericia.feita = true;   // v3.37: abre o Ato 2 no próximo dia
+    if (id === 'i-tempo') est.pericia.ato2 = true;
     registrar(est, { tipo: 'concluido', dia: est.dia, id, valor: ganho });
     return ganho;
 }

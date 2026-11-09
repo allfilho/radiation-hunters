@@ -135,7 +135,7 @@ export class AgenciaUI {
     /** Para o relógio e o voo quando a tela sai de vista (missão, menu). */
     pararTudo() { this._parar(); this.vel = 0; }
 
-    rotuloTipo(a) { const L = this.L; return a.tipo === 'rapida' ? L.tipoRapida : a.tipo === 'missao' ? L.tipoMissao : L.tipoInvestigacao; }
+    rotuloTipo(a) { const L = this.L; if (a.pericia || a.nivel === 'pericia') return L.tipoPericia; return a.tipo === 'rapida' ? L.tipoRapida : a.tipo === 'missao' ? L.tipoMissao : L.tipoInvestigacao; }
 
     // ---------- dados de um alerta ----------
     dadosAlerta(a) {

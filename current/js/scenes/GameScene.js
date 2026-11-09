@@ -1861,6 +1861,10 @@ export class GameScene extends Phaser.Scene {
                 en: 'Uranium-238: Most common uranium isotope (99.3%). Half-life: 4.5 billion years. Used in nuclear fuel and dating very old rocks.',
                 pt: 'Urânio-238: Isótopo de urânio mais comum (99,3%). Meia-vida: 4,5 bilhões de anos. Usado em combustível nuclear e datação de rochas antigas.'
             },
+            'Na-24': {
+                en: 'Sodium-24: made when stable sodium-23 captures a neutron, for example in volcanic glass irradiated in a research reactor. Half-life: about 15 hours. It emits two high-energy gamma rays (1.37 and 2.75 MeV). It fades within days, so storing the sample and waiting is a protection measure.',
+                pt: 'Sódio-24: forma-se quando o sódio-23 estável captura um nêutron, por exemplo em vidro vulcânico irradiado em reator de pesquisa. Meia-vida: cerca de 15 horas. Emite dois gamas de alta energia (1,37 e 2,75 MeV). Some em poucos dias, por isso guardar a amostra e esperar é uma medida de proteção.'
+            },
             'Am-241/Be': {
                 en: 'Americium-241/Beryllium: a neutron source used in oil-well logging tools. Neutrons come from alpha particles hitting beryllium; a 4.4 MeV gamma ray comes with them. Lead barely stops neutrons; hydrogen-rich material such as polyethylene does.',
                 pt: 'Amerício-241/Berílio: fonte de nêutrons usada em ferramentas de perfilagem de poços. Os nêutrons surgem de partículas alfa que atingem o berílio, e um gama de 4,4 MeV vem junto. O chumbo quase não os detém; material rico em hidrogênio, como o polietileno, detém.'

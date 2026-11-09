@@ -48,6 +48,18 @@ Valores de partida, todos **hipóteses de jogo [H]** (as fontes e os limites de 
 
 Pendente de confirmação em fonte ou físico: o Geiger comum ser pouco sensível a nêutrons e o chumbo atenuar mal nêutrons rápidos. Não há dose de nêutrons no modelo (só o gama de 4,44 MeV entra na dose de campo).
 
+## 8. Perícia de Laboratório (v3.37)
+Todos os valores são **hipóteses de jogo [H]**. Economia de referência no jogo: verba mensal 1500 créditos; prêmios 180 (chamado), 400 a 1400 (missões), 600 (investigação).
+| Item | Valor | Pergunta para a turma | Observado | Ajustar? |
+|---|---|---|---|---|
+| Pesquisa de geocronologia | 1800 créditos, 10 dias; exige espectrômetro concluído | Parece um preço justo para "só conhecimento", sem equipamento novo? | | |
+| Ato 1 (chamado com Na-24) | prêmio 500 créditos; 2 fontes; prazo de 10 dias (se vencer, volta a ser oferecido) | Os alunos separam Na-24 (gama de 1,37 e 2,75 MeV) de Co-60 (1,17 e 1,33 MeV) só com Geiger e placas, ou precisam do espectrômetro? | | |
+| Ato 2 (datação, bônus) | prêmio 2500 créditos (até 3250 com 3 estrelas); prazo de 30 dias que se renova sem punição; só uma vez | O valor faz o aluno querer fazer a investigação inteira? Alto demais a ponto de distorcer a economia? | | |
+| Lição N16 "O decaimento como relógio" | 4 perguntas | A lição ajuda a ligar meia-vida (campo) e idade (laboratório)? | | |
+| Na-24 (isótopo de ativação) | meia-vida de 0,62329 d (IAEA-NDS, tabela D-1 [V]); gama efetivo 2,061 MeV [C]; força 260 a 520 | A atividade parece cair rápido demais ou devagar demais? (no jogo a fonte é constante durante a missão) | | |
+
+Pendente de confirmação: as linhas gama do Na-24 (1368,6 e 2754 keV) vêm de dados nucleares padrão e devem ser conferidas na tabela do LNHB; a prática real de espera de amostras irradiadas nos laboratórios de traço de fissão não foi confirmada em fonte lida (o Arnaldo, que conhece o laboratório, pode ajustar os isótopos e o enredo).
+
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
 

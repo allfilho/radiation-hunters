@@ -30,7 +30,7 @@ test('reportagens de investigação: abertura (TV/rádio/jornal) e final com dec
 
 test('prêmios dobrados (v3.24) e coleta a 60 por fonte', async () => {
   const S = await import(RAIZ + 'agencia/simulacao.js'), F = await import(RAIZ + 'agencia/frota.js');
-  assert.deepEqual(S.PARAMETROS.premioMissao, { rapida: 180, easy: 400, normal: 600, hard: 900, insane: 1400, investigacao: 600 }); assert.equal(F.CUSTOS.valorColetaPorFonte, 60);
+  assert.deepEqual(S.PARAMETROS.premioMissao, { rapida: 180, easy: 400, normal: 600, hard: 900, insane: 1400, investigacao: 600, pericia1: 500, pericia: 2500 }); assert.equal(F.CUSTOS.valorColetaPorFonte, 60);
 });
 
 test('final da investigação: manchete de jornal, um único botão de saída "Voltar à Base", exportação recolhida', async () => {

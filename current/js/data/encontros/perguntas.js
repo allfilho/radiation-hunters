@@ -248,6 +248,24 @@ export const PERGUNTAS = [
         ['Besides neutrons, which radiation comes with an Am-Be source?', ['Only 4.4 MeV alpha particles', '4.4 MeV gamma, from excited carbon-12', 'Only beta'], 'Neutrons come from reactions of Am-241 alphas with beryllium, and excited carbon-12 emits a 4.4 MeV gamma ray along with the neutrons.'],
         ['N15-F2']),
 
+    // ---- N16 O decaimento como relógio (v3.37)
+    q('N16-1', 'N16', 1, 'mf', 'fato',
+        ['Uma amostra ativada em reator, como o Na-24, perde metade da atividade a cada meia-vida, que é de cerca de 15 horas.', 'O Na-24 tem meia-vida de 0,62329 dia, cerca de 15 horas; a cada 15 horas a atividade cai à metade.'],
+        ['A sample activated in a reactor, such as Na-24, loses half its activity every half-life, which is about 15 hours.', 'Na-24 has a half-life of 0.62329 day, about 15 hours; every 15 hours the activity falls to one half.'],
+        ['N16-F1']),
+    q('N16-2', 'N16', 1, 'mf', 'mito',
+        ['Esperar não adianta: qualquer amostra radioativa fica igualmente perigosa para sempre.', 'Depende da meia-vida: o Na-24, de cerca de 15 horas, cai a quase nada em poucos dias; já o Cs-137, de cerca de 30 anos, quase não muda em semanas.'],
+        ['Waiting does not help: any radioactive sample stays equally dangerous forever.', 'It depends on the half-life: Na-24, at about 15 hours, falls to almost nothing within days; Cs-137, at about 30 years, barely changes in weeks.'],
+        ['N16-F1', 'C1.1'], 'V+R'),
+    q('N16-3', 'N16', 2, 'mc', 1,
+        ['Depois de 30 horas (cerca de duas meias-vidas), quanto resta da atividade do Na-24?', ['A metade', 'Um quarto', 'Nada'], 'Duas meias-vidas: metade da metade, ou seja, um quarto. A atividade nunca zera de uma vez; ela cai pela metade a cada meia-vida.'],
+        ['After 30 hours (about two half-lives), how much of the Na-24 activity remains?', ['One half', 'One quarter', 'None'], 'Two half-lives: half of a half, that is, one quarter. The activity never drops to zero at once; it halves with each half-life.'],
+        ['N16-F1'], 'V+R'),
+    q('N16-4', 'N16', 2, 'mc', 0,
+        ['O que torna o decaimento útil como relógio?', ['A taxa de decaimento é característica do nuclídeo e, em geral, não muda com temperatura ou pressão', 'Cada átomo decai num momento exato que dá para prever', 'A própria radiação marca a data na rocha'], 'Não dá para prever quando um átomo decai, mas a taxa de um nuclídeo é estável e característica; por isso, medindo quanto já decaiu, dá para estimar quanto tempo passou.'],
+        ['What makes decay useful as a clock?', ['The decay rate is characteristic of the nuclide and, in general, does not change with temperature or pressure', 'Each atom decays at an exact moment that can be predicted', 'The radiation itself marks the date on the rock'], 'We cannot predict when a single atom decays, but the rate of a nuclide is stable and characteristic; so by measuring how much has decayed, we can estimate how much time has passed.'],
+        ['C1.1', 'C1.2'], 'V+R'),
+
     // ---- nós de história
     q('E-GOI-1', 'E-GOI', 1, 'mf', 'fato',
         ['O césio de Goiânia vinha de um aparelho de radioterapia abandonado numa clínica.', 'O relatório da AIEA descreve a unidade de teleterapia de césio-137 deixada numa clínica abandonada.'],

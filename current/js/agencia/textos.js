@@ -23,7 +23,7 @@ export const TXT = {
         evMes: 'Dia {dia}: fim do mês. O consórcio ficou {humor}. Pagamento: {valor} créditos.',
         humor: { feliz: 'satisfeito e aumentou a verba', satisfeito: 'neutro e manteve a verba', infeliz: 'insatisfeito e reduziu a verba' },
         anuncioPausa: 'Tempo pausado: ',
-        tipoRapida: 'Chamado de cidadão', ficticioRapida: 'Relato fictício de treino; a região é só uma referência no mapa.', tipoMissao: 'Missão', tipoInvestigacao: 'Investigação', dificuldade: 'Dificuldade',
+        tipoRapida: 'Chamado de cidadão', ficticioRapida: 'Relato fictício de treino; a região é só uma referência no mapa.', tipoMissao: 'Missão', tipoInvestigacao: 'Investigação', tipoPericia: 'Perícia de Laboratório', dificuldade: 'Dificuldade',
         distancia: 'Distância aproximada: {km} km · voo de cerca de {h} h no jato fictício.',
         recriacao: 'Recriação educativa inspirada em um caso real; não é um evento atual.',
         ficticio: 'Local fictício, criado para o jogo.',
@@ -78,7 +78,7 @@ export const TXT = {
         evMes: 'Day {dia}: end of the month. The consortium was {humor}. Payment: {valor} credits.',
         humor: { feliz: 'pleased and raised the funding', satisfeito: 'neutral and kept the funding', infeliz: 'unhappy and cut the funding' },
         anuncioPausa: 'Time paused: ',
-        tipoRapida: 'Citizen call', ficticioRapida: 'Fictional training report; the region is only a map reference.', tipoMissao: 'Mission', tipoInvestigacao: 'Investigation', dificuldade: 'Difficulty',
+        tipoRapida: 'Citizen call', ficticioRapida: 'Fictional training report; the region is only a map reference.', tipoMissao: 'Mission', tipoInvestigacao: 'Investigation', tipoPericia: 'Laboratory expertise', dificuldade: 'Difficulty',
         distancia: 'Approximate distance: {km} km · about {h} h flight on the fictional jet.',
         recriacao: 'Educational re-creation inspired by a real case; not a current event.',
         ficticio: 'Fictional location, created for the game.',
@@ -231,6 +231,7 @@ Object.assign(TXT.pt, {
         sondaAlfa: { nome: 'Sonda de cintilação para alfa', desc: 'Detecta partículas alfa com fundo muito baixo, mas só de contato: poeira e umidade podem dar leitura falsa. Libera a sonda alfa.' },
         camaraIonizacao: { nome: 'Câmara de ionização', desc: 'Mede a taxa de dose gama com exatidão, até em campos intensos, mas é menos sensível e mais lenta que o Geiger. Libera a câmara de ionização.' },
         detectorNeutrons: { nome: 'Detector de nêutrons', desc: 'Uma fonte de nêutrons foi coletada. O Geiger comum não conta nêutrons e o chumbo quase não os para: é preciso um detector próprio e material rico em hidrogênio, como o polietileno. Libera o detector de nêutrons e a placa de polietileno (tecla 5).' },
+        geocronologia: { nome: 'Geocronologia: o decaimento como relógio', desc: 'A mesma lei do decaimento que dá a meia-vida de uma fonte serve para medir idades de rochas e vidros. Conclua para abrir as Perícias de Laboratório, em parceria com o Laboratório de Cronologia, e a lição "o decaimento como relógio".' },
     },
     equip: {
         espectrometro: { nome: 'Espectrômetro gama portátil', desc: 'Lê a energia do gama para identificar o isótopo.' },
@@ -258,6 +259,7 @@ Object.assign(TXT.en, {
         sondaAlfa: { nome: 'Scintillation probe for alpha', desc: 'Detects alpha particles with very low background, but only by contact: dust and moisture can give false readings. Unlocks the alpha probe.' },
         camaraIonizacao: { nome: 'Ionization chamber', desc: 'Measures gamma dose rate accurately, even in intense fields, but it is less sensitive and slower than the Geiger counter. Unlocks the ionization chamber.' },
         detectorNeutrons: { nome: 'Neutron detector', desc: 'A neutron source was collected. A regular Geiger counter does not count neutrons and lead barely stops them: you need a dedicated detector and hydrogen-rich material such as polyethylene. Unlocks the neutron detector and the polyethylene plate (key 5).' },
+        geocronologia: { nome: 'Geochronology: decay as a clock', desc: 'The same decay law that gives a source its half-life can measure the ages of rocks and glasses. Finish it to open the Laboratory Expertise cases, with the partner Chronology Laboratory, and the lesson "decay as a clock".' },
     },
     equip: {
         espectrometro: { nome: 'Portable gamma spectrometer', desc: 'Reads the gamma energy to identify the isotope.' },

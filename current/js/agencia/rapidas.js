@@ -8,7 +8,7 @@
 import { ALERTAS } from './dados.js';
 import { gerarPlantaRapida, prng } from '../mapa/plantas-rapidas.js';
 import { CASOS_FALSO } from '../investigacao/falso-alarme.js';
-import { AMBE } from '../data/isotopes.js';
+import { AMBE, NA24 } from '../data/isotopes.js';
 
 const T = (pt, en) => ({ pt, en });
 
@@ -110,6 +110,26 @@ export const semDe = (id) => Number(id.slice(1));
 export const POCO_MIN = 990000000;
 export const PROB_POCO = 0.3;   // [H] chance de um chamado novo ser de poço, depois da pesquisa do espectrômetro
 export const ehPoco = (sem) => Number(sem) >= POCO_MIN;
+
+// ---------- Perícia de Laboratório, Ato 1 (v3.37) ----------
+// Uma amostra de vidro vulcânico voltou do reator de pesquisa com atividade induzida (²³Na → ²⁴Na por captura de nêutrons). Há UM chamado, de semente fixa
+// (faixa [PERICIA_MIN, POCO_MIN) reservada), oferecido depois da pesquisa de geocronologia; concluí-lo abre o Ato 2 (a datação, bônus). Relato fictício [H].
+export const PERICIA_MIN = 980000000;
+export const PERICIA_SEM = 980000001;
+export const PERICIA_ID = 'q' + PERICIA_SEM;
+export const ehPericia = (sem) => Number(sem) >= PERICIA_MIN && Number(sem) < POCO_MIN;
+function alertaPericia(sem) {
+    return {
+        id: 'q' + sem, tipo: 'rapida', nivel: 'pericia1', missaoId: 100, liberaMes: 0, regional: true, ficticio: true, pericia: true, lat: -22.9, lon: -47.1, bioma: 'urbano',
+        local: T('Laboratório de Cronologia (parceiro)', 'Chronology Laboratory (partner)'),
+        titulo: T('Perícia: amostra ativada', 'Expertise: activated sample'),
+        relato: T('O Laboratório de Cronologia mandou um pacote de vidro vulcânico para o reator de pesquisa e a irradiação passou do planejado. Na volta, o pacote e o material guardado perto dele estão com atividade induzida: parte do sódio do vidro virou Na-24, e pode haver outras fontes no depósito. A equipe precisa medir, identificar o que ativou e isolar tudo antes de a datação continuar.',
+                  'The Chronology Laboratory sent a package of volcanic glass to the research reactor and the irradiation went beyond plan. On its return, the package and the material stored near it carry induced activity: part of the glass sodium became Na-24, and other sources may be in the store. The team must measure, identify what was activated and isolate everything before the dating can continue.'),
+        noticia: { veiculo: VEICULOS[0], manchete: T('Amostra volta do reator mais radioativa que o previsto', 'Sample returns from reactor more radioactive than expected'),
+                   fala: T('"Nós sabemos que a amostra fica radioativa por um tempo, mas desta vez passou do esperado. Preferimos chamar a Agência."', '"We know the sample stays radioactive for a while, but this time it went beyond what we expected. We preferred to call the Agency."') },
+        n: 2, iso: NA24.name, extras: ['Co-60', 'Cs-137'],   // Co-60 é distrator real (ativação do Co-59 de impurezas e de peças de aço): gama de 1,25 MeV contra 2,06 MeV
+    };
+}
 const IDS_REGIAO_POCO = ['tx', 'aus', 'kz'];
 const RELATOS_POCO = [
     T('Uma empresa de perfilagem de poços perdeu o contato com uma unidade de serviço depois de uma tempestade. Na carga havia uma ferramenta com fonte de nêutrons e outra com fonte de densidade. O pátio da base foi isolado. Procure no pátio, nos galpões e nos contêineres, com o Geiger e as placas.', 'An oil-well logging company lost contact with a service unit after a storm. The load held a tool with a neutron source and another with a density source. The base yard was cordoned off. Search the yard, the sheds and the containers with the Geiger counter and the plates.'),
@@ -139,6 +159,7 @@ function alertaPoco(sem) {
 /** O alerta completo (mesmo formato dos de ALERTAS) calculado da semente. Puro e determinístico. */
 export function alertaRapida(sem) {
     if (ehPoco(sem)) return alertaPoco(sem);
+    if (ehPericia(sem)) return alertaPericia(sem);
     const r = prng(sem * 40503 + 7);
     const reg = REGIOES[Math.floor(r() * REGIOES.length)];
     const x = r();
@@ -177,13 +198,14 @@ export function missaoRapida(sem, lang = 'pt') {
         id: 100, rapida: true, semente: sem, trilha: 2, titulo: a.titulo[L], storyText: a.relato[L], descText: a.local[L],
         difficulty: 'easy', numSources: a.n, timeLimit: 90 + 60 * a.n, mapTheme: g.mapTheme, planta: g.planta, mapCols: g.cols, mapRows: g.rows,
         unlocked: true, allowedIsotopes: a.iso ? [a.iso] : [], allSameIsotope: true, candidatosExtras: a.extras, bioma: a.bioma,
-        ...(a.poco ? { addIsotope: AMBE, allowedIsotopes: [] } : {}),   // v3.36: Am-241/Be entra por `addIsotope` (como o Ra-226)
+        ...(a.poco ? { addIsotope: AMBE, allowedIsotopes: [] } : {}),
+        ...(a.pericia ? { addIsotope: NA24, allowedIsotopes: [] } : {}),   // v3.37: Na-24 entra por `addIsotope`   // v3.36: Am-241/Be entra por `addIsotope` (como o Ra-226)
     };
 }
 
 /** Sorteia uma semente nova que não esteja em uso. `nMax` limita o número de fontes do chamado (v3.16: os primeiros são mais fáceis). */
 export function novaSemente(rand, emUso = [], nMax = 3, poco = false) {
     if (poco) { for (let i = 0; i < 400; i++) { const s = POCO_MIN + Math.floor(rand() * (999999998 - POCO_MIN)); if (!emUso.includes('q' + s) && alertaRapida(s).n <= nMax) return s; } return POCO_MIN + Math.floor(rand() * (999999998 - POCO_MIN)); }   // v3.36: semente de poço (se nenhuma couber em nMax, aceita uma de 2 fontes)
-    for (let i = 0; i < 400; i++) { const s = 1 + Math.floor(rand() * 999999998); if (!emUso.includes('q' + s) && alertaRapida(s).n <= nMax) return s; }
-    return 1 + Math.floor(rand() * 999999998);
+    for (let i = 0; i < 400; i++) { const s = 1 + Math.floor(rand() * (PERICIA_MIN - 2)); if (!emUso.includes('q' + s) && alertaRapida(s).n <= nMax) return s; }   // v3.37: abaixo das faixas reservadas (perícia e poço)
+    return 1 + Math.floor(rand() * (PERICIA_MIN - 2));
 }

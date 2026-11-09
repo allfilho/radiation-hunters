@@ -82,6 +82,11 @@ export const CONCEITOS = [
         pt: { titulo: 'Nêutrons pedem outro escudo', ficha: 'Nêutrons não se barram como o gama: o chumbo é escudo de fótons, e material rico em hidrogênio, como o polietileno, é muito eficaz contra nêutrons. A fonte Am-Be, de poços de petróleo, emite nêutrons e um gama de 4,4 MeV.', fonte: 'Fermilab, TM-1834, cap. 6; Health Physics Society (q12136); SPE' },
         en: { titulo: 'Neutrons need a different shield', ficha: 'Neutrons are not stopped like gamma rays: lead is a photon shield, and hydrogen-rich material such as polyethylene is very effective against neutrons. The Am-Be source, used in oil wells, emits neutrons and a 4.4 MeV gamma ray.', fonte: 'Fermilab, TM-1834, ch. 6; Health Physics Society (q12136); SPE' },
     },
+    {
+        id: 'N16', tema: 'decaimento', prereq: ['N03'], missoes: [], gatilhos: [],
+        pt: { titulo: 'O decaimento como relógio', ficha: 'A meia-vida é característica de cada nuclídeo e, em geral, não muda com temperatura ou pressão; por isso o decaimento funciona como relógio. Uma amostra ativada em reator, como o Na-24 (meia-vida de cerca de 15 horas), perde metade da atividade a cada meia-vida: esperar protege. Em datação, a mesma lógica vira idade, como no método do traço de fissão, que conta o dano deixado pela fissão espontânea do urânio-238 acumulada ao longo do tempo.', fonte: 'US NRC, glossário "Half-life"; US DOE, DOE-HDBK-1122-99; IAEA Nuclear Data Section, tabela D-1' },
+        en: { titulo: 'Decay as a clock', ficha: 'The half-life is characteristic of each nuclide and, in general, does not change with temperature or pressure; that is why decay works as a clock. A sample activated in a reactor, such as Na-24 (half-life of about 15 hours), loses half its activity every half-life: waiting protects. In dating, the same logic becomes an age, as in the fission-track method, which counts the damage left by spontaneous fission of uranium-238 accumulated over time.', fonte: 'US NRC, glossary "Half-life"; US DOE, DOE-HDBK-1122-99; IAEA Nuclear Data Section, table D-1' },
+    },
     // ---------- nós de história (um por acidente) ----------
     {
         id: 'E-GOI', tema: 'historias', historia: true, prereq: ['N02', 'N06', 'N13'], missoes: [2], gatilhos: [],
