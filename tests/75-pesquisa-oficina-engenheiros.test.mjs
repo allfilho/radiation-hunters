@@ -26,8 +26,7 @@ test('gatilho: a espectrometria só aparece com Cs-137 E Co-60; nêutrons ficam 
   C.registrarColhidas(e, ['Cs-137']); assert.equal(C.estadoNo(e, 'espectrometriaGama'), 'oculta');
   C.registrarColhidas(e, ['Co-60']); assert.equal(C.estadoNo(e, 'espectrometriaGama'), 'disponivel');
   assert.equal(C.estadoNo(e, 'sondaAlfa'), 'oculta'); C.registrarColhidas(e, ['Am-241']); assert.equal(C.estadoNo(e, 'sondaAlfa'), 'disponivel');
-  assert.equal(C.estadoNo(e, 'detectorNeutrons'), 'bloqueada');
-  assert.equal(C.iniciarCiencia(e, 'detectorNeutrons', true).motivo, 'bloqueada');
+  assert.equal(C.estadoNo(e, 'detectorNeutrons'), 'oculta', 'v3.35: nêutrons dependem do espectrômetro e de Am-241/Be coletado');
 });
 
 test('pesquisa: exige laboratório, créditos, uma por vez; conclui no dia certo', async () => {
@@ -78,7 +77,7 @@ test('save: v2 antigo continua válido; v3 faz ida e volta; lixo é saneado', as
   e.ciencia.concluidas.sondaAlfa = 7; e.fila.push({ id: 'f1', equip: 'sondaAlfa', eng: 'e1', pronto: 20 });
   const r = S.sanear(JSON.parse(JSON.stringify(e)));
   assert.deepEqual(r.colhidas, e.colhidas); assert.deepEqual(r.engenheiros, e.engenheiros); assert.deepEqual(r.equipamentos, e.equipamentos); assert.deepEqual(r.fila, e.fila); assert.deepEqual(r.ciencia, e.ciencia);
-  const lixo = S.sanear({ colhidas: { 'x<y': 3, 'Cs-137': 5000 }, ciencia: { concluidas: { lixo: 1, detectorNeutrons: 3 }, andamento: { sondaAlfa: { pronto: 'a' } } }, engenheiros: [7, { id: 'a' }], fila: [{ equip: 'x' }, { id: 'f', equip: 'sondaAlfa', eng: 'nao' }], equipamentos: { sondaAlfa: -3, x: 4 } });
+  const lixo = S.sanear({ colhidas: { 'x<y': 3, 'Cs-137': 5000 }, ciencia: { concluidas: { lixo: 1 }, andamento: { sondaAlfa: { pronto: 'a' } } }, engenheiros: [7, { id: 'a' }], fila: [{ equip: 'x' }, { id: 'f', equip: 'sondaAlfa', eng: 'nao' }], equipamentos: { sondaAlfa: -3, x: 4 } });
   assert.deepEqual(lixo.colhidas, { 'Cs-137': 999 }); assert.deepEqual(lixo.ciencia.concluidas, {}); assert.deepEqual(Object.keys(lixo.ciencia.andamento), ['sondaAlfa']);
   assert.deepEqual(lixo.engenheiros, []); assert.equal(lixo.fila.length, 1); assert.equal(lixo.fila[0].eng, null); assert.deepEqual(lixo.equipamentos, {});
 });
@@ -97,7 +96,7 @@ for (const [w, h] of [[1280, 720], [390, 844]]) {
         const { novoJogo } = await import('./helpers/navegador.mjs');
         await novoJogo(pg); await pg.waitForSelector('.ag-mapa'); await pg.click('[data-ag="trocar"]'); await pg.waitForSelector('.ag-cena');
         await pg.click('[data-sala="laboratorio"]'); await pg.waitForSelector('.ag-janela');
-        assert.deepEqual(await pg.$$eval('[data-no]', (e) => e.map((x) => x.dataset.no)), ['espectrometriaGama', 'camaraIonizacao', 'detectorNeutrons'], 'Cs-137 e Co-60 coletados: espectrometria e câmara abertas; nêutrons reservada; sonda alfa oculta');
+        assert.deepEqual(await pg.$$eval('[data-no]', (e) => e.map((x) => x.dataset.no)), ['espectrometriaGama', 'camaraIonizacao'], 'Cs-137 e Co-60 coletados: espectrometria e câmara abertas; nêutrons e sonda alfa ocultas');
         await pg.click('[data-no="espectrometriaGama"] [data-ag="ciencia"]');
         assert.equal(await pg.evaluate(() => !!ui.agencia.est.ciencia.andamento.espectrometriaGama), true);
         assert.equal(await pg.evaluate(() => ui.agencia.est.creditos), 7000);

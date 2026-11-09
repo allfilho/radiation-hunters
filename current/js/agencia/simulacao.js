@@ -11,7 +11,7 @@
 // Não existe game over: a verba tem piso.
 // ============================================
 import { ALERTAS } from './dados.js';
-import { ehRapida, alertaPorId, novaSemente } from './rapidas.js';
+import { ehRapida, alertaPorId, novaSemente, PROB_POCO } from './rapidas.js';
 import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas, saneaEntregas } from './ciencia.js';
 import { ESPECIALIDADES, especialidadePorId, equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
 import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
@@ -190,7 +190,8 @@ export function avancarDia(est, rand = Math.random) {
     if (est.dia >= est.proximaRapida) {
         if (est.ativos.filter((x) => ehRapida(x.id)).length < PARAMETROS.rapidas.max) {
             const R = PARAMETROS.rapidas, nMax = est.rapidasFeitas < R.facilAte ? 1 : est.rapidasFeitas < R.medioAte ? 2 : 3;
-            const id = 'q' + novaSemente(rand, est.ativos.map((x) => x.id), nMax);
+            const poco = !!est.ciencia.concluidas.espectrometriaGama && rand() < PROB_POCO;   // v3.36: poço de petróleo só depois do espectrômetro (sem a pesquisa, nenhum sorteio novo: o fluxo antigo não muda)
+            const id = 'q' + novaSemente(rand, est.ativos.map((x) => x.id), nMax, poco);
             est.ativos.push({ id, desde: est.dia, expira: est.dia + PARAMETROS.rapidas.prazo });
             const e = { tipo: 'novo', dia: est.dia, id }; ev.push(e); registrar(est, e);
             est.proximaRapida = est.dia + inteiroAleatorio(rand, PARAMETROS.rapidas.intervaloMin, PARAMETROS.rapidas.intervaloMax);

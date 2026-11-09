@@ -23,3 +23,15 @@ export const ISOTOPES = [
     { name: "Ir-192", type: "gama", color: "#f28bff", minBase: 380, maxBase: 820, symbol: "γ", halfLifeS: 73.827 * DIA,   energyMeV: 0.372 },
     { name: "Co-60",  type: "gama", color: "#f66bff", minBase: 500, maxBase: 950, symbol: "γ", halfLifeS: 5.2711 * ANO,   energyMeV: 1.25 },
 ];
+
+// v3.35 (Fase E): fonte de nêutrons por reação (α,n). NÃO entra em ISOTOPES (que alimenta o sorteio de fontes e as listas de candidatos):
+// as missões que a usam a declaram em `addIsotope` (como o Ra-226). Meia-vida: a do Am-241 (LNHB, a mesma de acima).
+// Emissão (fontes consultadas em 06/11/2026, docs em claude/radhunter-fase-e-neutrons.md): nêutrons com espectro contínuo até ~10 MeV;
+// gama de 4,4 MeV do 12C* com taxa de ~0,75 da de nêutrons (HPS q12136; o arXiv 2605.03211 usa 1 e cita ~0,7) [V]; gama de 60 keV do Am-241
+// muito atenuado na própria fonte, por isso fora do modelo. `base` é a força de jogo (cps de nêutron a 1 m, [H]); o gama fica com peso 0,75 [V/H].
+export const AMBE = {
+    name: "Am-241/Be", type: "neutron", color: "#9fe8a8", minBase: 120, maxBase: 260, symbol: "n",
+    halfLifeS: 432.6 * ANO,
+    componentes: [{ tipo: "neutron", peso: 1 }, { tipo: "gama", peso: 0.75, energyMeV: 4.44 }],
+    linhasGama: [{ keV: 60 }, { keV: 4440 }],
+};

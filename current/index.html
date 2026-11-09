@@ -118,6 +118,7 @@
                             <div class="geiger-bar-fill" id="geiger-bar-fill"></div>
                         </div>
                     </div>
+                    <div class="pen-dose camara-dose neutron-dose" id="neutron-display" hidden role="img" aria-label="Neutron detector" data-i18n-aria="neutronAria"><div class="pen-rot" id="neutron-rot"></div></div>
                     <div class="pen-dose camara-dose" id="camara-display" hidden role="img" aria-label="Ionization chamber" data-i18n-aria="camaraAria"><div class="pen-rot" id="camara-rot"></div></div>
                     <div class="pen-dose" id="pen-dose" hidden role="status" aria-live="off">
                         <div class="pen-rot" id="pen-rot"></div>
@@ -166,6 +167,10 @@
                         <button class="shield-btn" data-shield="3" title="" data-i18n-title="shieldPb">
                             <span class="shield-icon"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><polygon points="9,11 23,11 28,18 4,18" fill="#98a4b3" stroke="#b7c1cd" stroke-width="1" stroke-linejoin="round"/><rect x="4" y="18" width="24" height="9" fill="#555f6d" stroke="#b7c1cd" stroke-width="1" stroke-linejoin="round"/><path d="M11 13.5 L21 13.5" stroke="#d3dbe4" stroke-width="1.2" opacity=".8" stroke-linecap="round"/><path d="M6.5 20.5 L25.5 20.5" stroke="#8a95a3" stroke-width="1" opacity=".7"/></svg></span>
                             <span class="shield-key">4</span>
+                        </button>
+                        <button class="shield-btn" data-shield="4" id="shield-pe" title="" data-i18n-title="shieldPe" hidden>
+                            <span class="shield-icon"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false"><rect x="4" y="7" width="24" height="18" rx="2" fill="#dfe7ea" stroke="#42535c" stroke-width="1.6"/><path d="M9 12h14M9 16h14M9 20h14" stroke="#7fa0ad" stroke-width="1.4" stroke-linecap="round"/><text x="16" y="23.5" font-size="7" text-anchor="middle" fill="#42535c" font-family="sans-serif">H</text></svg></span>
+                            <span class="shield-key">5</span>
                         </button>
                     </div>
                 </div>

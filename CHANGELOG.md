@@ -3,6 +3,25 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.36.0 — 2026-11-06 — Fase E (parte 2): chamados de poço de petróleo e lição de nêutrons
+- **Chamados de poço:** depois de concluir a pesquisa do espectrômetro, 30 % dos chamados rápidos novos (hipótese de jogo) são de pátio de campo de petróleo, com 1 ou 2 fontes **Am-241/Be**. Relato, manchete e fala fictícios, três regiões (Texas, interior da Austrália, estepe do Cazaquistão), mapa industrial. Distratores: Tc-99m, Sr-90 e Am-241. Sem a pesquisa nenhum sorteio novo é feito, então o fluxo antigo e os saves não mudam.
+- **Sementes de poço** são as de `q990000000` em diante (`POCO_MIN`). Um erro do sorteio (o `find` consumia o gerador) foi pego pela suíte; o teste 83 varre 3000 sementes.
+- **Em campo:** dica de erro própria para nêutrons (pt/en), ficha do Am-241/Be, rótulo do candidato. O primeiro Am-241/Be coletado libera a pesquisa do detector de nêutrons.
+- **Lição N15 "Nêutrons pedem outro escudo":** 4 perguntas e 3 fatos novos em docs/referencias-5c/busca/neutrons-v3-36.md (Fermilab TM-1834, Health Physics Society, SPE). "Chumbo não barra nêutrons como barra gama" é raciocínio do projeto (V+R).
+- **Testes:** novo 83 (6 subtestes); 01 (222 chaves) e 09 (22 conceitos) ajustados. Suíte completa: 83 arquivos verdes.
+- Pendente: revisão de físico dos valores de nêutrons; calibração em sala (seção 7); dose de nêutrons fora do modelo.
+
+
+## v3.35.0 — 2026-11-06 — Fase E (parte 1): nêutrons, detector e placa de polietileno
+- **Fonte Am-241/Be** (`AMBE` em `js/data/isotopes.js`, fora de `ISOTOPES`): nêutrons + gama de 4,44 MeV com peso 0,75; espectrômetro lista as linhas 60 e 4440 keV. Dados em claude/radhunter-fase-e-neutrons.md.
+- **O Geiger não conta nêutrons** (hipótese de jogo [H], a confirmar): a fonte só aparece pelo gama de 4,44 MeV. Novo `taxaNeutronsEsperada` (1/d², paredes, placa) e `transmissaoNeutron`; Σ de remoção por material é [H] (polietileno 0,20 por cm; chumbo 0,005).
+- **Placa 5 de polietileno** (5 cm, 0,92 g/cm³ [V]), à parte de `SHIELDS` para não mexer no cofre; atenua nêutrons e pouco o gama. Só aparece em campo da Agência depois da pesquisa do detector.
+- **Pesquisa e Oficina:** `detectorNeutrons` exige espectrometria concluída e Am-241/Be coletado; 2400 créditos e 14 dias; equipamento 1000 e 7 dias [H]. Entra no inventário individual. Nomes de isótopo com barra (`Am-241/Be`) aceitos no save.
+- **HUD:** mostrador "Nêutrons: X cps" para quem leva o detector (com o Geiger ligado, tecla G); botão e tecla 5 da placa.
+- **Testes:** novo 82 (8 subtestes); 01 (221 chaves), 59 e 75 ajustados. Suíte completa: 82 arquivos verdes.
+- Sem dose de nêutrons no modelo. Valores e limites em docs/calibracao-fases-b-d.md (seção 7).
+
+
 ## v3.34.0 — 2026-11-06 — Fase D (parte 3): retratos dos engenheiros
 - **Retratos próprios:** engenheiros e candidatos a engenheiro aparecem com capacete amarelo e colete refletivo laranja (`retratoSvg(npc, expressao, { engenheiro: true })`), para se distinguirem dos cientistas à primeira vista no Alojamento. Cientistas ficam como antes; o retrato sem a opção é idêntico ao anterior.
 - **Teste novo 81:** a opção só liga capacete e colete para engenheiros, o SVG continua bem formado para todos os personagens, e o Alojamento mostra o capacete só nos engenheiros (contratado e candidato). A suíte pegou um conflito de nome de atributo (`data-engenheiro`) com o teste 75 e foi corrigido (`data-retrato-eng`). Suíte completa: 81 arquivos verdes.

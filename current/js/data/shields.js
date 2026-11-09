@@ -8,3 +8,8 @@ export const SHIELDS = [
     { id: 2, name: "Acrylic",  key: "acr",  material: "acrilico", cm: 0.5 },
     { id: 3, name: "Lead",     key: "pb",   material: "chumbo",   cm: 1.0 },
 ];
+
+// v3.35 (Fase E): placa de material hidrogenado, só em campo da Agência depois da pesquisa do detector de nêutrons.
+// Fica FORA de SHIELDS de propósito: a lista acima alimenta o cofre e a ficha de placas de gama. Polietileno: ~14 % de H em massa, 0,92 g/cm³ (Fermilab TM-1834, cap. 6) [V];
+// 5 cm é escolha de jogo [H] (para a placa atenuar nêutrons de forma visível).
+export const PLACA_NEUTRON = { id: 4, name: "Polyethylene", key: "pe", material: "polietileno", cm: 5 };

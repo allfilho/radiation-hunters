@@ -37,7 +37,7 @@ test('em missão: 1 a 4 trocam a blindagem e 7, 8, 9, 0 trocam o cientista em ca
     assert.deepEqual(await pg.$$eval('#hud-equipe .hud-cient-tecla', (e) => e.map((x) => x.textContent)), ['7', '8', '9', '0']);
     assert.ok(await pg.$eval('#hud-equipe .hud-cient:first-child', (e) => e.classList.contains('ativo')));
     // rótulos das blindagens
-    assert.deepEqual(await pg.$$eval('.shield-key', (e) => e.map((x) => x.textContent)), ['1', '2', '3', '4']);
+    assert.deepEqual(await pg.$$eval('.shield-btn:not([hidden]) .shield-key', (e) => e.map((x) => x.textContent)), ['1', '2', '3', '4']);
     // blindagens
     for (const [tecla, id] of [['2', 1], ['3', 2], ['4', 3], ['1', 0]]) {
       await pg.keyboard.press(tecla); await pg.waitForTimeout(80);

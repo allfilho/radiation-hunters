@@ -16,6 +16,7 @@ export const LIMIAR_COMPONENTE = 50;
 
 /** @param iso {name, type, energyMeV?, betaRangeMgCm2?}  @returns [{tipo, peso, energyMeV?, betaRangeMgCm2?}] (primária primeiro) */
 export function componentesDe(iso, limiar = LIMIAR_COMPONENTE) {
+    if (Array.isArray(iso.componentes) && iso.componentes.length) return iso.componentes.map((c) => ({ ...c }));   // v3.35: fonte com emissão própria (Am-241/Be)
     const prim = { tipo: iso.type, peso: 1, energyMeV: iso.energyMeV, betaRangeMgCm2: iso.betaRangeMgCm2 };
     const r = rendimentoPorTipo(iso.name);
     if (!r || !(r[iso.type] > 0)) return [prim];
@@ -30,8 +31,8 @@ export function componentesDe(iso, limiar = LIMIAR_COMPONENTE) {
     return out;
 }
 
-const SIMBOLO = { alfa: 'α', beta: 'β', gama: 'γ' };
-const NOME = { alfa: { pt: 'alfa', en: 'alpha' }, beta: { pt: 'beta', en: 'beta' }, gama: { pt: 'gama', en: 'gamma' } };
+const SIMBOLO = { alfa: 'α', beta: 'β', gama: 'γ', neutron: 'n' };
+const NOME = { alfa: { pt: 'alfa', en: 'alpha' }, beta: { pt: 'beta', en: 'beta' }, gama: { pt: 'gama', en: 'gamma' }, neutron: { pt: 'nêutron', en: 'neutron' } };
 const num = (x, L) => { const s = String(Math.round(x * 10) / 10); return L === 'pt' ? s.replace('.', ',') : s; };
 
 /** Tipos das componentes em texto: "beta e gama" / "beta and gamma". */
@@ -63,6 +64,7 @@ export function descreverEmissoes(iso, lang = 'pt') {
  */
 export function linhasGamaTexto(iso, lang = 'pt') {
     const L = lang === 'en' ? 'en' : 'pt', e = EMISSOES[iso.name];
+    if (Array.isArray(iso.linhasGama)) return iso.linhasGama.map((l) => num(l.keV, L)).join(L === 'pt' ? ' e ' : ' and ') + ' keV';   // v3.35: Am-241/Be (valores das fontes, não do LNHB)
     if (!e) return null;
     const ls = e.linhas.filter((l) => l.tipo === 'gama' && l.y >= 10).sort((a, b) => a.keV - b.keV);
     if (!ls.length) return '';

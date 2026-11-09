@@ -77,6 +77,11 @@ export const CONCEITOS = [
         pt: { titulo: 'A radiação também ajuda', ficha: 'A radiação também ajuda: o tecnécio-99m é usado em diagnóstico por imagem, e cerca de metade dos pacientes com câncer precisa de radioterapia em algum momento.', fonte: 'US NRC, Medical Use of Radioactive Materials; AIEA' },
         en: { titulo: 'Radiation also helps', ficha: 'Radiation also helps: technetium-99m is used in diagnostic imaging, and about half of all cancer patients need radiotherapy at some point.', fonte: 'US NRC, Medical Use of Radioactive Materials; IAEA' },
     },
+    {
+        id: 'N15', tema: 'protecao', prereq: ['N04'], missoes: [], gatilhos: [],
+        pt: { titulo: 'Nêutrons pedem outro escudo', ficha: 'Nêutrons não se barram como o gama: o chumbo é escudo de fótons, e material rico em hidrogênio, como o polietileno, é muito eficaz contra nêutrons. A fonte Am-Be, de poços de petróleo, emite nêutrons e um gama de 4,4 MeV.', fonte: 'Fermilab, TM-1834, cap. 6; Health Physics Society (q12136); SPE' },
+        en: { titulo: 'Neutrons need a different shield', ficha: 'Neutrons are not stopped like gamma rays: lead is a photon shield, and hydrogen-rich material such as polyethylene is very effective against neutrons. The Am-Be source, used in oil wells, emits neutrons and a 4.4 MeV gamma ray.', fonte: 'Fermilab, TM-1834, ch. 6; Health Physics Society (q12136); SPE' },
+    },
     // ---------- nós de história (um por acidente) ----------
     {
         id: 'E-GOI', tema: 'historias', historia: true, prereq: ['N02', 'N06', 'N13'], missoes: [2], gatilhos: [],

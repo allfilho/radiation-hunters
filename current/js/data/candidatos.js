@@ -23,7 +23,7 @@ export function candidatosDaMissao(fontes, extras = [], tabela = ISOTOPES) {
     return [...mapa.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-const SIMBOLO = { alfa: 'α', beta: 'β', gama: 'γ' };
+const SIMBOLO = { alfa: 'α', beta: 'β', gama: 'γ', neutron: 'n' };
 
 /**
  * Rótulo do botão de um candidato: símbolos e nomes das componentes no idioma do jogo, e, se houver gama, a energia dela.

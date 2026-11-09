@@ -230,6 +230,24 @@ export const PERGUNTAS = [
         ['According to the IAEA, what share of cancer patients need radiotherapy at some point during the disease?', ['About half', 'Less than 1%', 'Almost all'], 'The IAEA reports that around half of all patients require radiotherapy at some point during the course of the disease.'],
         ['M7.2']),
 
+    // ---- N15 Nêutrons pedem outro escudo (v3.36)
+    q('N15-1', 'N15', 1, 'mf', 'fato',
+        ['Material rico em hidrogênio, como o polietileno, é muito eficaz para barrar nêutrons.', 'O hidrogênio é o que faz o polietileno ser um escudo de nêutrons muito eficaz; o alumínio, por exemplo, não é eficaz contra nêutrons.'],
+        ['Hydrogen-rich material, such as polyethylene, is very effective at stopping neutrons.', 'Hydrogen is what makes polyethylene a very effective neutron shield; aluminium, for example, is not effective against neutrons.'],
+        ['N15-F1']),
+    q('N15-2', 'N15', 1, 'mf', 'mito',
+        ['Uma placa de chumbo barra nêutrons tão bem quanto barra o gama.', 'O chumbo é escudo de fótons. Contra nêutrons rápidos o melhor é material com hidrogênio, como o polietileno; até o ferro tem grande deficiência como escudo.'],
+        ['A lead plate stops neutrons as well as it stops gamma rays.', 'Lead is a photon shield. Against fast neutrons the best choice is hydrogen-rich material, such as polyethylene; even iron is a poor neutron shield.'],
+        ['N15-F1'], 'V+R'),
+    q('N15-3', 'N15', 2, 'mc', 0,
+        ['Em ferramentas de perfilagem de poços de petróleo, qual fonte serve de fonte de nêutrons?', ['Am-241/Be', 'Cs-137', 'Tc-99m'], 'A ferramenta de porosidade usa Am-Be como fonte de nêutrons. O Cs-137 é a fonte de densidade e emite gama, não nêutrons.'],
+        ['In oil-well logging tools, which source is the neutron source?', ['Am-241/Be', 'Cs-137', 'Tc-99m'], 'The porosity tool uses Am-Be as its neutron source. Cs-137 is the density source and emits gamma rays, not neutrons.'],
+        ['N15-F3']),
+    q('N15-4', 'N15', 2, 'mc', 1,
+        ['Além de nêutrons, que radiação acompanha uma fonte Am-Be?', ['Só partículas alfa de 4,4 MeV', 'Gama de 4,4 MeV, do carbono-12 excitado', 'Só beta'], 'Os nêutrons surgem de reações das alfas do Am-241 com o berílio, e o carbono-12 excitado emite um gama de 4,4 MeV junto com os nêutrons.'],
+        ['Besides neutrons, which radiation comes with an Am-Be source?', ['Only 4.4 MeV alpha particles', '4.4 MeV gamma, from excited carbon-12', 'Only beta'], 'Neutrons come from reactions of Am-241 alphas with beryllium, and excited carbon-12 emits a 4.4 MeV gamma ray along with the neutrons.'],
+        ['N15-F2']),
+
     // ---- nós de história
     q('E-GOI-1', 'E-GOI', 1, 'mf', 'fato',
         ['O césio de Goiânia vinha de um aparelho de radioterapia abandonado numa clínica.', 'O relatório da AIEA descreve a unidade de teleterapia de césio-137 deixada numa clínica abandonada.'],

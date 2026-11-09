@@ -33,6 +33,21 @@ Campo: dose de coleta ×0,5. Física: dose do erro de identificação ×0,5. Med
 ## 6. Médico (v3.27)
 Alta com dose relativa < 85 % em vez de 75 % com o Departamento médico. A diferença parece justa pelo custo (1100 créditos, 4 dias de obra)?
 
+## 7. Nêutrons (v3.35, Fase E parte 1)
+Valores de partida, todos **hipóteses de jogo [H]** (as fontes e os limites de cada afirmação estão em claude/radhunter-fase-e-neutrons.md):
+| Item | Valor | Pergunta para a turma | Observado | Ajustar? |
+|---|---|---|---|---|
+| Pesquisa do detector de nêutrons | 2400 créditos, 14 dias | Só aparece depois do espectrômetro e de coletar Am-241/Be (as missões chegam na v3.36). Parece caro frente ao espectrômetro (2000, 12 dias)? | | |
+| Fabricar o detector | 1000 créditos, 7 dias | | | |
+| Placa de polietileno (tecla 5) | 5 cm; Σ de remoção 0,20 por cm (corta cerca de 63 %) | A turma percebe que o chumbo (tecla 4) não resolve e o polietileno sim? | | |
+| Chumbo, alumínio e acrílico para nêutrons | Σ de 0,005, 0,01 e 0,10 por cm | O acrílico (um pouco de hidrogênio) atenua um pouco e o alumínio quase nada: a ordem faz sentido para os alunos? | | |
+| Fonte Am-241/Be | força 120 a 260 (cps de nêutron a 1 m); gama de 4,44 MeV com peso 0,75 | O Geiger mostra só o gama e engana: o aluno desconfia que falta algo? | | |
+| Detector aparece só com o Geiger ligado (tecla G) | | Os alunos esquecem de ligar? | | |
+
+**Chamados de poço (v3.36):** depois de concluir a pesquisa do espectrômetro, 30 % dos chamados rápidos novos [H] passam a ser de poço de petróleo, com 1 ou 2 fontes Am-241/Be e distratores Tc-99m, Sr-90 e Am-241. Observe: o primeiro chamado de poço é resolvível só com Geiger e placas (gama de energia muito alta, que o chumbo quase não atenua)? A frequência de 30 % cansa ou some?
+
+Pendente de confirmação em fonte ou físico: o Geiger comum ser pouco sensível a nêutrons e o chumbo atenuar mal nêutrons rápidos. Não há dose de nêutrons no modelo (só o gama de 4,44 MeV entra na dose de campo).
+
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
 

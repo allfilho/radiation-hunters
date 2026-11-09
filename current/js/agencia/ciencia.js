@@ -5,7 +5,7 @@
 // `est.pesquisa` (frota.js) para não quebrar saves antigos; aqui ficam os nós novos, em `est.ciencia`.
 // Nada neste arquivo afirma propriedade física de instrumento: os nós só liberam um equipamento no inventário; o efeito em missão é da Fase C.
 // ============================================
-import { ISOTOPES } from '../data/isotopes.js';
+import { ISOTOPES, AMBE } from '../data/isotopes.js';
 
 export const NOS = {
     espectrometriaGama: {
@@ -23,7 +23,11 @@ export const NOS = {
         descoberta: [{ iso: ['Co-60', 'Ir-192'] }],                 // [H] fonte gama de taxa alta
         equipamento: 'camaraIonizacao',
     },
-    detectorNeutrons: { id: 'detectorNeutrons', custo: 0, dias: 0, requer: [], descoberta: [], bloqueado: true, equipamento: null },   // o jogo ainda não tem fonte de nêutrons
+    detectorNeutrons: {
+        id: 'detectorNeutrons', custo: 2400, dias: 14, requer: ['espectrometriaGama'],            // [H] só depois do espectrômetro (decisão do Arnaldo, 06/11/2026)
+        descoberta: [{ iso: ['Am-241/Be'] }],                                                       // fonte de nêutrons coletada (missões na v3.36)
+        equipamento: 'detectorNeutrons',
+    },
 };
 export const IDS_NOS = Object.keys(NOS);
 
@@ -31,19 +35,21 @@ export const EQUIPAMENTOS = {
     espectrometro: { id: 'espectrometro', no: 'espectrometriaGama', custo: 900, dias: 6 },
     sondaAlfa: { id: 'sondaAlfa', no: 'sondaAlfa', custo: 600, dias: 4 },
     camaraIonizacao: { id: 'camaraIonizacao', no: 'camaraIonizacao', custo: 800, dias: 5 },
+    detectorNeutrons: { id: 'detectorNeutrons', no: 'detectorNeutrons', custo: 1000, dias: 7 },   // [H]
 };
 export const IDS_EQUIPAMENTOS = Object.keys(EQUIPAMENTOS);
 
 export const CIENCIA = { contratarEngenheiro: 500, filaMax: 6, colhidasMax: 999, engenheirosMax: 6 };
 
 const falha = (motivo) => ({ ok: false, motivo });
-const NOME_ISO = /^[A-Z][a-z]?-\d{1,3}m?$/;
+const NOME_ISO = /^[A-Z][a-z]?-\d{1,3}m?(\/[A-Z][a-z]?)?$/;   // v3.35: aceita "Am-241/Be"
 
 // ---------- inventário de materiais coletados ----------
 /** Tipo de radiação de um isótopo pelo nome; Ra-226 entra nas missões como fonte especial (alfa). */
 export function tipoDoIsotopo(nome) {
     const i = ISOTOPES.find((x) => x.name === nome);
     if (i) return i.type;
+    if (nome === AMBE.name) return 'neutron';
     return nome === 'Ra-226' ? 'alfa' : null;
 }
 /** Soma os isótopos entregues ao inventário. Aceita qualquer lista; ignora o que não for nome de isótopo. */

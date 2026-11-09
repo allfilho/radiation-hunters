@@ -23,14 +23,15 @@ export const MU_RHO = {
     aluminio: [0.1704, 0.1223, 0.1042, 0.08445, 0.07802, 0.06841, 0.06146, 0.05496, 0.05006],
     concreto: [0.1738, 0.1282, 0.1097, 0.08915, 0.08236, 0.07227, 0.06495, 0.05807, 0.05288],
     acrilico: [0.1641, 0.1328, 0.1152, 0.0941, 0.08701, 0.07641, 0.0687, 0.06143, 0.05591],
+    polietileno: [0.1641, 0.1328, 0.1152, 0.0941, 0.08701, 0.07641, 0.0687, 0.06143, 0.05591],   // [H] v3.35: aproximado pelo acrílico (não consultado no XCOM); a placa é de nêutrons, o efeito no gama é pequeno
     ar:       [0.1541, 0.1233, 0.1067, 0.08712, 0.08055, 0.07074, 0.06358, 0.05687, 0.05175],
 };
 // Densidades (g/cm³), NIST Tabelas 1 e 2 [V]
-export const DENSIDADE = { chumbo: 11.35, aluminio: 2.699, concreto: 2.30, acrilico: 1.19, ar: 1.205e-3 };
+export const DENSIDADE = { chumbo: 11.35, aluminio: 2.699, concreto: 2.30, acrilico: 1.19, polietileno: 0.92, ar: 1.205e-3 };   // polietileno: Fermilab TM-1834 cap. 6 [V]
 
 export const PARAMETROS = {
     fundoCps: 5,                                    // [H]
-    fatorForca: { gama: 0.3, beta: 1.0, alfa: 1.0 },// [H] S = base × fator (projeto 3a, seção 6 / 12)
+    fatorForca: { gama: 0.3, beta: 1.0, alfa: 1.0, neutron: 1.0 },// [H] S = base × fator (projeto 3a, seção 6 / 12)
     refGamaM: 1.0, refBetaM: 0.5,                   // distâncias de referência de S [H]
     distMinM: 0.25,                                 // fonte dentro de um móvel de >= 1 tile [H]
     semiAnguloRad: Math.PI / 4,                     // cone de aceitação (90°) [H]
@@ -40,6 +41,36 @@ export const PARAMETROS = {
 
 /** v3.31: a sonda de cintilação para alfa (Oficina) multiplica a força do alfa na leitura: mais sensibilidade, mesmo alcance de contato [H]. */
 export const SONDA_ALFA_FATOR = 3;
+
+// ---------- nêutrons (v3.35, Fase E) ----------
+// O Geiger do jogo NÃO conta nêutrons (tubo comum é pouco sensível a eles [H, a confirmar em fonte]); só o detector de nêutrons (Oficina) mede.
+// Atenuação: exp(-Σ·x), com Σ (1/cm) de remoção de nêutrons rápidos, ESCOLHA DE JOGO [H] em todos os materiais: o que importa é a ordem.
+// Hidrogenados atenuam bem (polietileno: "muito eficaz por causa do hidrogênio", Fermilab TM-1834 cap. 6 [V]); alumínio e metais pesados mal
+// (Fermilab: alumínio "não é eficaz"; ferro tem "grande deficiência" [V]); para o chumbo não achei valor: fica pequeno [H].
+export const SIGMA_NEUTRON = { polietileno: 0.20, acrilico: 0.10, concreto: 0.05, aluminio: 0.01, chumbo: 0.005, ar: 0 };
+export const FUNDO_NEUTRON_CPS = 0.2;   // [H]
+export function transmissaoNeutron(camadas) {
+    let soma = 0;
+    for (const c of camadas) if (c && c.material && c.cm > 0) soma += (SIGMA_NEUTRON[c.material] ?? 0) * c.cm;
+    return Math.exp(-soma);
+}
+/** cps de nêutrons (fundo incluído) no ponto `sonda`, de todas as fontes não achadas com componente `neutron`; omnidirecional (sem cone). */
+export function taxaNeutronsEsperada(fontes, sonda, ctx) {
+    const P = ctx.params || PARAMETROS;
+    let r = FUNDO_NEUTRON_CPS;
+    for (const f of fontes) {
+        if (f.found) continue;
+        for (const c of f.componentes || []) {
+            if (c.tipo !== 'neutron') continue;
+            const nPar = paredesNoRaio(ctx.ehParede, sonda.x, sonda.y, f.x, f.y);
+            const dM = Math.max(Math.hypot(f.x - sonda.x, f.y - sonda.y) * ctx.tileM, P.distMinM);
+            const camadas = [{ material: 'concreto', cm: nPar * ctx.paredeCm }];
+            if (ctx.blindagem && ctx.blindagem.material) camadas.push(ctx.blindagem);
+            r += f.base * (c.peso ?? 1) * P.fatorForca.neutron * (P.refGamaM / dM) ** 2 * transmissaoNeutron(camadas);
+        }
+    }
+    return r;
+}
 
 /** μ/ρ por interpolação log-log; fora de 0,1-1,5 MeV usa o ponto mais próximo (aproximação) */
 export function muRho(material, energiaMeV) {
@@ -121,6 +152,7 @@ export function taxaFonte(fonte, sonda, ctx) {
 
     let soma = 0;
     for (const c of comps) {
+        if (c.tipo === 'neutron') continue;   // o Geiger não vê nêutrons (v3.35)
         const S = fonte.base * P.fatorForca[c.tipo] * (c.peso ?? 1);
         if (c.tipo === 'gama') {
             const E = c.energyMeV ?? 0.66;

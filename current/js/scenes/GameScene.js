@@ -2,11 +2,11 @@ import { audioManager } from '../audio.js';
 import { CONFIG } from '../data/config.js';
 import { ISOTOPES } from '../data/isotopes.js';
 import { MISSIONS } from '../data/missoes/index.js';
-import { SHIELDS } from '../data/shields.js';
+import { SHIELDS, PLACA_NEUTRON } from '../data/shields.js';
 import { GameState } from '../estado.js';
 import { componentesDe, descreverEmissoes, linhasGamaTexto, nomesDasComponentes } from '../fisica/componentes.js';
 import { candidatosDaMissao, rotuloDoCandidato } from '../data/candidatos.js';
-import { JanelaDeContagem, PARAMETROS as PARAM_GEIGER, SONDA_ALFA_FATOR, contar, distanciaAoRetangulo, pontoMaisProximo, taxaEsperada } from '../fisica/geiger.js';
+import { JanelaDeContagem, PARAMETROS as PARAM_GEIGER, SONDA_ALFA_FATOR, contar, distanciaAoRetangulo, pontoMaisProximo, taxaEsperada, taxaNeutronsEsperada } from '../fisica/geiger.js';
 import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
 import { foiLevantado } from '../agencia/frota.js';
 import { bonusDe } from '../agencia/equipe.js';
@@ -63,6 +63,7 @@ export class GameScene extends Phaser.Scene {
         this.lastCount = 0;
         this.currentUncertainty = 0;
         this.janelaGeiger = new JanelaDeContagem(CONFIG.GEIGER_JANELA_S);
+        this.janelaNeutron = new JanelaDeContagem(CONFIG.GEIGER_JANELA_S);   // v3.35: detector de nêutrons
         this.lastMeasure = 0;
         this.running = false;
         this.playerDirection = 0;
@@ -216,6 +217,7 @@ export class GameScene extends Phaser.Scene {
         
         // Start game immediately
         this.gameStarted = true;
+        this.atualizarEquipamentoHud();   // v3.35: placa de polietileno e detector de nêutrons
         GameState.startTime = this.time.now;
         this.encontros.iniciar();
     }
@@ -687,7 +689,7 @@ export class GameScene extends Phaser.Scene {
         // Esc é tratado no DOM (ui.aoPressionarEsc): fecha modal, retoma ou pausa conforme o contexto
         
         // Blindagens: 1 = sem blindagem, 2 = alumínio, 3 = acrílico, 4 = chumbo (v3.16; ids internos continuam 0 a 3)
-        ['ONE', 'TWO', 'THREE', 'FOUR'].forEach((nome, id) => {
+        ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'].forEach((nome, id) => {   // 5 = polietileno (v3.35, só com o detector de nêutrons pesquisado)
             this.input.keyboard.on('keydown-' + nome, () => this.setShield(id));
             this.input.keyboard.on('keydown-NUMPAD_' + nome, () => this.setShield(id));
         });
@@ -709,9 +711,10 @@ export class GameScene extends Phaser.Scene {
             C[velho].setPosition(this.player.x, this.player.y).setVisible(true);   // quem estava em campo fica parado onde estava
             this.player.setPosition(C[m.id].x, C[m.id].y); C[m.id].setVisible(false);
             if (this.rotuloAtivo) this.rotuloAtivo.setText(['7', '8', '9', '0'][i]);
-            this.janelaGeiger.reset();
+            this.janelaGeiger.reset(); this.janelaNeutron.reset();
             if (this.geigerActive) this.measureRadiation();
         }
+        this.atualizarEquipamentoHud();
         ui.atualizarCaneta(ui.agencia.penDoLider(ui.agencia.doseDoAtivo()));
         ui.atualizarEquipeHud();
         ui.showNotification((currentLang === 'pt' ? 'Em campo: ' : 'In the field: ') + m.nome, 'info');
@@ -1221,7 +1224,7 @@ export class GameScene extends Phaser.Scene {
     measureRadiation() {
         const T = CONFIG.TILE_SIZE;
         const sonda = { x: this.player.x / T, y: this.player.y / T, dir: this.playerDirection };
-        const escudo = SHIELDS[GameState.currentShield];
+        const escudo = GameState.currentShield === PLACA_NEUTRON.id ? PLACA_NEUTRON : SHIELDS[GameState.currentShield];
         const ctx = {
             tileM: this.missionData.tileM ?? CONFIG.TILE_M,
             paredeCm: CONFIG.PAREDE_CM,
@@ -1230,10 +1233,12 @@ export class GameScene extends Phaser.Scene {
             alfaAlcanceTiles: this.assistenciaAlfa ? CONFIG.ASSIST_ALFA_TILES : undefined,
             params: this.temSondaAlfa() ? { ...PARAM_GEIGER, fatorForca: { ...PARAM_GEIGER.fatorForca, alfa: PARAM_GEIGER.fatorForca.alfa * SONDA_ALFA_FATOR } } : undefined,
         };
-        const taxa = taxaEsperada(this.sources.map(s => this.fonteFisica(s)), sonda, ctx);
+        const fisicas = this.sources.map(s => this.fonteFisica(s));
+        const taxa = taxaEsperada(fisicas, sonda, ctx);
         const dt = CONFIG.GEIGER_PASSO_MS / 1000;
         const n = contar(taxa, dt);
         this.janelaGeiger.adicionar(n, dt);
+        this.medirNeutrons(fisicas, sonda, ctx, dt);
         
         this.lastRate = taxa;
         this.lastCount = n;
@@ -1249,11 +1254,12 @@ export class GameScene extends Phaser.Scene {
     
     setShield(shieldId) {
         if (this.bloqueado()) return;
+        if (shieldId === PLACA_NEUTRON.id && !this.temPlacaPolietileno()) return;   // v3.35: placa 5 só depois da pesquisa
         GameState.currentShield = shieldId;
         ui.setActiveShield(shieldId);
         
         // A leitura precisa refletir a nova blindagem: recomeça a janela de contagem
-        this.janelaGeiger.reset();
+        this.janelaGeiger.reset(); this.janelaNeutron.reset();
         if (this.geigerActive) {
             this.measureRadiation();
         }
@@ -1736,7 +1742,8 @@ export class GameScene extends Phaser.Scene {
             // Dica pelo TIPO real da fonte (só quando o jogador ligou as dicas)
             let hint = '';
             if (GameState.settings.showHints) {
-                if (componentesDe(source).length > 1) hint = t('betaGammaHint').replace('{0}', nomesDasComponentes(source, currentLang));
+                if (componentesDe(source).some((c) => c.tipo === 'neutron')) hint = t('neutronHint');
+                else if (componentesDe(source).length > 1) hint = t('betaGammaHint').replace('{0}', nomesDasComponentes(source, currentLang));
                 else if (source.type === 'alfa') hint = t('alphaHint');
                 else if (source.type === 'beta') hint = t('betaHint');
                 else hint = t('gammaHint');
@@ -1764,6 +1771,32 @@ export class GameScene extends Phaser.Scene {
         const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
         if (!a) return null;
         return equipDe(a.equipe.find((m) => m.id === ui.agencia.cientistaAtivo()));
+    }
+    /** v3.35: placa de polietileno (tecla 5) liberada pela pesquisa do detector de nêutrons; só em campo da Agência. */
+    temPlacaPolietileno() {
+        const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.est;
+        return !!a && !!a.ciencia.concluidas.detectorNeutrons && this.emCampoAgencia();
+    }
+    /** v3.35: o cientista à frente leva o detector de nêutrons (Oficina). */
+    temDetectorNeutrons() { return this.equipAtivo() === 'detectorNeutrons' && this.emCampoAgencia(); }
+    /** Mostra/esconde o botão da placa 5 e o mostrador de nêutrons conforme o que o campo permite agora. */
+    atualizarEquipamentoHud() {
+        const b = document.getElementById('shield-pe'), d = document.getElementById('neutron-display');
+        const placa = this.temPlacaPolietileno();
+        if (b) b.hidden = !placa;
+        if (!placa && GameState.currentShield === PLACA_NEUTRON.id) { GameState.currentShield = 0; ui.setActiveShield(0); }
+        if (d && !this.temDetectorNeutrons()) d.hidden = true;
+    }
+    /** Uma amostra do detector de nêutrons (mesmo passo e janela do Geiger); só roda com o Geiger ligado e o detector em mãos. */
+    medirNeutrons(fisicas, sonda, ctx, dt) {
+        const d = document.getElementById('neutron-display'), rot = document.getElementById('neutron-rot');
+        if (!this.temDetectorNeutrons()) { if (d) d.hidden = true; return; }
+        const taxaN = taxaNeutronsEsperada(fisicas, sonda, ctx);
+        this.janelaNeutron.adicionar(contar(taxaN, dt), dt);
+        if (!d || !rot) return;
+        d.hidden = false;
+        const v = this.janelaNeutron.cps, txt = v < 10 ? v.toFixed(1) : String(Math.round(v));
+        rot.textContent = t('neutronRot').replace('{0}', currentLang === 'pt' ? txt.replace('.', ',') : txt);
     }
     /** v3.31: modo Agência com a sonda alfa fabricada na Oficina. */
     temSondaAlfa() {
@@ -1827,6 +1860,10 @@ export class GameScene extends Phaser.Scene {
             'U-238': {
                 en: 'Uranium-238: Most common uranium isotope (99.3%). Half-life: 4.5 billion years. Used in nuclear fuel and dating very old rocks.',
                 pt: 'Urânio-238: Isótopo de urânio mais comum (99,3%). Meia-vida: 4,5 bilhões de anos. Usado em combustível nuclear e datação de rochas antigas.'
+            },
+            'Am-241/Be': {
+                en: 'Americium-241/Beryllium: a neutron source used in oil-well logging tools. Neutrons come from alpha particles hitting beryllium; a 4.4 MeV gamma ray comes with them. Lead barely stops neutrons; hydrogen-rich material such as polyethylene does.',
+                pt: 'Amerício-241/Berílio: fonte de nêutrons usada em ferramentas de perfilagem de poços. Os nêutrons surgem de partículas alfa que atingem o berílio, e um gama de 4,4 MeV vem junto. O chumbo quase não os detém; material rico em hidrogênio, como o polietileno, detém.'
             },
             'Am-241': {
                 en: 'Americium-241: Found in smoke detectors! Half-life: 432 years. Alpha emitter - safe inside detector housing.',

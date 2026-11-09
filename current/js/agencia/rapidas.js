@@ -8,6 +8,7 @@
 import { ALERTAS } from './dados.js';
 import { gerarPlantaRapida, prng } from '../mapa/plantas-rapidas.js';
 import { CASOS_FALSO } from '../investigacao/falso-alarme.js';
+import { AMBE } from '../data/isotopes.js';
 
 const T = (pt, en) => ({ pt, en });
 
@@ -103,8 +104,41 @@ export const PROB_FALSO = 0.3;
 export const ehRapida = (id) => typeof id === 'string' && /^q\d{1,9}$/.test(id);
 export const semDe = (id) => Number(id.slice(1));
 
+// ---------- chamados de poço de petróleo (v3.36, Fase E parte 2) ----------
+// Fonte Am-241/Be de perfilagem (porosidade por nêutrons: ~16 a 20 Ci em ferramentas reais, apresentação SPE [V]). Só são sorteados depois da pesquisa do espectrômetro (simulacao.js).
+// Para não mexer nas sementes antigas, uma semente >= POCO_MIN é um chamado de poço; as demais seguem a regra de sempre. Relatos fictícios (treino) [H].
+export const POCO_MIN = 990000000;
+export const PROB_POCO = 0.3;   // [H] chance de um chamado novo ser de poço, depois da pesquisa do espectrômetro
+export const ehPoco = (sem) => Number(sem) >= POCO_MIN;
+const IDS_REGIAO_POCO = ['tx', 'aus', 'kz'];
+const RELATOS_POCO = [
+    T('Uma empresa de perfilagem de poços perdeu o contato com uma unidade de serviço depois de uma tempestade. Na carga havia uma ferramenta com fonte de nêutrons e outra com fonte de densidade. O pátio da base foi isolado. Procure no pátio, nos galpões e nos contêineres, com o Geiger e as placas.', 'An oil-well logging company lost contact with a service unit after a storm. The load held a tool with a neutron source and another with a density source. The base yard was cordoned off. Search the yard, the sheds and the containers with the Geiger counter and the plates.'),
+    T('Um sucateiro comprou ferramentas velhas de um campo de petróleo desativado. A balança acusou peso a mais e o detector da portaria apitou baixo, mas de um jeito estranho. Verifique as máquinas, os tambores e os galpões do pátio.', 'A scrap dealer bought old tools from a disused oil field. The scale showed extra weight and the gate detector beeped low, but in an odd way. Check the machines, the drums and the sheds in the yard.'),
+];
+const MANCHETE_POCO = T('Ferramenta de poço de petróleo some depois de tempestade', 'Oil-well tool goes missing after storm');
+const FALAS_POCO = [
+    T('"A ferramenta vem numa caixa de aço, mas ninguém achou. Dizem que tem fonte lá dentro. Por favor, venham."', '"The tool comes in a steel case, but nobody found it. They say there is a source inside. Please come."'),
+    T('"Os operários foram afastados do pátio. Ninguém sabe se há risco. A empresa só diz que a fonte é selada."', '"The workers were moved away from the yard. Nobody knows if there is a risk. The company only says the source is sealed."'),
+];
+function alertaPoco(sem) {
+    const r = prng(sem * 40503 + 11);
+    const idReg = IDS_REGIAO_POCO[Math.floor(r() * IDS_REGIAO_POCO.length)], reg = REGIOES.find((x) => x.id === idReg);
+    const n = r() < 0.6 ? 1 : 2;
+    const relato = RELATOS_POCO[Math.floor(r() * RELATOS_POCO.length)];
+    const lat = Math.max(-55, Math.min(80, reg.lat + (r() - 0.5) * 3)), lon = reg.lon + (r() - 0.5) * 3;
+    const veiculo = VEICULOS[Math.floor(r() * VEICULOS.length)], fala = FALAS_POCO[Math.floor(r() * FALAS_POCO.length)];
+    return {
+        id: 'q' + sem, tipo: 'rapida', nivel: 'rapida', missaoId: 100, liberaMes: 0, regional: true, ficticio: true, lat, lon, poco: true,
+        local: T(`pátio de campo de petróleo · ${reg.nome.pt}`, `oil-field yard · ${reg.nome.en}`),
+        titulo: T(`Chamado: ${reg.nome.pt}`, `Call: ${reg.nome.en}`),
+        relato, bioma: 'industrial', noticia: { veiculo, manchete: MANCHETE_POCO, fala },
+        n, iso: AMBE.name, extras: ['Tc-99m', 'Sr-90', 'Am-241'],   // distratores separáveis só com Geiger e placas: gama de energia muito alta × gama baixa × beta × alfa
+    };
+}
+
 /** O alerta completo (mesmo formato dos de ALERTAS) calculado da semente. Puro e determinístico. */
 export function alertaRapida(sem) {
+    if (ehPoco(sem)) return alertaPoco(sem);
     const r = prng(sem * 40503 + 7);
     const reg = REGIOES[Math.floor(r() * REGIOES.length)];
     const x = r();
@@ -143,11 +177,13 @@ export function missaoRapida(sem, lang = 'pt') {
         id: 100, rapida: true, semente: sem, trilha: 2, titulo: a.titulo[L], storyText: a.relato[L], descText: a.local[L],
         difficulty: 'easy', numSources: a.n, timeLimit: 90 + 60 * a.n, mapTheme: g.mapTheme, planta: g.planta, mapCols: g.cols, mapRows: g.rows,
         unlocked: true, allowedIsotopes: a.iso ? [a.iso] : [], allSameIsotope: true, candidatosExtras: a.extras, bioma: a.bioma,
+        ...(a.poco ? { addIsotope: AMBE, allowedIsotopes: [] } : {}),   // v3.36: Am-241/Be entra por `addIsotope` (como o Ra-226)
     };
 }
 
 /** Sorteia uma semente nova que não esteja em uso. `nMax` limita o número de fontes do chamado (v3.16: os primeiros são mais fáceis). */
-export function novaSemente(rand, emUso = [], nMax = 3) {
+export function novaSemente(rand, emUso = [], nMax = 3, poco = false) {
+    if (poco) { for (let i = 0; i < 400; i++) { const s = POCO_MIN + Math.floor(rand() * (999999998 - POCO_MIN)); if (!emUso.includes('q' + s) && alertaRapida(s).n <= nMax) return s; } return POCO_MIN + Math.floor(rand() * (999999998 - POCO_MIN)); }   // v3.36: semente de poço (se nenhuma couber em nMax, aceita uma de 2 fontes)
     for (let i = 0; i < 400; i++) { const s = 1 + Math.floor(rand() * 999999998); if (!emUso.includes('q' + s) && alertaRapida(s).n <= nMax) return s; }
     return 1 + Math.floor(rand() * 999999998);
 }
