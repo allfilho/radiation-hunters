@@ -154,3 +154,36 @@ for (const lang of ['pt', 'en']) {
     } finally { await nav.close(); await srv.fechar(); }
   });
 }
+
+// v3.37.2 (testes): identificação errada no Ato 1 custa 0,3 mSv; o espectrômetro mostra as linhas do Na-24 (sem o nome da fonte) e o texto sai em pt/en.
+const COM = (id) => ({ equipamentos: { [id]: 4 }, equipe: [1, 2, 3, 4].map((i) => ({ id: 'c' + i, nome: 'N' + i, retrato: 'lara', especialidade: 'campo', doses: [], equip: id })) });
+const estadoEsp = `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], bestStars: { 1: 3, 2: 2 }, settings: { encontros: false } }));
+  localStorage.setItem('radiationHuntersAgencia', JSON.stringify(Object.assign({ v: 3, iniciado: true, dia: 30, proximoAlerta: null, proximaRapida: 99, creditos: 5000, ativos: [{ id: 'q980000001', desde: 30, expira: 50 }],
+    ciencia: { concluidas: { espectrometriaGama: 1, geocronologia: 1 }, andamento: {} } }, ${JSON.stringify(COM('espectrometro'))}))); } catch (e) {} `;
+for (const lang of ['pt', 'en']) {
+  test(`campo (${lang}): Ato 1 com espectrômetro mostra as linhas do Na-24; escolher o isótopo errado custa 0,3 mSv`, async () => {
+    const srv = await servidor(), nav = await abrirNavegador();
+    try {
+      const { pg, erros } = await novaPagina(nav, srv.url, { idioma: lang, antes: estadoEsp });
+      await novoJogo(pg); await pg.waitForSelector('.ag-pino');
+      await pg.click('.ag-item[data-alerta="q980000001"]'); await pg.click('[data-ag="enviar"]'); await pg.waitForSelector('.ag-nave-int');
+      await pg.click('[data-assento="2"]'); await pg.click('[data-cartao]:not([disabled])');
+      await pg.click('[data-ag="decolar"]'); await pg.waitForSelector('#ag-rota'); await pg.click('#ag-chegar');
+      await pg.waitForSelector('#story-continue', { state: 'visible' }); await passarHistoria(pg);
+      await pg.waitForFunction(() => window.gameScene && window.gameScene.gameStarted && window.gameScene.sources);
+      await pg.evaluate(() => { const s = window.gameScene, f = s.sources[0].furniture; s.player.x = f.centerX; s.player.y = f.centerY; s.currentReading = 9999; s.handleIdentify(); });
+      await pg.waitForSelector('#identify-modal.active');
+      assert.equal(await pg.isVisible('#btn-espectro'), true);
+      await pg.click('#btn-espectro');
+      const lido = await pg.textContent('#identify-espectro');
+      assert.match(lido, lang === 'pt' ? /1368,6 e 2754 keV/ : /1368\.6 and 2754 keV/);
+      assert.doesNotMatch(lido, /Na-24|sódio|sodium/i, 'a linha não entrega o nome da fonte');
+      const antes = await pg.evaluate(() => GameState.doseMissao || 0);
+      await pg.click('.isotope-btn:not([data-name="Na-24"])'); await pg.waitForSelector('#identify-feedback.visible');
+      const dep = await pg.evaluate(() => GameState.doseMissao || 0);
+      assert.ok(Math.abs(dep - antes - 0.3) < 0.05, `dose extra de 0,3 mSv (antes ${antes}, depois ${dep})`);
+      assert.match(await pg.textContent('#identify-feedback'), lang === 'pt' ? /0,3 mSv/ : /0\.3 mSv/);
+      assert.deepEqual(erros, []);
+    } finally { await nav.close(); await srv.fechar(); }
+  });
+}

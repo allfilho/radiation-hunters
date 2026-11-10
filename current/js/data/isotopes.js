@@ -38,8 +38,8 @@ export const AMBE = {
 
 // v3.37 (Perícia de Laboratório): Na-24, produto de ativação por nêutrons (o ²³Na de vidro vulcânico ou de mineral vira ²⁴Na no reator de pesquisa).
 // NÃO entra em ISOTOPES (que alimenta o sorteio de fontes): a missão de perícia o declara em `addIsotope`, como o Am-241/Be.
-// Meia-vida 0,62329 d (IAEA-NDS, tabela D-1 de produtos de ativação [V]). Gamas de 1368,6 e 2754,0 keV, rendimento perto de 100 por 100 cada (dados nucleares
-// padrão; conferir na tabela do LNHB antes de publicar) [V/H]; energia efetiva = média das duas linhas = 2,061 MeV [C]. `base` é força de jogo [H]:
+// Meia-vida 0,62329 d (IAEA-NDS, tabela D-1 de produtos de ativação [V]). Gamas de 1368,6 e 2754,0 keV, rendimento perto de 100 por 100 cada (IAEA-NDS,
+// tabela 3 de padrões de raios gama: 1368,626 e 2754,007 keV, conferido em 10/11/2026) [V]; energia efetiva = média das duas linhas = 2,061 MeV [C]. `base` é força de jogo [H]:
 // de energia mais alta que o Co-60, mas de meia-vida de horas: some em dias, o que ensina "esperar" como medida de proteção.
 export const NA24 = {
     name: "Na-24", type: "gama", color: "#8fd3ff", minBase: 260, maxBase: 520, symbol: "γ",

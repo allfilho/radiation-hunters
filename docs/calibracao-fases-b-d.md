@@ -58,7 +58,7 @@ Todos os valores são **hipóteses de jogo [H]**. Economia de referência no jog
 | Lição N16 "O decaimento como relógio" | 4 perguntas | A lição ajuda a ligar meia-vida (campo) e idade (laboratório)? | | |
 | Na-24 (isótopo de ativação) | meia-vida de 0,62329 d (IAEA-NDS, tabela D-1 [V]); gama efetivo 2,061 MeV [C]; força 260 a 520 | A atividade parece cair rápido demais ou devagar demais? (no jogo a fonte é constante durante a missão) | | |
 
-Pendente de confirmação: as linhas gama do Na-24 (1368,6 e 2754 keV) vêm de dados nucleares padrão e devem ser conferidas na tabela do LNHB; a prática real de espera de amostras irradiadas nos laboratórios de traço de fissão não foi confirmada em fonte lida (o Arnaldo, que conhece o laboratório, pode ajustar os isótopos e o enredo).
+Confirmado em 10/11/2026 [V]: as linhas gama do Na-24 (1368,626 e 2754,007 keV, emissão de 99,99 % e 99,87 % por decaimento) na tabela 3 de padrões da IAEA-NDS. Pendente de confirmação: a prática real de espera de amostras irradiadas nos laboratórios de traço de fissão não foi confirmada em fonte lida (o Arnaldo, que conhece o laboratório, pode ajustar os isótopos e o enredo).
 
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
