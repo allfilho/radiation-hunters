@@ -2269,3 +2269,12 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 /* v3.25: cabine do transporte (embarque, assentos, desembarque) no painel de voo da Agência */
 .ag-cabine { margin: 0 0 10px; border: 2px solid #355a78; border-radius: 6px; background: #050b11; overflow: hidden; }
 .ag-cabine svg { display: block; width: 100%; height: auto; shape-rendering: crispEdges; }
+
+/* v3.38 (Fase F): plano de dose no preparo e dosímetro no HUD */
+.ag-plano { margin-top: 12px; padding: 10px 12px; border: 1px solid #2b4a66; border-radius: 6px; background: rgba(5,10,15,.4); }
+.ag-plano-op { flex-wrap: wrap; }
+.ag-plano-op .menu-btn.sel { border-color: var(--primary, #00ff88); box-shadow: 0 0 0 2px rgba(0,255,136,.35) inset; color: #fff; }
+.plano-dose .pen-cheia { background: #4fc3ff; }
+.plano-dose.amarelo .pen-cheia { background: #ffcc00; }
+.plano-dose.vermelho .pen-cheia { background: #ff5a4a; }
+.plano-dose.vermelho { border-color: #ff5a4a; }

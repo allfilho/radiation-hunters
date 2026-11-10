@@ -18,6 +18,7 @@ import {
     CUSTOS, NAVES, TIPOS_NAVE, CONSTRUIVEIS, UNICOS, GRADE_MAX, baiasTotal, camasTotal, modulosProntos, temLaboratorio, temMedico, limiteRetorno, pesquisaPronta, temOficina, camasOcupadas, naveLivre,
     primeiraNaveLivre, comprarNave, construirModulo, expandirBase, iniciarPesquisa, contratar, enviarResgate, enviarLevantamento, foiLevantado,
 } from './frota.js';
+import { OBJETIVOS, margemMsv, sugerirObjetivo, avisosPlano, objetivoValido } from './plano-dose.js';
 
 const preencher = (s, dados) => s.replace(/\{(\w+)\}/g, (_, k) => (dados[k] ?? ''));
 const estrelasTxt = (n) => { const k = Math.max(0, Math.min(3, n | 0)); return '★'.repeat(k) + '☆'.repeat(3 - k); };
@@ -325,7 +326,28 @@ export const metodosBase = {
             + `<div class="ag-nave-int" role="group" aria-label="${L.naveInterior}"><span class="ag-frente" aria-hidden="true">${L.frente} ▶</span>${casco}<div class="ag-assentos" style="--n:${p.max}">${assentos}</div></div>${acoesAssento}`
             + (p.aviso ? `<p class="ag-aviso" role="status">${p.aviso}</p>` : '')
             + `<h4 class="ag-sub">${L.elencoTit}</h4><div class="ag-elenco">${cartoes}</div>`
+            + this.htmlPlano()
             + `<div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="decolar" ${pode ? '' : 'disabled'}>${p.tipo === 'voo' ? L.decolar : L.enviarResgate}</button><button type="button" class="menu-btn secondary" data-ag="sugerir">${L.sugerir}</button><button type="button" class="menu-btn secondary" data-ag="cancelar-preparo">${L.cancelarPreparo}</button></div></div>`;
+    },
+    /** v3.38 (Fase F): o preparo de um voo para missão de campo ou chamado rápido leva um plano de dose. */
+    temPlano() { const p = this.preparo, a = p && p.alvo; return !!p && p.tipo === 'voo' && !!a && (a.tipo === 'missao' || a.tipo === 'rapida'); },
+    /** Objetivo escolhido pelo jogador (null = sem objetivo, o padrão: o bônus exige escolher). */
+    objetivoDoPreparo() { const p = this.preparo; return this.temPlano() && p.objetivoManual ? objetivoValido(p.objetivo) : null; },
+    htmlPlano() {
+        if (!this.temPlano()) return '';
+        const L = this.L, e = this.est, obj = this.objetivoDoPreparo();
+        const membros = this.idsDoPreparo().map((id) => e.equipe.find((m) => m.id === id)).filter(Boolean);
+        const margens = membros.map((m) => `<li>${m.nome}: ${preencher(L.planoMargem, { v: fmt(margemMsv(m, e.dia)) })}</li>`).join('');
+        const opcoes = OBJETIVOS.map((o) => `<button type="button" class="menu-btn secondary ag-mini${obj === o.msv ? ' sel' : ''}" data-ag="objetivo" data-v="${o.msv}" aria-pressed="${obj === o.msv}">${preencher(L.planoOpcao, { v: fmt(o.msv), b: Math.round(o.bonus * 100) })}</button>`).join('')
+            + `<button type="button" class="menu-btn secondary ag-mini${obj === null ? ' sel' : ''}" data-ag="objetivo" data-v="0" aria-pressed="${obj === null}">${L.planoSem}</button>`;
+        const av = avisosPlano(membros, e.dia, obj), sug = sugerirObjetivo(membros, e.dia);
+        return `<div class="ag-plano" id="ag-plano" role="group" aria-label="${L.planoTit}"><h4 class="ag-sub">${L.planoTit}</h4><p class="ag-nota">${L.planoExpl}</p>`
+            + (membros.length ? `<ul class="ag-lista-simples">${margens}</ul>` : '')
+            + `<div class="ag-acoes ag-plano-op">${opcoes}</div>`
+            + `<p class="ag-nota" id="ag-plano-escolha" role="status">${obj === null ? L.planoSemNota : preencher(L.planoEscolha, { v: fmt(obj), b: Math.round(OBJETIVOS.find((o) => o.msv === obj).bonus * 100) })}</p>`
+            + (sug !== null ? `<p class="ag-nota" id="ag-plano-sugestao">${preencher(L.planoSugestao, { v: fmt(sug) })}</p>` : '')
+            + (av.length ? `<p class="ag-aviso">${preencher(L.planoAviso, { quem: av.map((x) => `${x.nome} (${fmt(x.margem)} mSv)`).join(', ') })}</p>` : '')
+            + `</div>`;
     },
     /** Põe `id` num assento: no selecionado, senão no primeiro livre. Devolve false se a nave está cheia. */
     embarcar(id) {
@@ -362,12 +384,14 @@ export const metodosBase = {
         if (k === 'tirar-assento') { const p = this.preparo; if (p && p.selSeat !== null) { p.seats[p.selSeat] = null; p.selSeat = null; } this.desenhar(false); return true; }
         if (k === 'passar-frente') { const p = this.preparo; if (p && p.selSeat > 0) { [p.seats[0], p.seats[p.selSeat]] = [p.seats[p.selSeat], p.seats[0]]; p.selSeat = null; } this.desenhar(false); return true; }
         if (k === 'sugerir') { const p = this.preparo; if (p) { const disp = e.equipe.filter((m) => disponivel(m, e.dia)).sort((x, y) => razao(x, e.dia) - razao(y, e.dia)); p.seats = Array.from({ length: p.max }, (_, i) => (i < Math.min(2, p.max) && disp[i] ? disp[i].id : null)); p.selSeat = null; p.aviso = ''; } this.desenhar(false); return true; }
+        if (k === 'objetivo') { const p = this.preparo; if (p) { const v = Number(b.dataset.v); p.objetivo = v > 0 ? v : null; p.objetivoManual = true; } this.desenhar(false); return true; }
         if (k === 'cancelar-preparo') { this.preparo = null; this.desenhar(false); return true; }
         if (k === 'decolar') {
             const p = this.preparo, ids = this.idsDoPreparo(); if (!p || !ids.length) return true;
             if (p.tipo === 'resgate') { const r = enviarResgate(e, p.coletaId, ids); this.preparo = null; return feito(r); }
             if (!primeiraNaveLivre(e, 'tripulacao')) return true;
-            this.equipeSaida = { ids: [...ids], lider: ids[0], ativo: ids[0], acum: {}, naveId: (primeiraNaveLivre(e, 'tripulacao') || {}).id };   // o primeiro assento é o líder, que vai à frente
+            const objetivo = this.objetivoDoPreparo();   // v3.38: plano de dose da saída (null = sem objetivo)
+            this.equipeSaida = { ids: [...ids], lider: ids[0], ativo: ids[0], acum: {}, naveId: (primeiraNaveLivre(e, 'tripulacao') || {}).id, objetivo, alarmes: {} };   // o primeiro assento é o líder, que vai à frente
             this.voo = { alvo: p.alvo }; this.preparo = null; this._parar(); this.vel = 0; this.desenhar(false);
             const c = this.el.querySelector('#ag-chegar'); if (c) c.focus();
             return true;

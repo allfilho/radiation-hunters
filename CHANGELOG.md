@@ -3,6 +3,15 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.38.0 — 2026-11-10 — Fase F: plano de dose antes da missão
+- **Plano de dose no preparo** (missões de campo e chamados rápidos): mostra a margem de cada cientista embarcado até o limite das Normas (janela mais restritiva de 1, 7 ou 30 dias) e pede o objetivo de dose individual da saída: 0,25 / 0,5 / 0,75 / 1,0 mSv ou sem objetivo. Sugestão automática (o maior objetivo que cabe na menor margem) até o jogador escolher; aviso se alguém embarcado tem margem menor que o objetivo.
+- **Dosímetro em campo:** linha no HUD com a dose da saída de quem está à frente e o objetivo; com a câmara de ionização, também o tempo estimado até o objetivo na taxa atual (tempo = dose ÷ taxa). Ao atingir o objetivo, alarme (três bipes e aviso) uma vez por cientista, sugerindo trocar quem vai à frente (7 a 0) ou terminar. Nada é forçado.
+- **Relatório:** missão concluída com todos dentro do objetivo paga bônus de 20 / 15 / 10 / 5 % do prêmio. Quem passar o objetivo em mais de 25 % provoca a revisão pós-trabalho: a equipe fica 1 dia a mais ocupada, sem bônus. Base real: OECD/NEA, *Work Management* (NEA 6399, 2009) [V]; valores do jogo [H] (docs/calibracao-fases-b-d.md, seção 9).
+- **Lição N17 "Planejar a dose"** (4 perguntas; fatos em docs/referencias-5c/busca/plano-dose-v3-38.md: NEA 6399 e 10 CFR 34.47 [V], cálculo tempo = dose ÷ taxa [C]).
+- **Na-24:** linhas gama confirmadas na tabela 3 de padrões da IAEA-NDS (1368,626 e 2754,007 keV) [V].
+- Código: `js/agencia/plano-dose.js` (lógica pura); preparo em `ui-base.js`; relatório, bônus e revisão em `ui-agencia.js`; HUD e alarme em `GameScene.js`, `ui.js`, `audio.js`; textos pt/en.
+- **Testes:** novo 85 (12 subtestes: lógica, preparo em desktop e celular pt/en, HUD, alarme, bônus, revisão); 84 com identificação errada e linhas do Na-24; 09 (24 conceitos).
+
 ## v3.37.1 · 2026-11-09 — Correções do teste no site publicado (Perícia de Laboratório)
 
 - Ato 1 e Ato 2 passam a mostrar na tela do chamado o aviso do bônus opcional e o prêmio (Ato 1: bônus de 2500 créditos ao final; Ato 2: 2500 com 2 estrelas, até 3250 com 3). pt/en.

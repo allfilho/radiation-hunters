@@ -266,6 +266,24 @@ export const PERGUNTAS = [
         ['What makes decay useful as a clock?', ['The decay rate is characteristic of the nuclide and, in general, does not change with temperature or pressure', 'Each atom decays at an exact moment that can be predicted', 'The radiation itself marks the date on the rock'], 'We cannot predict when a single atom decays, but the rate of a nuclide is stable and characteristic; so by measuring how much has decayed, we can estimate how much time has passed.'],
         ['C1.1', 'C1.2'], 'V+R'),
 
+    // ---- N17 Planejar a dose (v3.38)
+    q('N17-1', 'N17', 1, 'mf', 'fato',
+        ['Em trabalhos reais com radiação, a dose é estimada antes, a partir da taxa na área, do tempo e do número de pessoas.', 'A agência de energia nuclear da OCDE descreve objetivos de dose fixados na preparação do trabalho e comparados depois com a dose real.'],
+        ['In real jobs with radiation, the dose is estimated beforehand, from the rate in the area, the time and the number of people.', 'The OECD Nuclear Energy Agency describes dose goals set while preparing the job and later compared with the real dose.'],
+        ['N17-F1']),
+    q('N17-2', 'N17', 2, 'mc', 1,
+        ['A taxa perto da fonte é de 2 mSv/h e o objetivo da saída é 0,5 mSv. Quanto tempo dá para ficar ali?', ['1 hora', '15 minutos', '4 horas'], 'Dose = taxa × tempo, então tempo = dose ÷ taxa = 0,5 ÷ 2 = 0,25 h, ou seja, 15 minutos.'],
+        ['The rate near the source is 2 mSv/h and the trip goal is 0.5 mSv. How long can you stay there?', ['1 hour', '15 minutes', '4 hours'], 'Dose = rate × time, so time = dose ÷ rate = 0.5 ÷ 2 = 0.25 h, that is, 15 minutes.'],
+        ['N17-C1', 'C2.3'], 'V+R'),
+    q('N17-3', 'N17', 1, 'mf', 'mito',
+        ['Se o dosímetro tocou o alarme, o melhor é ficar até terminar, para não perder a viagem.', 'O alarme avisa que o limite combinado chegou: quem está à frente deve sair ou ser trocado. Em radiografia industrial nos EUA, cada pessoa usa um medidor com alarme durante o trabalho.'],
+        ['If the dosimeter alarm goes off, it is best to stay until you finish, so the trip is not wasted.', 'The alarm warns that the agreed limit has been reached: whoever is in front should leave or be swapped. In industrial radiography in the US, each person wears an alarming meter during the work.'],
+        ['N17-F2'], 'V+R'),
+    q('N17-4', 'N17', 2, 'mc', 0,
+        ['Por que revezar quem vai à frente ajuda a cumprir o objetivo de dose?', ['Porque a dose do trabalho se divide entre várias pessoas, e ninguém passa do objetivo', 'Porque a fonte enfraquece quando vê mais gente', 'Porque o dosímetro zera ao trocar de pessoa'], 'A fonte emite o mesmo, mas cada pessoa fica menos tempo perto dela; como dose = taxa × tempo, a dose de cada um cai.'],
+        ['Why does rotating who goes in front help meet the dose goal?', ['Because the job’s dose is split among several people, and nobody goes over the goal', 'Because the source weakens when it sees more people', 'Because the dosimeter resets when you swap people'], 'The source emits the same, but each person spends less time near it; since dose = rate × time, each person’s dose falls.'],
+        ['C2.3', 'N17-F1'], 'V+R'),
+
     // ---- nós de história
     q('E-GOI-1', 'E-GOI', 1, 'mf', 'fato',
         ['O césio de Goiânia vinha de um aparelho de radioterapia abandonado numa clínica.', 'O relatório da AIEA descreve a unidade de teleterapia de césio-137 deixada numa clínica abandonada.'],

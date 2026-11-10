@@ -202,7 +202,7 @@ test('caderno de campo: conceitos por descobrir ficam trancados; depois de um en
     await pg.evaluate(() => { GameState.aprendizado.nos.N02 = { m: 2, v: 2, a: 2, e: 0 }; });
     await pg.click('#btn-caderno');
     assert.ok((await pg.$$eval('.cad-carta:not(.fechada)', (e) => e.length)) >= 1);
-    assert.match(await pg.textContent('#caderno-resumo'), /1 de 23/);
+    assert.match(await pg.textContent('#caderno-resumo'), /1 de 24/);
     assert.deepEqual(erros, []);
   }));
 

@@ -18,6 +18,7 @@ import { mapaMundiSvg, posicaoSvg } from './mapa-mundi.js';
 import { TXT, NOME_AGENCIA } from './textos.js';
 import { metodosBase } from './ui-base.js';
 import { distribuirDoseMissao, NORMAS, razao, corCaneta } from './equipe.js';
+import { avaliarPlano, bonusPlano, bonusDoObjetivo, PLANO } from './plano-dose.js';
 import { CUSTOS, registrarColeta, foiLevantado, pesquisaPronta, diasDeVolta, registrarRetorno } from './frota.js';
 import { novoEstado, sanear, iniciar, avancarDia, concluir, mesDe, diaDoMes, diasRestantes, PARAMETROS } from './simulacao.js';
 
@@ -73,12 +74,14 @@ export class AgenciaUI {
     /** Fim ou saída de uma missão/investigação aberta pela Agência. r = { concluida, estrelas }. */
     retornar(r = {}) {
         const L = this.L, a = this.alvo; this.relatorio = null;
+        let ganhoCampo = 0, concluiuCampo = false, res = null;   // v3.38: para o plano de dose
         if (a) {
             const d = this.dadosAlerta(a);
             const ativo = this.est.ativos.some((x) => x.id === a.id);
             if (r.concluida && ativo) {
                 const pts = emCampo(a) ? Math.max(1, Math.min(3, r.estrelas | 0)) : PARAMETROS.pontosInvestigacao;
                 const ganho = concluir(this.est, a.id, pts);
+                if (emCampo(a)) { ganhoCampo = ganho; concluiuCampo = true; }
                 this.relatorio = emCampo(a) ? preencher(L.relatorioMissao, { titulo: d.titulo, estrelas: estrelasTxt(pts), valor: ganho }) : preencher(L.relatorioInv, { titulo: d.titulo, valor: ganho });
                 if (((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida') && r.fontes > 0 && registrarColeta(this.est, a.id, r.fontes, r.isotopos)) this.relatorio += ' ' + L.aguardandoColeta;
             } else if (ativo) this.relatorio = preencher(L.relatorioAbandono, { titulo: d.titulo });
@@ -89,10 +92,24 @@ export class AgenciaUI {
             const soma = Object.values(q.acum || {}).reduce((x, y) => x + y, 0);
             const exato = !!q.exato && Math.abs(r.dose - soma) < 1e-6;   // v3.17: cada um recebeu a dose do lugar onde esteve
             if (!exato && r.dose > soma) this.registrarDoseCampo(r.dose - soma);   // dose que não passou pelo registro de campo vai a quem estava à frente
-            const res = distribuirDoseMissao(this.est.equipe, q.ids, q.lider, r.dose, this.est.dia, q.acum, exato);
+            res = distribuirDoseMissao(this.est.equipe, q.ids, q.lider, r.dose, this.est.dia, q.acum, exato);
             const nomes = res.filter((x) => x.tratamento).map((x) => (this.est.equipe.find((m) => m.id === x.id) || {}).nome).filter(Boolean);
             const fmt = (n) => (Math.round(n * 100) / 100).toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-US');
             this.relatorio = (this.relatorio ? this.relatorio + ' ' : '') + preencher(L.relatorioDose, { l: fmt((res.find((x) => x.id === q.lider) || { msv: 0 }).msv), a: fmt(res.filter((x) => x.id !== q.lider).reduce((s, x, _, v) => s + x.msv / v.length, 0)) }) + (nomes.length ? ' ' + preencher(L.relatorioTratamento, { quem: nomes.join(', ') }) : '');
+        }
+        // v3.38 (Fase F): plano de dose. Bônus se a missão foi concluída e todos ficaram dentro do objetivo; revisão se alguém passou 25 %.
+        let revisao = null;
+        if (q && emCampo(a) && q.objetivo != null) {
+            const doses = res || q.ids.map((id) => ({ id, msv: 0 }));
+            const av = avaliarPlano(q.objetivo, doses), v = (Math.round(av.objetivo * 100) / 100).toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-US');
+            const nomesDe = (ids) => ids.map((id) => (this.est.equipe.find((m) => m.id === id) || {}).nome).filter(Boolean).join(', ');
+            const partes = [];
+            if (!concluiuCampo) partes.push(L.relPlanoSemConclusao);
+            else if (av.cumprido) { const b = bonusPlano(av.objetivo, ganhoCampo, true, true); this.est.creditos += b; partes.push(preencher(L.relPlanoOk, { v, b })); }
+            if (av.acima.length && (concluiuCampo || av.revisao)) partes.push(preencher(L.relPlanoFora, { v, quem: nomesDe(av.acima) }));
+            if (av.revisao) { revisao = av.revisados; partes.push(preencher(L.relPlanoRevisao, { quem: nomesDe(av.revisados), d: PLANO.revisaoDias })); }
+            if (partes.length) this.relatorio = (this.relatorio ? this.relatorio + ' ' : '') + partes.join(' ');
+            this.ultimoPlano = { ...av, bonus: concluiuCampo && av.cumprido ? Math.round(ganhoCampo * bonusDoObjetivo(av.objetivo)) : 0 };
         }
         if (!this.est.iniciado && treinamentoConcluido(this.cb.desbloqueadas())) iniciar(this.est, CUSTOS.creditosIniciais);
         // v3.17: a equipe volta no mesmo jato; a nave e os cientistas ficam ocupados durante o voo de volta
@@ -101,6 +118,7 @@ export class AgenciaUI {
             const horas = horasDeVoo(Math.round(distanciaKm(BASE, a) / 10) * 10), dias = diasDeVolta(horas);
             if (registrarRetorno(this.est, q.naveId, q.ids, dias, a.id)) volta = { alvo: a, retorno: true, dias, ids: [...q.ids] };
         }
+        if (revisao && q) for (const id of q.ids) { const m = this.est.equipe.find((x) => x.id === id); if (m) m.ocupadoAte = Math.max(m.ocupadoAte || 0, this.est.dia) + PLANO.revisaoDias; }   // a equipe toda revê o plano
         this.gravar();
         this._parar(); this.vista = 'mapa'; this.sel = null; this.sala = null; this.mod = null; this.vazio = null; this.preparo = null; this.equipeSaida = null; this.voo = volta; this.vel = 0;
         this.desenhar(true);

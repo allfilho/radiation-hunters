@@ -751,9 +751,24 @@ export class UIManager {
     }
 
     /** Caneta dosimétrica do líder: info = { msv, r, cor } ou null (esconde). */
+    /** v3.38: número no formato do idioma (até 2 casas). */
+    numeroLocal(x) { return (Math.round(x * 100) / 100).toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-US'); }
+    /** v3.38 (Fase F): linha do dosímetro com o objetivo do plano de dose. info = { objetivo, dose, segundos } ou null. */
+    atualizarPlanoDose(info) {
+        const el = document.getElementById('plano-dose'); if (!el) return;
+        if (!info) { el.hidden = true; return; }
+        el.hidden = false;
+        const f = Math.min(1, info.dose / info.objetivo);
+        el.classList.toggle('amarelo', f >= 0.75 && f < 1); el.classList.toggle('vermelho', f >= 1);
+        let txt = t('planoRot').replace('{d}', this.numeroLocal(info.dose)).replace('{o}', this.numeroLocal(info.objetivo));
+        if (f >= 1) txt += t('planoAtingido');
+        else if (info.segundos != null && info.segundos < 3600) { const s = Math.max(0, Math.round(info.segundos)); txt += t('planoTempo').replace('{t}', `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`); }
+        document.getElementById('plano-rot').textContent = txt;
+        document.getElementById('plano-cheia').style.width = Math.round(f * 100) + '%';
+    }
     atualizarCaneta(info) {
         const el = document.getElementById('pen-dose'); if (!el) return;
-        if (!info) { el.hidden = true; return; }
+        if (!info) { el.hidden = true; this.atualizarPlanoDose(null); return; }
         el.hidden = false; el.classList.remove('verde', 'amarelo', 'vermelho'); el.classList.add(info.cor);
         const pt = currentLang === 'pt', nome = { verde: pt ? 'verde' : 'green', amarelo: pt ? 'amarela' : 'yellow', vermelho: pt ? 'vermelha' : 'red' }[info.cor];
         const n = (x) => (Math.round(x * 100) / 100).toLocaleString(pt ? 'pt-BR' : 'en-US');

@@ -135,6 +135,23 @@ export class AudioManager {
         } catch (e) {}
     }
     
+    /** v3.38: alarme do dosímetro (três bipes curtos e agudos). */
+    playAlarmeDose() {
+        if (!this.audioContext || this.volume === 0 || !this.efeitosLigados) return;
+        try {
+            const now = this.audioContext.currentTime;
+            for (let k = 0; k < 3; k++) {
+                const osc = this.audioContext.createOscillator(), gain = this.audioContext.createGain();
+                osc.connect(gain); gain.connect(this.audioContext.destination);
+                osc.frequency.value = 2400; osc.type = 'square';
+                const t0 = now + k * 0.18;
+                gain.gain.setValueAtTime(this.volume * 0.08, t0);
+                gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.12);
+                osc.start(t0); osc.stop(t0 + 0.12);
+            }
+        } catch (e) {}
+    }
+
     setEfeitosLigados(ligado) { this.efeitosLigados = ligado !== false; }
     
     setMusicaLigada(ligado) {

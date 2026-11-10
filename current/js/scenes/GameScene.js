@@ -9,6 +9,7 @@ import { candidatosDaMissao, rotuloDoCandidato } from '../data/candidatos.js';
 import { JanelaDeContagem, PARAMETROS as PARAM_GEIGER, SONDA_ALFA_FATOR, contar, distanciaAoRetangulo, pontoMaisProximo, taxaEsperada, taxaNeutronsEsperada } from '../fisica/geiger.js';
 import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
 import { foiLevantado } from '../agencia/frota.js';
+import { tempoAteObjetivo } from '../agencia/plano-dose.js';
 import { bonusDe } from '../agencia/equipe.js';
 import { equipDe } from '../agencia/ciencia.js';
 import { currentLang, t } from '../i18n/index.js';
@@ -988,6 +989,23 @@ export class GameScene extends Phaser.Scene {
         q.exato = true;
         GameState.doseMissao = (GameState.doseMissao || 0) + dd;
         ui.atualizarCaneta(ui.agencia.penDoLider(ui.agencia.doseDoAtivo()));
+        this.verificarPlanoDose(q, ativo, taxaMsvH);
+    }
+
+    /** v3.38 (Fase F): dosímetro com o objetivo do plano de dose. HUD de quem está à frente; alarme uma vez por cientista. */
+    verificarPlanoDose(q, ativo, taxaMsvH) {
+        if (!q || q.objetivo == null) { ui.atualizarPlanoDose(null); return; }
+        q.alarmes = q.alarmes || {};
+        const dose = (q.acum && q.acum[ativo]) || 0;
+        // o tempo até o objetivo usa a taxa da câmara de ionização: sem câmara, só a dose e o objetivo
+        ui.atualizarPlanoDose({ objetivo: q.objetivo, dose, segundos: this.temCamara() ? tempoAteObjetivo(q.objetivo, dose, taxaMsvH) : null });
+        for (const id of q.ids) {
+            if (q.alarmes[id] || !((q.acum && q.acum[id]) >= q.objetivo)) continue;
+            q.alarmes[id] = true;
+            const m = ui.agencia.est.equipe.find((x) => x.id === id), nome = m ? m.nome : id;
+            audioManager.playAlarmeDose();
+            ui.showNotification(t('alarmeDose').replace('{nome}', nome).replace('{v}', ui.numeroLocal(q.objetivo)), 'error');
+        }
     }
 
     updateFurnitureInfo() {

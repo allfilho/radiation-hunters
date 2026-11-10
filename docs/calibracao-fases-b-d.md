@@ -60,6 +60,18 @@ Todos os valores são **hipóteses de jogo [H]**. Economia de referência no jog
 
 Confirmado em 10/11/2026 [V]: as linhas gama do Na-24 (1368,626 e 2754,007 keV, emissão de 99,99 % e 99,87 % por decaimento) na tabela 3 de padrões da IAEA-NDS. Pendente de confirmação: a prática real de espera de amostras irradiadas nos laboratórios de traço de fissão não foi confirmada em fonte lida (o Arnaldo, que conhece o laboratório, pode ajustar os isótopos e o enredo).
 
+## 9. Plano de dose (v3.38, Fase F)
+Base real [V]: OECD/NEA, *Work Management* (NEA 6399, 2009): objetivo de dose fixado na preparação, comparado com a dose real depois; revisão pós-trabalho na Coreia quando a real passa a esperada em 25 %. Os números abaixo são **hipóteses de jogo [H]**. Referência: o robô de calibração recebe 0,5 a 2,4 mSv por saída como líder (`js/fisica/dose.js`).
+| Item | Valor | Pergunta para a turma | Observado | Ajustar? |
+|---|---|---|---|---|
+| Objetivos | 0,25 / 0,5 / 0,75 / 1,0 mSv por cientista, ou sem objetivo | Os alunos escolhem o objetivo olhando a margem de cada um? Alguém entende "margem"? | | |
+| Bônus | +20 / +15 / +10 / +5 % do prêmio se todos ficarem dentro e a missão for concluída | O bônus faz o aluno revezar quem vai à frente, ou ele só escolhe 1,0 mSv para garantir? | | |
+| Sugestão automática | o maior objetivo que cabe na menor margem | A sugestão tira a decisão do aluno? Melhor começar sem sugestão? | | |
+| Alarme do dosímetro | toca uma vez por cientista ao atingir o objetivo; não obriga a sair | Os alunos trocam de cientista (teclas 7 a 0) depois do alarme? | | |
+| Tempo até o objetivo | só com a câmara de ionização (usa a taxa medida: tempo = dose ÷ taxa) | O número ajuda a planejar ou distrai? | | |
+| Revisão pós-trabalho | dose real > 1,25 × objetivo: equipe fica 1 dia a mais ocupada, sem bônus | A punição é perceptível? Leve demais, pesada demais? | | |
+| Lição N17 "Planejar a dose" | 4 perguntas (fatos N17-F1, N17-F2, N17-C1, C2.3) | A conta "tempo = dose ÷ taxa" fica clara? | | |
+
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
 

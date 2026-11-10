@@ -87,6 +87,11 @@ export const CONCEITOS = [
         pt: { titulo: 'O decaimento como relógio', ficha: 'A meia-vida é característica de cada nuclídeo e, em geral, não muda com temperatura ou pressão; por isso o decaimento funciona como relógio. Uma amostra ativada em reator, como o Na-24 (meia-vida de cerca de 15 horas), perde metade da atividade a cada meia-vida: esperar protege. Em datação, a mesma lógica vira idade, como no método do traço de fissão, que conta o dano deixado pela fissão espontânea do urânio-238 acumulada ao longo do tempo.', fonte: 'US NRC, glossário "Half-life"; US DOE, DOE-HDBK-1122-99; IAEA Nuclear Data Section, tabela D-1' },
         en: { titulo: 'Decay as a clock', ficha: 'The half-life is characteristic of each nuclide and, in general, does not change with temperature or pressure; that is why decay works as a clock. A sample activated in a reactor, such as Na-24 (half-life of about 15 hours), loses half its activity every half-life: waiting protects. In dating, the same logic becomes an age, as in the fission-track method, which counts the damage left by spontaneous fission of uranium-238 accumulated over time.', fonte: 'US NRC, glossary "Half-life"; US DOE, DOE-HDBK-1122-99; IAEA Nuclear Data Section, table D-1' },
     },
+    {
+        id: 'N17', tema: 'dose', prereq: ['N07', 'N12'], missoes: [], gatilhos: [],
+        pt: { titulo: 'Planejar a dose', ficha: 'Antes de um trabalho com radiação, a equipe estima a dose a partir da taxa na área, do tempo e do número de pessoas, fixa um objetivo e, no fim, compara a dose real com ele. Dose = taxa × tempo: a 2 mSv/h, 0,5 mSv chegam em 15 minutos.', fonte: 'OECD/NEA, Work Management (NEA 6399, 2009); 10 CFR 34.47; US EPA (tempo, distância e blindagem)' },
+        en: { titulo: 'Planning the dose', ficha: 'Before a job with radiation, the team estimates the dose from the rate in the area, the time and the number of people, sets a goal and, at the end, compares the real dose with it. Dose = rate × time: at 2 mSv/h, 0.5 mSv arrives in 15 minutes.', fonte: 'OECD/NEA, Work Management (NEA 6399, 2009); 10 CFR 34.47; US EPA (time, distance and shielding)' },
+    },
     // ---------- nós de história (um por acidente) ----------
     {
         id: 'E-GOI', tema: 'historias', historia: true, prereq: ['N02', 'N06', 'N13'], missoes: [2], gatilhos: [],
