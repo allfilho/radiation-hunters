@@ -7,6 +7,7 @@ import { GameState } from './estado.js';
 import { CONCEITOS } from './data/encontros/conceitos.js';
 import { PERGUNTAS } from './data/encontros/perguntas.js';
 import { normalizarAprendizado } from './encontros/motor.js';
+import { saneaSementeTurma } from './corridas.js';
 
 const CHAVE = 'radiationHunters';
 const CHAVE_LANG = 'radiationHuntersLang';
@@ -54,6 +55,7 @@ export function sanear(dados) {
             screenShake: booleano(s.screenShake, base.screenShake),
             encontros: booleano(s.encontros, base.encontros),
             revisao: booleano(s.revisao, base.revisao),
+            sementeTurma: saneaSementeTurma(s.sementeTurma),   // v3.43: modo professor
         },
         aprendizado: normalizarAprendizado(d.aprendizado, CONCEITOS, PERGUNTAS),
     };

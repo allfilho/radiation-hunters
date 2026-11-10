@@ -3,6 +3,12 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.43.0 — 2026-11-10 — Arcanos no meio da missão e semente da turma (modo professor)
+- **Arcanos de campo** (tarô de Cult of the Lamb): ao achar a 1ª e a 3ª fonte, aparece um painel com 2 arcanos; o jogador escolhe 1 (ou deixa passar; some em 20 s) e o efeito vale até o fim da missão. Não pausa o jogo. Vale nas missões avulsas e nas da Agência. Arcanos [H]: Radar (a fonte mais próxima pisca no minimapa por 25 s), Fôlego (correr gasta metade), Escudo (o próximo erro de identificação não custa dose nem quebra o combo), Passos leves (+10 % de velocidade), Ampulheta (+30 s na meta de tempo), Estrela (+50 % de pontos nas próximas fontes).
+- **Semente da turma** nas Missões avulsas (modo professor): quem digita a mesma semente joga a mesma corrida (mesma posição e força das fontes, mesmos arcanos oferecidos), para comparar resultados na aula. Sem semente, cada partida é diferente. Na Agência, os arcanos seguem o alerta e o dia.
+- Código: `js/corridas.js` (lógica pura); `util.js` com gerador de acaso trocável (`usarAleatorio`); ganchos em `GameScene` (oferta ao achar fonte, velocidade, fôlego, meta de tempo, pontos, escudo, radar no minimapa) e `ui.js` (painel e formulário da semente). Configuração salva: `settings.sementeTurma`. i18n +24 chaves (253).
+- **Testes:** novo 90 (7 subtestes: oferta, determinismo da semente em duas partidas, telas pt/en em desktop e celular, efeitos); 01 ajustado.
+
 ## v3.42.0 — 2026-11-10 — Identidade de jornal em todo o jogo e briefing fácil no começo
 - **Caderno de campo** virou "Arquivo de recortes": papel claro, tinta escura, abas como seções de jornal, cada conceito como recorte colado com fita; os não descobertos aparecem como recorte riscado. Corrige um defeito de contraste: o estilo de aço dos modais cobria o papel e deixava texto marrom sobre azul-escuro (ilegível).
 - **Briefing do dia** como "Boletim da manhã" da Gazeta Chronos (mês e dia de jogo). **Mais fácil no começo** [H]: até o dia 15 só "fato ou mito" de nível 1 dos conceitos de base; até o dia 40, nível 1; depois, nível 1 ou 2. O assunto da pergunta passa a entrar no Caderno de campo.

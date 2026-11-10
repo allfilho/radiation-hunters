@@ -1,14 +1,18 @@
 // ============================================
 // UTILITY FUNCTIONS
 // ============================================
+// v3.43: fonte de acaso trocável (semente da turma); padrão = Math.random
+let aleatorio = Math.random;
+/** Troca o gerador de números aleatórios usado por randomRange e shuffleArray (null volta a Math.random). */
+export function usarAleatorio(fn) { aleatorio = typeof fn === 'function' ? fn : Math.random; }
 export function randomRange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(aleatorio() * (max - min + 1)) + min;
 }
 
 export function shuffleArray(array) {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(aleatorio() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;

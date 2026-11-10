@@ -30,7 +30,7 @@ test('configurações salvas parciais são mescladas com os padrões', () =>
   com({ antes: `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], settings: { soundVolume: 20 } })); } catch (e) {}` },
     async ({ pg }) => {
       const s = await pg.evaluate(() => GameState.settings);
-      assert.deepEqual(s, { soundVolume: 20, musicVolume: 50, musicOn: true, soundOn: true, showHints: true, screenShake: true, encontros: true, revisao: false });
+      assert.deepEqual(s, { soundVolume: 20, musicVolume: 50, musicOn: true, soundOn: true, showHints: true, screenShake: true, encontros: true, revisao: false, sementeTurma: '' });   // v3.43: semente da turma
     }));
 
 // ---- correções da etapa 3d (antes eram 'todo') ----

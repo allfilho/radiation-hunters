@@ -2402,3 +2402,18 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 .ag-politica-op .menu-btn .ag-nota { display: block; }
 .ag-plano-op { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
 .ag-plano-op .menu-btn { width: 100%; }
+
+/* v3.43: arcanos no meio da missão e semente da turma */
+.arcano-oferta { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); z-index: 150; width: min(560px, calc(100vw - 32px)); padding: 10px 12px 8px;
+    background: rgba(12, 8, 24, .92); border: 2px solid #b99a4b; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.6); animation: arcano-entra .25s ease-out; }
+.arcano-tit { margin: 0 0 8px; text-align: center; color: #f2d98b; font: 700 .9rem Georgia, serif; }
+.arcano-op { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.arcano-oferta .ag-carta { min-height: 150px; }
+.arcano-passar { display: block; margin: 8px auto 0; min-height: 36px; padding: 4px 14px; background: transparent; color: #cfc6e8; border: 1px solid #6c5622; border-radius: 6px; font: .8rem Georgia, serif; cursor: pointer; }
+@keyframes arcano-entra { from { opacity: 0; transform: translate(-50%, 14px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@media (prefers-reduced-motion: reduce) { .arcano-oferta { animation: none; } }
+@media (max-width: 480px) { .arcano-oferta { bottom: 150px; } .arcano-oferta .ag-carta { min-height: 128px; padding: 8px 6px; } .arcano-oferta .ag-carta-icone { font-size: 1.6rem; } }
+.turma { margin: 8px auto 12px; max-width: 760px; }
+.turma-linha { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.turma-linha input { min-height: 40px; padding: 4px 10px; font: 700 1rem 'Courier New', monospace; letter-spacing: .12em; text-transform: uppercase; background: #fffaf0; color: var(--tinta); border: 2px solid var(--regua); border-radius: 3px; width: 12em; }
+.turma .menu-btn { width: auto; min-width: 0; min-height: 40px; padding: 4px 14px; }

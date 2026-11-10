@@ -4,6 +4,7 @@ import { htmlJornal, htmlFimJornal, temJornal } from './jornal/jornal.js';
 import { jornalRapida, reportagemFim } from './jornal/reportagens.js';
 import { GameState } from './estado.js';
 import { currentLang, setLang, t, updateTexts } from './i18n/index.js';
+import { saneaSementeTurma } from './corridas.js';
 import { formatTime } from './util.js';
 import { aprendizadoVazio } from './encontros/motor.js';
 import { EncontroUI } from './encontros/ui-encontro.js';
@@ -145,6 +146,13 @@ export class UIManager {
         
         // Back button for missions
         document.querySelectorAll('.mission-tab').forEach((b) => b.addEventListener('click', () => this.mostrarAba(b.dataset.aba)));
+        // v3.43: semente da turma (modo professor)
+        const fTurma = document.getElementById('turma-form'), iTurma = document.getElementById('turma-semente');
+        if (fTurma) {
+            this.atualizarTurma();
+            fTurma.addEventListener('submit', (ev) => { ev.preventDefault(); GameState.settings.sementeTurma = saneaSementeTurma(iTurma.value); salvar(); this.atualizarTurma(); });
+            document.getElementById('turma-limpar').addEventListener('click', () => { GameState.settings.sementeTurma = ''; salvar(); this.atualizarTurma(); });
+        }
         document.getElementById('btn-back-missions').addEventListener('click', () => {
             this.showScreen('mainMenu');
         });
@@ -311,6 +319,7 @@ export class UIManager {
     /** Destrói o jogo Phaser (via evento, para ui.js não importar main.js) */
     encerrarJogo() {
         this.screens.gameScreen.inert=false;
+        this.esconderArcanos();   // v3.43
         this.screens.investigacao.classList.remove('active');
         document.dispatchEvent(new CustomEvent('rh:encerrar'));
         this.atualizarCaneta(null); this.atualizarEquipeHud(true);
@@ -508,6 +517,7 @@ export class UIManager {
     }
 
     updateMissionsDisplay() {
+        this.atualizarTurma();   // v3.43
         const container = document.getElementById('missions-container');
         container.innerHTML = '';
         
@@ -751,6 +761,22 @@ export class UIManager {
     }
 
     /** Caneta dosimétrica do líder: info = { msv, r, cor } ou null (esconde). */
+    /** v3.43: mostra a semente da turma em uso. */
+    atualizarTurma() {
+        const i = document.getElementById('turma-semente'), e = document.getElementById('turma-estado'); if (!i || !e) return;
+        const s = GameState.settings.sementeTurma || '';
+        i.value = s; e.textContent = s ? t('turmaAtiva').replace('{0}', s) : t('turmaNenhuma');
+    }
+    /** v3.43: painel de arcanos no meio da missão. `ofertas` = ids; `escolher(id)` é chamado no clique. */
+    mostrarArcanos(ofertas, escolher) {
+        const el = document.getElementById('arcano-oferta'); if (!el) return;
+        const NUM = { radar: 'VI', folego: 'VII', escudo: 'VIII', passos: 'IX', tempo: 'X', pontos: 'XI' }, ICO = { radar: '📡', folego: '💨', escudo: '🛡️', passos: '👟', tempo: '⌛', pontos: '✨' };
+        el.innerHTML = `<p class="arcano-tit">${t('arcanoTit')}</p><div class="arcano-op">` + ofertas.map((id) => `<button type="button" class="ag-carta arcano" data-arcano="${id}"><span class="ag-carta-num" aria-hidden="true">${NUM[id] || ''}</span><span class="ag-carta-icone" aria-hidden="true">${ICO[id] || '🃏'}</span><span class="ag-carta-nome">${t('arcano_' + id)}</span><span class="ag-carta-desc">${t('arcanoDesc_' + id)}</span></button>`).join('')
+            + `</div><button type="button" class="arcano-passar" data-arcano="">${t('arcanoPassar')}</button>`;
+        el.hidden = false;
+        el.querySelectorAll('[data-arcano]').forEach((b) => b.addEventListener('click', (ev) => { ev.stopPropagation(); if (b.dataset.arcano) escolher(b.dataset.arcano); else { this.esconderArcanos(); if (window.gameScene) window.gameScene.ofertaArcanos = null; } b.blur(); }));
+    }
+    esconderArcanos() { const el = document.getElementById('arcano-oferta'); if (el) { el.hidden = true; el.innerHTML = ''; } }
     /** v3.38: número no formato do idioma (até 2 casas). */
     numeroLocal(x) { return (Math.round(x * 100) / 100).toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-US'); }
     /** v3.38 (Fase F): linha do dosímetro com o objetivo do plano de dose. info = { objetivo, dose, segundos } ou null. */

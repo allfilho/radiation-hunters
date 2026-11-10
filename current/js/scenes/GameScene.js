@@ -31,7 +31,8 @@ import { OBJ_TXT, mapaDeDistancias, pontoAdiante, proximoObjetivo } from '../aca
 import { aproveitamento } from '../encontros/aproveitamento.js';
 import { modoEstudo } from '../modo.js';
 import { DICA_PEDIDA_S, nivelDicaAuto } from '../encontros/dica.js';
-import { distance, randomRange, shuffleArray } from '../util.js';
+import { distance, randomRange, shuffleArray, usarAleatorio } from '../util.js';
+import { ARCANOS, OFERTA, prng, hashTexto, sortearOferta, abreOferta } from '../corridas.js';
 
 // ============================================
 // PHASER GAME SCENE
@@ -150,7 +151,9 @@ export class GameScene extends Phaser.Scene {
         this.drawMap();
         
         // Place sources in furniture
+        this.iniciarCorrida();   // v3.43: semente da turma e arcanos da corrida
         this.placeSources();
+        usarAleatorio(null);
         
         // Portas trancadas e chaves (Academia)
         this.criarPortasEChaves();
@@ -783,6 +786,13 @@ export class GameScene extends Phaser.Scene {
             });
         }
 
+        // v3.43: arcano de radar: a fonte não achada mais próxima pisca forte por alguns segundos
+        if (this.radarAteMs > this.elapsedMs && this.sources) {
+            const T = CONFIG.TILE_SIZE, px = this.player.x / T, py = this.player.y / T;
+            const alvo = this.sources.filter((s) => !s.found).sort((u, v) => Math.hypot(u.furniture.centerX / T - px, u.furniture.centerY / T - py) - Math.hypot(v.furniture.centerX / T - px, v.furniture.centerY / T - py))[0];
+            if (alvo) { const pulso = 0.5 + 0.5 * Math.sin(this.time.now / 160); ctx.strokeStyle = `rgba(242,217,139,${0.6 + 0.4 * pulso})`; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.arc((Math.floor(alvo.furniture.centerX / T) + 0.5) * scale, (Math.floor(alvo.furniture.centerY / T) + 0.5) * scale, scale * (1.5 + pulso), 0, Math.PI * 2); ctx.stroke(); }
+        }
         // v3.41: ajuda escondida. Muito tempo sem achar fonte: um pulso fraco no bloco aproximado da fonte mais próxima, sem aviso.
         const semAchar = (this.elapsedMs - (this.ultimoAchadoMs || 0)) / 1000;
         if (!this.fim && this.sources && precisaAjuda(semAchar, this.metaTempoS)) {
@@ -880,7 +890,7 @@ export class GameScene extends Phaser.Scene {
     }
     
     /** Meta de tempo da missão (s): timeLimit da missão; 240 s quando a missão não define. [H] */
-    get metaTempoS() { const m = this.missionData.timeLimit > 0 ? this.missionData.timeLimit : 240; return Math.round(m * (this.cartaCampo() === 'pressa' ? CARTAS.pressa.meta : 1)); }   // v3.40: carta de pressa
+    get metaTempoS() { const m = this.missionData.timeLimit > 0 ? this.missionData.timeLimit : 240; return Math.round(m * (this.cartaCampo() === 'pressa' ? CARTAS.pressa.meta : 1)) + (this.temArcano('tempo') ? ARCANOS.tempo.segundos : 0); }   // v3.40: carta de pressa; v3.43: arcano de tempo
     /** v3.40: carta de campo da saída (modo Agência) ou null. */
     cartaCampo() { const q = ui.origem === 'agencia' && ui.agencia && ui.agencia.equipeSaida; return q ? q.carta || null : null; }
     
@@ -1011,9 +1021,36 @@ export class GameScene extends Phaser.Scene {
 
     /** v3.39: fator de velocidade do cientista em campo (bônus de carreira); 1 fora do modo Agência. */
     fatorVelocidade() {
-        if (ui.origem !== 'agencia' || !ui.agencia || !ui.agencia.equipeSaida) return 1;
+        const arc = this.temArcano('passos') ? ARCANOS.passos.velocidade : 1;   // v3.43: arcano de passos (em qualquer modo)
+        if (ui.origem !== 'agencia' || !ui.agencia || !ui.agencia.equipeSaida) return arc;
         const m = ui.agencia.est.equipe.find((x) => x.id === ui.agencia.cientistaAtivo());
-        return m ? bonusDe(m, 'velocidade') * fatorMoral(m) : 1;   // v3.41: × moral
+        return arc * (m ? bonusDe(m, 'velocidade') * fatorMoral(m) : 1);   // v3.41: × moral
+    }
+    /** v3.43: corrida. Semente da turma (modo professor) fixa a posição das fontes e os arcanos; na Agência, alerta + dia. */
+    iniciarCorrida() {
+        const turma = ui.origem !== 'agencia' ? (GameState.settings.sementeTurma || '') : '';
+        const a = ui.origem === 'agencia' && ui.agencia && ui.agencia.alvo;
+        const base = turma ? hashTexto(turma + '|' + (this.missionData.id ?? '')) : (a ? hashTexto((a.id || '') + '|' + ui.agencia.est.dia) : (Math.random() * 4294967296) >>> 0);
+        this.sementeTurma = turma; this.rngArcanos = prng(base ^ 0x9E3779B9);
+        this.arcanos = []; this.escudoUsado = false; this.radarAteMs = 0; this.ofertaArcanos = null;
+        if (turma) usarAleatorio(prng(base));
+    }
+    temArcano(id) { return Array.isArray(this.arcanos) && this.arcanos.includes(id); }
+    /** Oferece 2 arcanos (não bloqueia o jogo); some sozinho depois de alguns segundos. */
+    oferecerArcanos() {
+        const ofertas = sortearOferta(this.rngArcanos, this.arcanos); if (!ofertas.length) return;
+        this.ofertaArcanos = ofertas;
+        ui.mostrarArcanos(ofertas, (id) => this.escolherArcano(id));
+        if (this._tArcanos) this._tArcanos.remove(false);
+        this._tArcanos = this.time.delayedCall(OFERTA.segundos * 1000, () => { if (this.ofertaArcanos) { this.ofertaArcanos = null; ui.esconderArcanos(); } });
+    }
+    escolherArcano(id) {
+        if (!this.ofertaArcanos || !this.ofertaArcanos.includes(id) || this.temArcano(id)) return false;
+        this.arcanos.push(id); this.ofertaArcanos = null; ui.esconderArcanos();
+        if (id === 'radar') this.radarAteMs = this.elapsedMs + ARCANOS.radar.segundos * 1000;
+        if (id === 'tempo') ui.updateTimer(Math.floor(this.elapsedMs / 1000), this.metaTempoS);
+        ui.showNotification(t('arcanoEscolhido').replace('{0}', t('arcano_' + id)), 'success');
+        return true;
     }
 
     /** v3.38 (Fase F): dosímetro com o objetivo do plano de dose. HUD de quem está à frente; alarme uma vez por cientista. */
@@ -1126,7 +1163,7 @@ export class GameScene extends Phaser.Scene {
         
         // Update stamina
         if (isRunning && (dx !== 0 || dy !== 0)) {
-            GameState.stamina = Math.max(0, GameState.stamina - CONFIG.STAMINA_DRAIN * k * (this.cartaCampo() === 'folego' ? CARTAS.folego.stamina : 1));   // v3.40: carta de fôlego
+            GameState.stamina = Math.max(0, GameState.stamina - CONFIG.STAMINA_DRAIN * k * (this.cartaCampo() === 'folego' || this.temArcano('folego') ? CARTAS.folego.stamina : 1));   // v3.40: carta de fôlego; v3.43: arcano
         } else {
             GameState.stamina = Math.min(CONFIG.STAMINA_MAX, GameState.stamina + CONFIG.STAMINA_REGEN * k);
         }
@@ -1703,12 +1740,13 @@ export class GameScene extends Phaser.Scene {
                 GameState.maxCombo = GameState.combo;
             }
             
-            const points = 100 * GameState.combo;
+            const points = Math.round(100 * GameState.combo * (this.temArcano('pontos') ? ARCANOS.pontos.fator : 1));   // v3.43: arcano de pontos
             GameState.score += points;
             
             source.found = true;
             this.ultimoAchadoMs = this.elapsedMs;   // v3.41: ajuda escondida recomeça a contar
             this.foundSources.push(source);
+            if (abreOferta(this.foundSources.length, this.sources.length)) this.oferecerArcanos();   // v3.43: arcanos no meio da corrida
             const ultima = this.foundSources.length === this.sources.length && this.licoesCompletas();
             if (ultima) this.concluindo = true;   // congela o relógio e o movimento
             
@@ -1795,12 +1833,13 @@ export class GameScene extends Phaser.Scene {
             audioManager.playError();
             if (GameState.settings.screenShake) this.cameras.main.shake(200, 0.004);
             ui.marcarTentativa(selected.name);
-            const doseErro = this.doseDoErroDeIdentificacao();
-            const txtDose = doseErro > 0 ? '\n☢ ' + t('wrongIdDose').replace('{0}', String(doseErro).replace('.', currentLang === 'pt' ? ',' : '.')) : (this._erroGratis ? '\n🃏 ' + t('cartaSegundaUsada') : '');
+            const escudo = this.temArcano('escudo') && !this.escudoUsado; if (escudo) this.escudoUsado = true;   // v3.43: arcano de escudo
+            const doseErro = escudo ? 0 : this.doseDoErroDeIdentificacao();
+            const txtDose = doseErro > 0 ? '\n☢ ' + t('wrongIdDose').replace('{0}', String(doseErro).replace('.', currentLang === 'pt' ? ',' : '.')) : (escudo ? '\n🃏 ' + t('arcanoEscudoUsado') : (this._erroGratis ? '\n🃏 ' + t('cartaSegundaUsada') : ''));
             this._erroGratis = false;
             ui.showIdentifyFeedback(false, t('wrongIsotope') + txtDose + (hint ? '\n💡 ' + hint : ''));
             ui.showNotification(t('wrongIsotope'), 'error');
-            ui.updateCombo(1);
+            if (!escudo) ui.updateCombo(1);
             this.time.delayedCall(hint ? 3500 : 1800, () => ui.liberarEscolhas());
         }
     }
