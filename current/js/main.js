@@ -1,6 +1,6 @@
 /**
  * RADIATION HUNTERS - The Isotope Chronicles
- * Version 3.47.0
+ * Version 3.48.0
  * 
  * A gamified physics education tool for teaching about radioactive decay,
  * radiation types, and shielding materials.
@@ -10,6 +10,7 @@
  * By Grupo de Cronologia - IFGW - Arnaldo Filho
  */
 
+import { vigiarIcones } from './arte/icones.js';
 import { temJornal } from './jornal/jornal.js';
 import { jornalRapida, jornalInvestigacao } from './jornal/reportagens.js';
 import { audioManager } from './audio.js';
@@ -150,6 +151,7 @@ document.addEventListener('rh:encerrar', encerrarPhaser);
 
 // Initialize on load
 function iniciar() {
+    vigiarIcones();   // v3.48: ícones desenhados no lugar dos emojis
     // Idioma salvo (o armazenamento pode estar bloqueado: lerIdioma nunca lança)
     const savedLang = lerIdioma();
     if (savedLang) {

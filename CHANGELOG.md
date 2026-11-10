@@ -3,6 +3,14 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+
+## v3.48.0 — 2026-11-10 — Ícones desenhados, seleção de missões, Como jogar e vagas de save
+- **Ícones desenhados no lugar dos emojis** (passo 4 da auditoria): conjunto próprio de 45 ícones de traço (`js/arte/icones.js`), na cor do texto, iguais em qualquer sistema. Uma troca automática converte os emojis do HTML, dos textos dos idiomas e das telas montadas por código (menu, HUD de campo, abas do caderno, avisos, lições, investigações, ícones de recompensa). Bandeiras do seletor de idioma saem (o rótulo EN/PT basta). Sinais tipográficos (✓ ✗ ★ ☆ × ≈ ○) continuam como letras.
+- **Seleção de missões** (passo 3): a semente da turma vira painel de aço (é controle, não documento); missões e investigações usam o mesmo cartão, com a faixa da esquerda indicando o tipo.
+- **Como jogar** vira "Manual de campo" em papel, como o caderno.
+- **Vagas de save:** um só botão principal (a vaga em uso ou a primeira vaga vazia); os demais são secundários.
+- **Testes:** 92 ampliado (nenhum emoji pictográfico no menu, mapa, salas, preparo e campo); 88, 89 e 01 ajustados. Suíte: 92/92.
+
 ## v3.47.0 — 2026-11-10 — Fundamentos da auditoria visual e ordem de missão
 - **Auditoria** (claude/radhunter-auditoria-visual-v3-46.md): 32 telas em dois tamanhos, com medição automática dos botões. Esta versão resolve os passos 1 e 2 do plano.
 - **Letras:** nenhum controle cai mais na fonte padrão do navegador (52 botões estavam em Arial: fechar, idioma, relógio, HUD, escudos). A fonte de pixel fica só no logotipo e nos rótulos da arte da Base; título da Agência, "PAUSADO", rótulos do Geiger e do HUD passam à fonte de interface.

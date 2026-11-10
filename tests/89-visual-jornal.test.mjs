@@ -30,7 +30,7 @@ for (const [w, h] of [[1280, 720], [390, 844]]) {
         antes: `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], bestStars: {}, settings: {}, aprendizado: { nos: {}, perguntas: {}, fichas: { N01: true } } })); } catch (e) {}` });
       await pg.click('#btn-caderno'); await pg.waitForSelector('#caderno-modal.active .cad-carta');
       const c = await pg.evaluate(() => { const box = document.querySelector('#caderno-modal .caderno-content'), tit = document.querySelector('#caderno-titulo'), ficha = document.querySelector('.cad-carta:not(.fechada) .cad-ficha'), card = document.querySelector('.cad-carta:not(.fechada)');
-        const cs = (e, p) => getComputedStyle(e)[p]; return { fundo: cs(box, 'backgroundColor'), tit: cs(tit, 'color'), ficha: cs(ficha, 'color'), card: cs(card, 'backgroundColor'), kicker: document.querySelector('.caderno-kicker').textContent }; });
+        const cs = (e, p) => getComputedStyle(e)[p]; return { fundo: cs(box, 'backgroundColor'), tit: cs(tit, 'color'), ficha: cs(ficha, 'color'), card: cs(card, 'backgroundColor'), kicker: document.querySelector('#caderno-modal .caderno-kicker').textContent }; });
       assert.ok(contraste(c.fundo, c.tit) >= 7, `título ${c.tit} sobre ${c.fundo}`);
       assert.ok(contraste(c.card, c.ficha) >= 7, `ficha ${c.ficha} sobre ${c.card}`);
       assert.match(c.kicker, /Arquivo de recortes/);

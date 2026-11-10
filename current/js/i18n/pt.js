@@ -369,6 +369,7 @@ Fonte: BASE (Alemanha), "Fukushima ten years later"; AIEA, Fukushima Daiichi Acc
         arcano_pontos: "Estrela", arcanoDesc_pontos: "+50 % de pontos nas próximas fontes.",
         turmaTit: "Semente da turma", turmaExpl: "Quem digitar a mesma semente joga a mesma corrida: mesma posição das fontes e os mesmos arcanos oferecidos. Bom para comparar resultados na aula.",
         turmaRotulo: "Semente", turmaAplicar: "Aplicar", turmaLimpar: "Limpar", turmaAtiva: "Semente em uso: {0}. Todas as missões avulsas seguem esta corrida.", turmaNenhuma: "Sem semente: cada partida é diferente.",
+        howtoKicker: "Manual de campo · Agência Chronos",
         notebookKicker: "Arquivo de recortes · Agência Chronos",
         cartaSegundaUsada: "Carta de segunda chance: este erro não custou dose.",
         alarmeDose: "Alarme do dosímetro de {nome}: objetivo de {v} mSv atingido. Troque quem vai à frente (7 a 0) ou termine logo.",

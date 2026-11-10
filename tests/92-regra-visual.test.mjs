@@ -1,7 +1,7 @@
 // v3.45: uma regra visual (aço = aparelhos e comandos; papel = documentos) e movimento só quando a vista muda.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { servidor, abrirNavegador, novaPagina, novoJogo } from './helpers/navegador.mjs';
+import { servidor, abrirNavegador, novaPagina, novoJogo, passarHistoria } from './helpers/navegador.mjs';
 const lum = (rgb) => { const [r, g, b] = rgb.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
 const contraste = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
 const EST = `try { localStorage.setItem('radiationHunters', JSON.stringify({ unlockedMissions: [1,2], bestStars: { 1: 3, 2: 2 }, settings: { encontros: false } }));
@@ -103,3 +103,24 @@ for (const [w, h] of [[1280, 720], [390, 844]]) {
     } finally { await nav.close(); await srv.fechar(); }
   });
 }
+
+// v3.48: ícones desenhados. Nenhum emoji pictográfico visível nas telas principais (estrelas ★☆ são sinais tipográficos e ficam).
+test('ícones: menu, mapa, salas, preparo e campo sem emoji; ícones em SVG no lugar', async () => {
+  const srv = await servidor(), nav = await abrirNavegador();
+  try {
+    const { pg, erros } = await novaPagina(nav, srv.url, { idioma: 'pt', antes: EST });
+    const EMO = () => pg.evaluate(() => { const modal = [...document.querySelectorAll('.modal.active')].pop(), raiz = modal || document.querySelector('.screen.active');
+      return (raiz.innerText.match(/\p{Extended_Pictographic}/gu) || []).filter((c) => !'★☆'.includes(c)); });
+    await pg.waitForTimeout(300); assert.deepEqual(await EMO(), [], 'menu');
+    assert.ok(await pg.$('#btn-new-game .ico'), 'ícone desenhado no menu');
+    await novoJogo(pg); await pg.waitForSelector('.ag-pino'); await pg.waitForTimeout(300); assert.deepEqual(await EMO(), [], 'mapa');
+    for (const s of ['alojamento', 'academia', 'cofre', 'comando', 'hangar']) { await pg.evaluate((s) => { ui.agencia.vista = 'base'; ui.agencia.abrirSala(s); }, s); await pg.waitForTimeout(250); assert.deepEqual(await EMO(), [], s); }
+    await pg.evaluate(() => { ui.agencia.vista = 'mapa'; ui.agencia.sala = null; ui.agencia.desenhar(false); });
+    await pg.click('.ag-item[data-alerta="m2"]'); await pg.click('[data-ag="enviar"]'); await pg.waitForSelector('#ag-preparo'); await pg.waitForTimeout(250); assert.deepEqual(await EMO(), [], 'preparo');
+    await pg.click('[data-ag="decolar"]'); await pg.waitForSelector('#ag-rota'); await pg.click('#ag-chegar');
+    await pg.waitForSelector('#story-continue', { state: 'visible' }); await passarHistoria(pg);
+    await pg.waitForFunction(() => window.gameScene && window.gameScene.gameStarted && window.gameScene.sources); await pg.waitForTimeout(300);
+    assert.deepEqual(await EMO(), [], 'campo'); assert.ok(await pg.$('#btn-geiger .ico'));
+    assert.deepEqual(erros, []);
+  } finally { await nav.close(); await srv.fechar(); }
+});

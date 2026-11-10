@@ -369,6 +369,7 @@ Source: BASE (Germany), "Fukushima ten years later"; IAEA, Fukushima Daiichi Acc
         arcano_pontos: "Star", arcanoDesc_pontos: "+50 % points on the next sources.",
         turmaTit: "Class seed", turmaExpl: "Everyone who types the same seed plays the same run: same source positions and the same arcana offered. Good for comparing results in class.",
         turmaRotulo: "Seed", turmaAplicar: "Apply", turmaLimpar: "Clear", turmaAtiva: "Seed in use: {0}. Every single mission follows this run.", turmaNenhuma: "No seed: every game is different.",
+        howtoKicker: "Field manual · Chronos Agency",
         notebookKicker: "Clippings archive · Chronos Agency",
         cartaSegundaUsada: "Second-chance card: this mistake cost no dose.",
         alarmeDose: "{nome}’s dosimeter alarm: goal of {v} mSv reached. Swap who is in front (7 to 0) or finish soon.",

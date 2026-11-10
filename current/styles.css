@@ -2613,3 +2613,49 @@ button, input, select, textarea { font-family: inherit; }   /* nenhum controle c
 .ag-barra-acao { position: sticky; bottom: 0; z-index: 3; margin: 6px -18px 0; padding: 10px 18px; background: #e4d7b6; border-top: 3px double var(--regua); box-shadow: 0 -6px 12px rgba(0,0,0,.18); }
 .ag-barra-acao > .menu-btn.primary { flex: 2 1 180px; }
 :is(.ag-painel, .ag-janela):has(#ag-preparo) { padding-bottom: 0; }
+
+/* ============================================
+   v3.48: ícones desenhados (js/arte/icones.js) no lugar dos emojis; mesmo traço e cor do texto em qualquer superfície
+   ============================================ */
+.ico-w { display: inline-flex; vertical-align: -0.18em; line-height: 1; }
+.ico { width: 1.15em; height: 1.15em; flex: 0 0 auto; }
+.btn-icon .ico, .action-icon .ico { width: 22px; height: 22px; }
+.action-icon { display: grid; place-items: center; }
+.cad-aba-icone .ico { width: 18px; height: 18px; }
+.notification-icon .ico { width: 20px; height: 20px; }
+.ag-rende-i .ico { width: 15px; height: 15px; vertical-align: -0.2em; }
+.inv-icone .ico { width: 40px; height: 40px; }
+
+/* ---------- v3.48: seleção de missões, Como jogar e vagas de save ---------- */
+/* a semente da turma é um controle: painel de aço, não documento */
+.turma { background: linear-gradient(180deg, #14222f, #0e1a25); color: var(--text); border: 2px solid var(--aco-borda); border-top-color: var(--aco-claro); border-radius: 6px;
+    padding: 10px 14px; font-family: var(--body-font); box-shadow: none; display: grid; gap: 6px; }
+.turma .turma-tit { font: 700 .78rem var(--ui-font); letter-spacing: .08em; text-transform: uppercase; color: var(--primary); }
+.turma .ag-nota { color: #b7c0cc; font-size: .85rem; margin: 0; }
+.turma label { font: 600 .9rem var(--ui-font); color: var(--text); }
+.turma-linha input { background: #07121b; color: #e8fff4; border: 2px solid var(--aco-borda); border-radius: 6px; font: 700 1rem var(--ui-font); letter-spacing: .12em; min-height: var(--bt-h); }
+.turma-linha input:focus-visible { outline: 3px solid var(--primary); outline-offset: 1px; }
+.turma .menu-btn { background: linear-gradient(180deg, #1d3346, #132433); color: var(--text); border: 2px solid var(--aco-borda); border-radius: 6px; font: 600 var(--bt-fs-s) var(--ui-font); box-shadow: none; }
+.turma .menu-btn:is(:hover, :focus-visible) { border-color: var(--primary); background: linear-gradient(180deg, #25405a, #17293a); color: var(--text); outline: none; }
+/* missões e investigações: o mesmo cartão; o tipo aparece na faixa da esquerda */
+.investigacao-card { border-color: var(--aco-borda); border-left: 5px solid #5aa7ff; }
+.mission-card:not(.investigacao-card) { border-left: 5px solid var(--primary); }
+.mission-card.locked { border-left-color: #3a4a5a; }
+/* Como jogar: texto de leitura = manual em papel */
+#howto-modal .modal-content.howto-content { background: #e9dfc4 repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 2px, transparent 2px 4px); color: var(--tinta); border: 3px double var(--regua); border-radius: 3px;
+    font-family: Georgia, 'Times New Roman', serif; padding: 20px 24px; box-shadow: 0 12px 40px rgba(0,0,0,.6); max-height: 92dvh; overflow-y: auto; }
+#howto-modal .howto-content::before, #howto-modal .howto-content::after { display: none; }
+#howto-modal .close-btn { color: var(--tinta); background: transparent; border: 0; }
+#howto-modal h2 { text-align: center; font: 800 1.9rem Georgia, serif; font-variant: small-caps; color: var(--tinta); text-shadow: none; border-bottom: 3px double var(--regua); padding-bottom: 4px; margin: 4px 0 10px; }
+#howto-modal .howto-sections { display: grid; gap: 12px; }
+#howto-modal .howto-section { background: #f8f2e0; border: 1px solid #a89062; box-shadow: 2px 2px 0 rgba(0,0,0,.15); padding: 10px 14px; border-radius: 0; }
+#howto-modal .howto-section h4 { font: 800 1.05rem Georgia, serif; color: var(--tinta); border-bottom: 1px solid var(--regua); padding-bottom: 2px; margin: 0 0 6px; text-transform: none; letter-spacing: 0; }
+#howto-modal :is(p, li, span) { color: var(--tinta); font-family: Georgia, serif; font-size: .95rem; line-height: 1.5; }
+#howto-modal strong { color: var(--tinta); }
+/* vagas de save: um principal por tela (a vaga ativa); as outras ações são secundárias */
+#slots-modal .slot-card:not(.ativa) .menu-btn.primary:not([data-slot="novo"]) { background: linear-gradient(180deg, #1d3346, #132433); color: var(--text); border-color: var(--aco-borda); }
+#slots-modal .slot-card.vazia .menu-btn[data-slot="novo"] { background: linear-gradient(180deg, #1d3346, #132433); color: var(--text); border: 2px solid var(--aco-borda); }
+#slots-modal .slot-card.vazia .menu-btn[data-slot="novo"]:is(:hover, :focus-visible) { border-color: var(--primary); }
+#slots-modal .slot-card.vazia:first-of-type .menu-btn[data-slot="novo"], #slots-modal .slot-card.ativa .menu-btn.primary { background: linear-gradient(180deg, #19e58c, #00c46a); color: #04150c; border-color: var(--primary); }
+#turma-form .menu-btn { background: linear-gradient(180deg, #1d3346, #132433); color: var(--text); border: 2px solid var(--aco-borda); border-radius: 6px; font: 600 var(--bt-fs-s) var(--ui-font); box-shadow: none; }
+#turma-form .menu-btn:is(:hover, :focus-visible) { border-color: var(--primary); background: linear-gradient(180deg, #25405a, #17293a); color: var(--text); outline: none; }

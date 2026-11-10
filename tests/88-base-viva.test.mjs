@@ -80,7 +80,7 @@ for (const [w, h] of [[1280, 720], [390, 844]]) {
         const { pg, erros } = await novaPagina(nav, srv.url, { idioma: lang, viewport: { width: w, height: h }, toque: w < 800, antes: EST() });
         await novoJogo(pg); await pg.waitForSelector('.ag-item[data-alerta="m2"] .ag-rende');
         const rende = await pg.textContent('.ag-item[data-alerta="m2"] .ag-rende');
-        assert.match(rende, /💰 400/); assert.match(rende, lang === 'pt' ? /⏳ prazo curto/ : /⏳ short deadline/); assert.match(rende, lang === 'pt' ? /📉 região com confiança baixa/ : /📉 region with low trust/);
+        assert.match(rende, /400/); assert.equal(await pg.$$eval('.ag-item[data-alerta="m2"] .ag-rende svg.ico', (x) => x.length) >= 3, true); assert.match(rende, lang === 'pt' ? /prazo curto/ : /short deadline/); assert.match(rende, lang === 'pt' ? /região com confiança baixa/ : /region with low trust/);
         await pg.click('.ag-item[data-alerta="m2"]'); assert.match(await pg.textContent('#ag-detalhe'), lang === 'pt' ? /Rende:/ : /Yields:/);
         await pg.evaluate(() => { ui.agencia.vista = 'base'; ui.agencia.abrirSala('alojamento'); }); await pg.waitForSelector('#ag-dados');
         assert.match(await pg.textContent('[data-carreira="c1"]'), lang === 'pt' ? /Moral: 85 \(animado\)/ : /Morale: 85 \(high\)/);
