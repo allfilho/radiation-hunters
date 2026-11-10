@@ -24,6 +24,8 @@ export const NORMAS = {
     doseColeta: 0.2, // dose de manejo na coleta de fontes, em fração de L1 por fonte [H]
 };
 
+import { fatorCarreira, saneaCarreira } from './carreira.js';
+
 const JANELA_MAX = 30;
 const NOMES_POOL = ['Ana', 'Bruno', 'Carla', 'Diego', 'Elisa', 'Fábio', 'Graça', 'Hugo', 'Iara', 'Jonas', 'Kátia', 'Lívia', 'Mateus', 'Nina', 'Otto', 'Paula', 'Quintino', 'Rosa', 'Sérgio', 'Tereza'];
 export const RETRATOS_POOL = ['lara', 'caio', 'dora', 'ines', 'nelson', 'leo', 'vera', 'paulo', 'tania', 'helena', 'rita', 'andre'];
@@ -43,10 +45,10 @@ export const BONUS = {
 export const especialidadePorId = (id) => { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return ESPECIALIDADES[h % ESPECIALIDADES.length]; };
 export const especialidadeDe = (m) => (m && ESPECIALIDADES.includes(m.especialidade) ? m.especialidade : especialidadePorId(m && m.id));
 /** Fator do bônus da especialidade de `m` para `chave` (1 = sem bônus). */
-export const bonusDe = (m, chave) => (BONUS[especialidadeDe(m)] || {})[chave] ?? 1;
+export const bonusDe = (m, chave) => ((BONUS[especialidadeDe(m)] || {})[chave] ?? 1) * fatorCarreira(m, chave);   // v3.39: × bônus de carreira
 
 export function novoCientista(id, nome, retrato, especialidade) {
-    return { id, nome, retrato, especialidade: ESPECIALIDADES.includes(especialidade) ? especialidade : especialidadePorId(id), doses: [], tratamento: false, ocupadoAte: 0, equip: null };
+    return { id, nome, retrato, especialidade: ESPECIALIDADES.includes(especialidade) ? especialidade : especialidadePorId(id), doses: [], tratamento: false, ocupadoAte: 0, equip: null, missoes: 0, escolhas: {} };
 }
 
 /** Equipe inicial: 4 cientistas (decisão do Arnaldo, 28/10/2026). */
@@ -100,14 +102,14 @@ export function registrarDose(m, dia, msv) {
 
 /** A cada dia: quem está em tratamento volta ao serviço quando r < 0,75. Devolve true se voltou. */
 export function verificarRetorno(m, dia, limite = NORMAS.retorno) {
-    if (m.tratamento && razao(m, dia) < limite + (BONUS[especialidadeDe(m)].retorno || 0)) { m.tratamento = false; return true; }
+    if (m.tratamento && razao(m, dia) < limite + (BONUS[especialidadeDe(m)].retorno || 0) + fatorCarreira(m, 'retorno')) { m.tratamento = false; return true; }
     return false;
 }
 
 /** Quantos dias faltam para voltar (só com as doses que ainda estão nas janelas; sem novas doses). null se não está em tratamento. */
 export function diasParaVoltar(m, dia, limite = NORMAS.retorno) {
     if (!m.tratamento) return null;
-    const lim = limite + (BONUS[especialidadeDe(m)].retorno || 0);
+    const lim = limite + (BONUS[especialidadeDe(m)].retorno || 0) + fatorCarreira(m, 'retorno');
     for (let t = 0; t <= 60; t++) if (razao(m, dia + t) < lim) return t;
     return 60;
 }
@@ -158,6 +160,7 @@ export function saneaEquipe(lista) {
             id: o.id.slice(0, 12), nome: o.nome.slice(0, 24), retrato: RETRATOS_POOL.includes(o.retrato) ? o.retrato : 'lara', especialidade: ESPECIALIDADES.includes(o.especialidade) ? o.especialidade : especialidadePorId(o.id),
             doses: (Array.isArray(o.doses) ? o.doses : []).filter((d) => d && Number.isFinite(d.dia) && Number.isFinite(d.msv)).slice(-60).map((d) => ({ dia: inteiro(d.dia, 0, 1000000, 0), msv: num(d.msv, 0, 1000, 0) })),
             tratamento: o.tratamento === true, ocupadoAte: inteiro(o.ocupadoAte, 0, 1000000, 0), equip: typeof o.equip === 'string' ? o.equip.slice(0, 20) : null,
+            ...saneaCarreira(o),   // v3.39
         });
     }
     return ok.length ? ok : equipeInicial();

@@ -13,6 +13,7 @@
 import { ALERTAS } from './dados.js';
 import { ehRapida, alertaPorId, novaSemente, PROB_POCO, PERICIA_ID } from './rapidas.js';
 import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas, saneaEntregas } from './ciencia.js';
+import { saneaMural, saneaBriefing } from './carreira.js';
 import { ESPECIALIDADES, especialidadePorId, equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
 import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
 
@@ -44,7 +45,7 @@ export function novoEstado() {
         v: 3, iniciado: false, dia: 0, fator: PARAMETROS.fatorInicial, creditos: 0, nota: 0, proximoAlerta: null, proximaRapida: null, rapidasFeitas: 0, ativos: [], usados: [], concluidos: {}, expirados: 0, historico: [],
         equipe: equipeInicial(), candidatos: [], naves: naveInicial(), modulos: modulosIniciais(), grade: { ...GRADE_INICIAL },
         pesquisa: {}, coleta: [], levantados: [], proxId: 10,
-        colhidas: {}, pericia: { feita: false, ato2: false }, ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
+        colhidas: {}, pericia: { feita: false, ato2: false }, mural: [], briefing: saneaBriefing(null), ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
     };
 }
 
@@ -100,6 +101,7 @@ export function sanear(d) {
     e.coleta = (Array.isArray(o.coleta) ? o.coleta : []).filter((c) => c && typeof c.id === 'string' && idValido(c.alertaId)).slice(0, 10).map((c) => ({ id: c.id.slice(0, 12), alertaId: c.alertaId, fontes: inteiro(c.fontes, 1, 20, 1), isotopos: saneaIsotopos(c.isotopos), desde: inteiro(c.desde, 0, 1000000, 0), expira: inteiro(c.expira, 0, 1000000, e.dia + PRAZO_COLETA) }));
     e.levantados = [...new Set((Array.isArray(o.levantados) ? o.levantados : []).filter((id) => idValido(id)))];
     e.pericia = { feita: !!(o.pericia && o.pericia.feita), ato2: !!(o.pericia && o.pericia.ato2) };   // v3.37
+    e.mural = saneaMural(o.mural); e.briefing = saneaBriefing(o.briefing);   // v3.39
     Object.assign(e, saneaCiencia(o, e.dia));
     saneaEntregas(e);
     e.v = 3;

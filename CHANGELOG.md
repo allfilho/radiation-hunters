@@ -3,6 +3,15 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.39.0 — 2026-11-10 — Carreira dos cientistas, Mural da Agência e briefing do dia
+- **Carreira** (ideia de Cult of the Lamb + X-COM): cada missão ou investigação concluída soma uma missão a quem estava na saída. Postos: Iniciante (0), Especialista (3), Sênior (8), Referência da Agência (15) [H]. A cada promoção o jogador escolhe no Alojamento 1 de 2 bônus permanentes: Agilidade (+8 % de velocidade em campo), Manuseio (−30 % de dose na coleta), Precisão (metade da dose extra do erro de identificação), Recuperação (alta 5 pontos antes) [H]. Os bônus se multiplicam com os da especialidade.
+- **Pensamento** no dossiê de cada cientista, a partir do estado: tratamento, caneta amarela ou vermelha, muitos dias seguidos em campo, novato, veterano, promoção pendente.
+- **Aposentadoria e Mural da Agência:** quem chega a Referência com 20 missões pode se aposentar com homenagem; vai ao Mural (Centro de comando), libera a cama e dá +1 de nota. Sem morte de personagens.
+- **Briefing do dia:** no painel do mapa, uma pergunta dos Encontros por dia de jogo (nível 1 ou 2, sem repetir as 30 últimas); acerto rende 30 créditos [H].
+- **Correção:** o dossiê do cientista vazava à direita no Alojamento e no Dep. médico (a coluna de texto crescia com botões).
+- Código: `js/agencia/carreira.js` (lógica pura), `js/agencia/ui-gente.js` (telas); save da Agência com `missoes`, `escolhas`, `mural` e `briefing` (saves antigos começam do zero). Roteiro de calibração: seção 10.
+- **Testes:** novo 86 (10 subtestes, pt/en, desktop e celular).
+
 ## v3.38.0 — 2026-11-10 — Fase F: plano de dose antes da missão
 - **Plano de dose no preparo** (missões de campo e chamados rápidos): mostra a margem de cada cientista embarcado até o limite das Normas (janela mais restritiva de 1, 7 ou 30 dias) e pede o objetivo de dose individual da saída: 0,25 / 0,5 / 0,75 / 1,0 mSv ou sem objetivo. Sugestão automática (o maior objetivo que cabe na menor margem) até o jogador escolher; aviso se alguém embarcado tem margem menor que o objetivo.
 - **Dosímetro em campo:** linha no HUD com a dose da saída de quem está à frente e o objetivo; com a câmara de ionização, também o tempo estimado até o objetivo na taxa atual (tempo = dose ÷ taxa). Ao atingir o objetivo, alarme (três bipes e aviso) uma vez por cientista, sugerindo trocar quem vai à frente (7 a 0) ou terminar. Nada é forçado.

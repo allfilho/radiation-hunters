@@ -992,6 +992,13 @@ export class GameScene extends Phaser.Scene {
         this.verificarPlanoDose(q, ativo, taxaMsvH);
     }
 
+    /** v3.39: fator de velocidade do cientista em campo (bônus de carreira); 1 fora do modo Agência. */
+    fatorVelocidade() {
+        if (ui.origem !== 'agencia' || !ui.agencia || !ui.agencia.equipeSaida) return 1;
+        const m = ui.agencia.est.equipe.find((x) => x.id === ui.agencia.cientistaAtivo());
+        return m ? bonusDe(m, 'velocidade') : 1;
+    }
+
     /** v3.38 (Fase F): dosímetro com o objetivo do plano de dose. HUD de quem está à frente; alarme uma vez por cientista. */
     verificarPlanoDose(q, ativo, taxaMsvH) {
         if (!q || q.objetivo == null) { ui.atualizarPlanoDose(null); return; }
@@ -1098,7 +1105,7 @@ export class GameScene extends Phaser.Scene {
         
         // Running
         const isRunning = (this.shiftKey.isDown || v.run) && GameState.stamina > 0 && (dx !== 0 || dy !== 0);
-        const speed = isRunning ? CONFIG.PLAYER_RUN_SPEED : CONFIG.PLAYER_SPEED;
+        const speed = (isRunning ? CONFIG.PLAYER_RUN_SPEED : CONFIG.PLAYER_SPEED) * this.fatorVelocidade();   // v3.39: bônus de carreira (agilidade)
         
         // Update stamina
         if (isRunning && (dx !== 0 || dy !== 0)) {

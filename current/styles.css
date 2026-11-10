@@ -2278,3 +2278,15 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 .plano-dose.amarelo .pen-cheia { background: #ffcc00; }
 .plano-dose.vermelho .pen-cheia { background: #ff5a4a; }
 .plano-dose.vermelho { border-color: #ff5a4a; }
+
+/* v3.39: carreira, Mural e briefing */
+.ag-carreira { margin-top: 6px; padding-top: 6px; border-top: 1px dashed #2b4a66; }
+.ag-pensamento { font-style: italic; color: #d8e2ee; font-size: .84rem; margin: 2px 0 4px; }
+.ag-promocao { margin-top: 4px; padding: 6px 8px; border: 1px solid var(--primary, #00ff88); border-radius: 6px; background: rgba(0,255,136,.06); }
+.ag-mural { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ag-mural-item { display: flex; gap: 10px; align-items: center; }
+.ag-mural-item .inv-retrato { width: 44px; height: 44px; flex: 0 0 44px; }
+.ag-briefing { border-color: #4fc3ff; }
+/* v3.39: o dossiê não vaza à direita (a coluna de texto não cresce com botões e seletores) */
+.ag-membro-info { grid-template-columns: minmax(0, 1fr); }
+.ag-membro-info .menu-btn { white-space: normal; max-width: 100%; min-width: 0; }

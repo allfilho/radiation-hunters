@@ -72,6 +72,16 @@ Base real [V]: OECD/NEA, *Work Management* (NEA 6399, 2009): objetivo de dose fi
 | Revisão pós-trabalho | dose real > 1,25 × objetivo: equipe fica 1 dia a mais ocupada, sem bônus | A punição é perceptível? Leve demais, pesada demais? | | |
 | Lição N17 "Planejar a dose" | 4 perguntas (fatos N17-F1, N17-F2, N17-C1, C2.3) | A conta "tempo = dose ÷ taxa" fica clara? | | |
 
+## 10. Carreira, Mural e briefing (v3.39)
+Inspiração: seguidores com níveis e pensamentos (Cult of the Lamb) e postos com memorial (X-COM); ver claude/radhunter-ideias-cult-of-the-lamb.md. Todos os valores são **hipóteses de jogo [H]**.
+| Item | Valor | Pergunta para a turma | Observado | Ajustar? |
+|---|---|---|---|---|
+| Postos | Iniciante 0, Especialista 3, Sênior 8, Referência 15 missões | Os alunos chegam à primeira promoção numa aula? Rápido ou lento demais? | | |
+| Bônus de promoção | Agilidade +8 % de velocidade; Manuseio −30 % de dose na coleta; Precisão −50 % na dose do erro de identificação; Recuperação +5 pontos no limite de alta | A escolha parece importante? Algum bônus é óbvio demais? | | |
+| Pensamentos | frase pelo estado (tratamento, caneta, dias seguidos de campo, novato, veterano) | Os alunos leem? Ajudam a decidir quem vai à frente? | | |
+| Aposentadoria | Referência com 20 missões; vai ao Mural, libera cama, +1 de nota | Alguém se aposenta numa turma? Faz sentido o prêmio? | | |
+| Briefing do dia | 1 pergunta por dia de jogo (nível 1 ou 2), +30 créditos no acerto | Os alunos respondem ou pulam? O valor muda o comportamento? | | |
+
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
 

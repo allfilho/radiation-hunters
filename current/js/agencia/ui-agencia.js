@@ -17,6 +17,8 @@ import { prepararFalso } from '../investigacao/falso-alarme.js';
 import { mapaMundiSvg, posicaoSvg } from './mapa-mundi.js';
 import { TXT, NOME_AGENCIA } from './textos.js';
 import { metodosBase } from './ui-base.js';
+import { metodosGente } from './ui-gente.js';
+import { registrarMissao } from './carreira.js';
 import { distribuirDoseMissao, NORMAS, razao, corCaneta } from './equipe.js';
 import { avaliarPlano, bonusPlano, bonusDoObjetivo, PLANO } from './plano-dose.js';
 import { CUSTOS, registrarColeta, foiLevantado, pesquisaPronta, diasDeVolta, registrarRetorno } from './frota.js';
@@ -74,14 +76,14 @@ export class AgenciaUI {
     /** Fim ou saída de uma missão/investigação aberta pela Agência. r = { concluida, estrelas }. */
     retornar(r = {}) {
         const L = this.L, a = this.alvo; this.relatorio = null;
-        let ganhoCampo = 0, concluiuCampo = false, res = null;   // v3.38: para o plano de dose
+        let ganhoCampo = 0, concluiuCampo = false, concluiuAlerta = false, res = null;   // v3.38: plano de dose; v3.39: carreira
         if (a) {
             const d = this.dadosAlerta(a);
             const ativo = this.est.ativos.some((x) => x.id === a.id);
             if (r.concluida && ativo) {
                 const pts = emCampo(a) ? Math.max(1, Math.min(3, r.estrelas | 0)) : PARAMETROS.pontosInvestigacao;
                 const ganho = concluir(this.est, a.id, pts);
-                if (emCampo(a)) { ganhoCampo = ganho; concluiuCampo = true; }
+                concluiuAlerta = true; if (emCampo(a)) { ganhoCampo = ganho; concluiuCampo = true; }
                 this.relatorio = emCampo(a) ? preencher(L.relatorioMissao, { titulo: d.titulo, estrelas: estrelasTxt(pts), valor: ganho }) : preencher(L.relatorioInv, { titulo: d.titulo, valor: ganho });
                 if (((a.tipo === 'missao' && a.missaoId > 1) || a.tipo === 'rapida') && r.fontes > 0 && registrarColeta(this.est, a.id, r.fontes, r.isotopos)) this.relatorio += ' ' + L.aguardandoColeta;
             } else if (ativo) this.relatorio = preencher(L.relatorioAbandono, { titulo: d.titulo });
@@ -110,6 +112,12 @@ export class AgenciaUI {
             if (av.revisao) { revisao = av.revisados; partes.push(preencher(L.relPlanoRevisao, { quem: nomesDe(av.revisados), d: PLANO.revisaoDias })); }
             if (partes.length) this.relatorio = (this.relatorio ? this.relatorio + ' ' : '') + partes.join(' ');
             this.ultimoPlano = { ...av, bonus: concluiuCampo && av.cumprido ? Math.round(ganhoCampo * bonusDoObjetivo(av.objetivo)) : 0 };
+        }
+        // v3.39: carreira. Quem estava na saída de um alerta concluído soma uma missão; promoções vão para o relatório.
+        if (q && concluiuAlerta) {
+            const promovidos = [];
+            for (const id of q.ids) { const m = this.est.equipe.find((x) => x.id === id); const novo = m && registrarMissao(m); if (novo) promovidos.push(preencher(L.promoveu, { nome: m.nome, posto: L.posto[novo] })); }
+            if (promovidos.length) this.relatorio = (this.relatorio ? this.relatorio + ' ' : '') + promovidos.join(' ') + ' ' + L.promocaoOnde;
         }
         if (!this.est.iniciado && treinamentoConcluido(this.cb.desbloqueadas())) iniciar(this.est, CUSTOS.creditosIniciais);
         // v3.17: a equipe volta no mesmo jato; a nave e os cientistas ficam ocupados durante o voo de volta
@@ -312,7 +320,7 @@ export class AgenciaUI {
                 return `<li><button type="button" class="ag-item ${a.tipo}${this.sel === a.id ? ' sel' : ''}" data-alerta="${a.id}" aria-pressed="${this.sel === a.id}"><span class="ag-item-tipo">${this.rotuloTipo(a)}</span><span class="ag-item-titulo">${d.titulo}</span><span class="ag-item-local">${a.local[lang]} · <span class="ag-prazo" data-id="${a.id}">${this.textoPrazo(x)}</span></span></button></li>`;
             }).join('');
             const lista = e.ativos.length ? `<h3 class="ag-lista-titulo">${preencher(L.ativosTitulo, { n: e.ativos.length, max: PARAMETROS.maxAtivos + PARAMETROS.rapidas.max })}</h3><ul class="ag-lista">${itens}</ul>` : `<p class="ag-dica">${L.semAlertas}</p>`;
-            corpo = this.fala('marta', L.marta, L.martaMapa) + lista + `<div class="ag-detalhe" id="ag-detalhe" aria-live="polite">${this.sel ? this.htmlDetalhe() : (e.ativos.length ? `<p class="ag-dica">${L.selecione}</p>` : '')}</div>`;
+            corpo = this.fala('marta', L.marta, L.martaMapa) + this.htmlBriefing() + lista + `<div class="ag-detalhe" id="ag-detalhe" aria-live="polite">${this.sel ? this.htmlDetalhe() : (e.ativos.length ? `<p class="ag-dica">${L.selecione}</p>` : '')}</div>`;
         }
         const hist = e.historico.slice(-6).reverse().map((h) => `<li>${this.textoHistorico(h)}</li>`).join('');
         const emViagem = e.naves.filter((n) => n.missao).map((n) => { const a = alertaPorId(n.missao.alertaId); return `<li>${L.tipoNave[n.tipo]}: ${a ? this.dadosAlerta(a).titulo : ''} · ${preencher(L.viagemNave, { d: n.missao.chegaEm })}</li>`; }).join('');
@@ -467,7 +475,7 @@ export class AgenciaUI {
         else if (k === 'treino' || k === 'academia-completa') { const completa = k === 'academia-completa'; this.alvo = { tipo: 'treino', missaoId: 1, completa }; this.equipeSaida = null; this._parar(); this.vel = 0; this.cb.iniciarMissao(completa ? MISSIONS[0] : TUTORIAL); }
         else if (k === 'pular') { this.cb.pularTreinamento(); if (treinamentoConcluido(this.cb.desbloqueadas()) && !this.est.iniciado) { iniciar(this.est, CUSTOS.creditosIniciais); this.gravar(); } this.desenhar(false); }
         else if (k === 'caderno') this.cb.abrirCaderno();
-        else this.acaoBase(k, b);
+        else if (!this.acaoGente(k, b)) this.acaoBase(k, b);
     }
 
     chegar() {
@@ -481,4 +489,4 @@ export class AgenciaUI {
     }
 }
 
-Object.assign(AgenciaUI.prototype, metodosBase);
+Object.assign(AgenciaUI.prototype, metodosBase, metodosGente);

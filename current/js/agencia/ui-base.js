@@ -44,7 +44,7 @@ export const metodosBase = {
             + `<p class="ag-fala-nome">${m.nome}${extra}</p><p class="ag-nota" data-esp="${especialidadeDe(m)}"><strong>${L.especialidade[especialidadeDe(m)]}</strong> · ${L.espBonus[especialidadeDe(m)]}</p>`
             + `<div class="ag-vida" role="img" aria-label="${preencher(L.doseRel, { p: pct })}"><span class="ag-vida-cheia ag-c-${cor}" style="width:${Math.min(100, pct)}%"></span></div>`
             + `<p class="ag-nota"><strong>${preencher(L.doseRel, { p: pct })}</strong>${pct > 0 && jan ? ' (' + L.janela[jan.id] + ')' : ''} · ${L.caneta}: <span class="ag-caneta ag-c-${cor}">${corTxt}</span></p>`
-            + `<p class="ag-nota">${doses}</p><p class="ag-nota"><strong>${estado}</strong></p>${this.htmlEquipDe(m)}</div></div>`;
+            + `<p class="ag-nota">${doses}</p><p class="ag-nota"><strong>${estado}</strong></p>${this.htmlEquipDe(m)}${this.htmlCarreira(m)}</div></div>`;
     },
 
     /** v3.33: o que o cientista leva e botões para trocar (só o que há no estoque). */
@@ -172,7 +172,7 @@ export const metodosBase = {
         if (s === 'laboratorio') return rel + this.htmlLaboratorio();
         if (s === 'alojamento') return rel + this.htmlAlojamento();
         if (s === 'medico') return rel + this.htmlMedico();
-        if (s === 'comando') return rel + this.fala('marta', L.marta, L.martaMapa) + `<div class="ag-cartao"><p>${preencher(L.comandoResumo, { a: e.ativos.length, c: Object.values(e.concluidos).filter((n) => n > 0).length, x: e.expirados })}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="trocar">${L.irMapa}</button></div></div>`;
+        if (s === 'comando') return rel + this.fala('marta', L.marta, L.martaMapa) + `<div class="ag-cartao"><p>${preencher(L.comandoResumo, { a: e.ativos.length, c: Object.values(e.concluidos).filter((n) => n > 0).length, x: e.expirados })}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="trocar">${L.irMapa}</button></div></div>` + this.htmlMural();
         if (s === 'academia') {
             const m1 = TUTORIAL, feito = treinamentoConcluido(this.cb.desbloqueadas()), est = this.cb.estrelas(1);
             return rel + this.fala('teo', L.teo, feito ? L.teoFalaFeito : L.teoFala)

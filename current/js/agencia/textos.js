@@ -313,3 +313,45 @@ Object.assign(TXT.en, {
 // ---------- Inventário individual (v3.33) ----------
 Object.assign(TXT.pt, { leva: 'Leva', nenhumEquip: 'Nenhum', noEstoque: 'no estoque', semEstoque: 'Não há mais desse equipamento no estoque: ele já está com outro cientista.' });
 Object.assign(TXT.en, { leva: 'Carries', nenhumEquip: 'None', noEstoque: 'in stock', semEstoque: 'No more of this item in stock: another scientist already has it.' });
+
+// v3.39: carreira, Mural da Agência e briefing do dia
+Object.assign(TXT.pt, {
+    posto: { iniciante: 'Iniciante', especialista: 'Especialista', senior: 'Sênior', referencia: 'Referência da Agência' },
+    missoesN: '{n} missões', proximoPosto: 'próximo posto em {n}',
+    bonusCarreira: { agilidade: 'Agilidade: anda 8 % mais rápido em campo', manuseio: 'Manuseio: 30 % menos dose na coleta', precisao: 'Precisão: identificar errado custa metade da dose extra', recuperacao: 'Recuperação: alta do tratamento 5 pontos antes' },
+    promocaoTit: 'Promoção a {posto}!', promocaoEscolha: 'Escolha um bônus (fica para sempre):',
+    promoveu: '{nome} chegou a {posto}.', promocaoOnde: 'Escolha o bônus da promoção no Alojamento.',
+    pensa: {
+        tratamento: 'Preciso de uns dias longe das fontes.', promocao: 'Promoção! Qual bônus a Direção vai me dar?',
+        vermelho: 'Minha caneta está quase no limite. Melhor outra pessoa ir à frente.', amarelo: 'A caneta já está amarela; posso ir, mas atrás.',
+        cansado: 'Foram muitos dias seguidos de campo. Um dia de folga cairia bem.', novato: 'Ainda não fui a campo. Quero aprender.',
+        aposentar: 'Já fiz minha parte. Posso me aposentar quando a Agência quiser.', veterano: 'Já vi muita fonte perdida. Posso orientar os novatos.',
+        pronto: 'Tudo certo para a próxima missão.',
+    },
+    aposentarBtn: 'Aposentar com homenagem', aposentarNota: 'Vai para o Mural da Agência e libera uma cama; a reputação da Agência sobe.',
+    aposentou: '{nome} se aposentou depois de {n} missões e entrou no Mural da Agência.',
+    muralTit: 'Mural da Agência', muralVazio: 'Ninguém se aposentou ainda. Cientistas com 20 missões, no posto Referência, podem se aposentar com homenagem.',
+    muralItem: '{esp} · {n} missões · aposentadoria no dia {d}',
+    briefingTit: 'Briefing do dia', briefingExpl: 'Uma pergunta por dia. Acertar rende {v} créditos.', briefingFato: 'Fato', briefingMito: 'Mito',
+    briefingCerto: 'Certo! +{v} créditos.', briefingErrado: 'Não foi dessa vez.',
+});
+Object.assign(TXT.en, {
+    posto: { iniciante: 'Rookie', especialista: 'Specialist', senior: 'Senior', referencia: 'Agency Veteran' },
+    missoesN: '{n} missions', proximoPosto: 'next rank in {n}',
+    bonusCarreira: { agilidade: 'Agility: moves 8 % faster in the field', manuseio: 'Handling: 30 % less dose when collecting', precisao: 'Precision: a wrong identification costs half the extra dose', recuperacao: 'Recovery: leaves treatment 5 points earlier' },
+    promocaoTit: 'Promotion to {posto}!', promocaoEscolha: 'Choose a bonus (it is permanent):',
+    promoveu: '{nome} reached {posto}.', promocaoOnde: 'Choose the promotion bonus in the Quarters.',
+    pensa: {
+        tratamento: 'I need a few days away from the sources.', promocao: 'I got promoted! Which bonus will the Director give me?',
+        vermelho: 'My pen is almost at the limit. Someone else should go in front.', amarelo: 'My pen is already yellow; I can go, but behind.',
+        cansado: 'Too many field days in a row. A day off would be nice.', novato: 'I have not been to the field yet. Ready to learn.',
+        aposentar: 'I have done my part. I can retire whenever the Agency wants.', veterano: 'I have seen many lost sources. I can guide the rookies.',
+        pronto: 'Ready for the next mission.',
+    },
+    aposentarBtn: 'Retire with honors', aposentarNota: 'Goes to the Agency Wall and frees a bed; the Agency’s reputation rises.',
+    aposentou: '{nome} retired after {n} missions and joined the Agency Wall.',
+    muralTit: 'Agency Wall', muralVazio: 'Nobody has retired yet. Scientists with 20 missions, at the Agency Veteran rank, can retire with honors.',
+    muralItem: '{esp} · {n} missions · retired on day {d}',
+    briefingTit: 'Daily briefing', briefingExpl: 'One question per day. A right answer earns {v} credits.', briefingFato: 'Fact', briefingMito: 'Myth',
+    briefingCerto: 'Right! +{v} credits.', briefingErrado: 'Not this time.',
+});
