@@ -5,6 +5,7 @@ import { jornalRapida, reportagemFim } from './jornal/reportagens.js';
 import { GameState } from './estado.js';
 import { currentLang, setLang, t, updateTexts } from './i18n/index.js';
 import { saneaSementeTurma } from './corridas.js';
+import { simbolo } from './arte/arcanos.js';
 import { formatTime } from './util.js';
 import { aprendizadoVazio } from './encontros/motor.js';
 import { EncontroUI } from './encontros/ui-encontro.js';
@@ -770,8 +771,8 @@ export class UIManager {
     /** v3.43: painel de arcanos no meio da missão. `ofertas` = ids; `escolher(id)` é chamado no clique. */
     mostrarArcanos(ofertas, escolher) {
         const el = document.getElementById('arcano-oferta'); if (!el) return;
-        const NUM = { radar: 'VI', folego: 'VII', escudo: 'VIII', passos: 'IX', tempo: 'X', pontos: 'XI' }, ICO = { radar: '📡', folego: '💨', escudo: '🛡️', passos: '👟', tempo: '⌛', pontos: '✨' };
-        el.innerHTML = `<p class="arcano-tit">${t('arcanoTit')}</p><div class="arcano-op">` + ofertas.map((id) => `<button type="button" class="ag-carta arcano" data-arcano="${id}"><span class="ag-carta-num" aria-hidden="true">${NUM[id] || ''}</span><span class="ag-carta-icone" aria-hidden="true">${ICO[id] || '🃏'}</span><span class="ag-carta-nome">${t('arcano_' + id)}</span><span class="ag-carta-desc">${t('arcanoDesc_' + id)}</span></button>`).join('')
+        const NUM = { radar: 'VI', folego: 'VII', escudo: 'VIII', passos: 'IX', tempo: 'X', pontos: 'XI' };
+        el.innerHTML = `<p class="arcano-tit">${t('arcanoTit')}</p><div class="arcano-op">` + ofertas.map((id) => `<button type="button" class="ag-carta arcano" data-arcano="${id}"><span class="ag-carta-num" aria-hidden="true">${NUM[id] || ''}</span><span class="ag-carta-icone" aria-hidden="true">${simbolo(id)}</span><span class="ag-carta-nome">${t('arcano_' + id)}</span><span class="ag-carta-desc">${t('arcanoDesc_' + id)}</span></button>`).join('')
             + `</div><button type="button" class="arcano-passar" data-arcano="">${t('arcanoPassar')}</button>`;
         el.hidden = false;
         el.querySelectorAll('[data-arcano]').forEach((b) => b.addEventListener('click', (ev) => { ev.stopPropagation(); if (b.dataset.arcano) escolher(b.dataset.arcano); else { this.esconderArcanos(); if (window.gameScene) window.gameScene.ofertaArcanos = null; } b.blur(); }));

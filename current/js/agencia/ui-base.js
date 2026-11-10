@@ -287,8 +287,8 @@ export const metodosBase = {
         }).join('');
         const temLev = e.naves.some((n) => n.tipo === 'levantamento');
         return this.fala('otavio', L.otavio, L.otavioFala)
-            + `<div class="ag-cartao"><h3>${L.hangarTit} · ${preencher(L.baias, { n: e.naves.length, b: baiasTotal(e) })}</h3><ul class="ag-lista-simples">${naves}</ul>${compras}</div>`
-            + `<div class="ag-cartao"><h3>${L.coletaTit}</h3>${coletas ? `<ul class="ag-lista-simples">${coletas}</ul>` : `<p class="ag-nota">${L.semColeta}</p>`}</div>`
+            + `<div class="ag-cartao papel ag-hangar" id="ag-hangar"><span class="papel-secao">${L.quadroOperacoes}</span><h3>${L.hangarTit} · ${preencher(L.baias, { n: e.naves.length, b: baiasTotal(e) })}</h3><ul class="ag-lista-simples">${naves}</ul>${compras}</div>`
+            + `<div class="ag-cartao papel"><span class="papel-secao">${L.ordemColeta}</span><h3>${L.coletaTit}</h3>${coletas ? `<ul class="ag-lista-simples">${coletas}</ul>` : `<p class="ag-nota">${L.semColeta}</p>`}</div>`
             + (temLev ? `<div class="ag-cartao"><h3>${L.levTit}</h3>${lev ? `<ul class="ag-lista-simples">${lev}</ul>` : `<p class="ag-nota">${L.semAlertasLev}</p>`}</div>` : '');
     },
 

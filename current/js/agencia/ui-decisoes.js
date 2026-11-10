@@ -2,12 +2,13 @@
 // AGÊNCIA (v3.40): telas das Políticas da Agência, das cartas de campo e das propostas do cliente. Métodos da AgenciaUI.
 // Lógica em decisoes.js; aqui só HTML e cliques.
 // ============================================
+import { simbolo } from '../arte/arcanos.js';
 import { POLITICAS, politicasPendentes, escolherPolitica, concluidosTotal, CARTAS, sortearCartas, cartaValida, PROPOSTAS, propostaDe, cumpreProposta } from './decisoes.js';
 
 const preencher = (s, dados) => s.replace(/\{(\w+)\}/g, (_, k) => (dados[k] ?? ''));
 /** v3.42: arcanos das cartas de campo (numeral e símbolo). */
 const NUMERAL = { levantamento: 'I', pressa: 'II', folego: 'III', segundaChance: 'IV', patrocinio: 'V' };
-const ICONE_CARTA = { levantamento: '🛰️', pressa: '⏱️', folego: '💨', segundaChance: '🔁', patrocinio: '🏛️' };
+// v3.44: símbolos desenhados (js/arte/arcanos.js) no lugar dos emojis
 
 export const metodosDecisoes = {
     /** Centro de comando: políticas escolhidas, a escolher e as próximas. */
@@ -38,7 +39,7 @@ export const metodosDecisoes = {
         const L = this.L, e = this.est, p = this.preparo;
         const cartas = sortearCartas(p.alvo.id, e.dia);
         const html = `<div class="ag-cartas" id="ag-cartas" role="group" aria-label="${L.cartasTit}"><h4 class="ag-sub">${L.cartasTit}</h4><p class="ag-nota">${L.cartasExpl}</p><div class="ag-cartas-op">`
-            + cartas.map((c) => `<button type="button" class="ag-carta${p.carta === c ? ' sel' : ''}" data-ag="carta" data-c="${c}" aria-pressed="${p.carta === c}"><span class="ag-carta-num" aria-hidden="true">${NUMERAL[c]}</span><span class="ag-carta-icone" aria-hidden="true">${ICONE_CARTA[c]}</span><span class="ag-carta-nome">${L.carta[c].nome}</span><span class="ag-carta-desc">${L.carta[c].desc}</span></button>`).join('')
+            + cartas.map((c) => `<button type="button" class="ag-carta${p.carta === c ? ' sel' : ''}" data-ag="carta" data-c="${c}" aria-pressed="${p.carta === c}"><span class="ag-carta-num" aria-hidden="true">${NUMERAL[c]}</span><span class="ag-carta-icone" aria-hidden="true">${simbolo(c)}</span><span class="ag-carta-nome">${L.carta[c].nome}</span><span class="ag-carta-desc">${L.carta[c].desc}</span></button>`).join('')
             + `</div></div>`;
         const prop = this.propostaDoPreparo();
         if (!prop) return html;

@@ -104,6 +104,17 @@ Inspiração: fé dos seguidores, ajuda escondida e Knucklebones (Cult of the La
 | Ajuda escondida | depois de max(60 s; 35 % da meta) sem achar fonte, pulso fraco no bloco 4 × 4 da fonte mais próxima no minimapa | Os alunos lentos destravam? Os rápidos percebem? | | |
 | Ícones nos alertas | 💰 prêmio, ⭐ bônus, 🤝 proposta, ⏳ prazo ≤ 3 dias, 📉 região com confiança < 40 | Ajudam a escolher o alerta? | | |
 
+## 13. Arcanos no meio da missão e semente da turma (v3.43)
+Inspiração: cartas de tarô escolhidas durante a corrida (Cult of the Lamb). Todos os valores são **hipóteses de jogo [H]**.
+| Item | Valor | Pergunta para a turma | Observado | Ajustar? |
+|---|---|---|---|---|
+| Quando aparecem | ao achar a 1ª e a 3ª fonte; 2 opções; somem em 20 s; não pausam | Os alunos leem a tempo? Melhor pausar o jogo? | | |
+| Radar | a fonte mais próxima pisca no minimapa por 25 s | Facilita demais? | | |
+| Fôlego / Passos leves | correr gasta metade; +10 % de velocidade | Diferença perceptível? | | |
+| Escudo | o próximo erro de identificação não custa dose nem quebra o combo | Incentiva chutar? | | |
+| Ampulheta / Estrela | +30 s na meta; +50 % de pontos nas próximas fontes | Alguma é sempre a melhor escolha? | | |
+| Semente da turma | mesma semente = mesma posição e força das fontes e mesmos arcanos | A turma compara resultados? O placar fica justo? | | |
+
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
 

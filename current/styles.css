@@ -2417,3 +2417,29 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 .turma-linha { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .turma-linha input { min-height: 40px; padding: 4px 10px; font: 700 1rem 'Courier New', monospace; letter-spacing: .12em; text-transform: uppercase; background: #fffaf0; color: var(--tinta); border: 2px solid var(--regua); border-radius: 3px; width: 12em; }
 .turma .menu-btn { width: auto; min-width: 0; min-height: 40px; padding: 4px 14px; }
+
+/* ============================================
+   v3.44: dossiês como pasta de arquivo (manila), Hangar em papel, símbolos desenhados nas cartas
+   ============================================ */
+.ag-dossie { background: #e6d6a4 linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.05)); color: var(--tinta); border: 1px solid #8a7341; border-top: 6px solid #c9b276;
+    border-radius: 2px 10px 2px 2px; box-shadow: 2px 3px 0 rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.25); font-family: Georgia, 'Times New Roman', serif; }
+.ag-dossie .ag-fala-nome { color: var(--tinta); font-family: Georgia, serif; font-size: 1.05rem; font-weight: 800; }
+.ag-dossie .ag-nota, .ag-dossie .ag-pensamento { color: #3b2e1c; }
+.ag-dossie .ag-pensamento { font-family: Georgia, serif; }
+.ag-dossie .ag-foto { background: #f3ead2; }
+.ag-dossie .ag-foto-cab { background: #3a2c1d; color: #f3ead2; }
+.ag-dossie .ag-vida { background: #c9b98c; }
+.ag-dossie span.ag-caneta.ag-c-verde, .ag-dossie .ag-moral-alto { color: #145c30; }
+.ag-dossie span.ag-caneta.ag-c-amarelo { color: #7a5a00; }
+.ag-dossie span.ag-caneta.ag-c-vermelho, .ag-dossie .ag-moral-baixo { color: #8f1d12; }
+.ag-dossie .ag-carreira { border-top-color: #8a7341; }
+.ag-dossie .menu-btn { background: #f7f0dc; color: var(--tinta); border: 2px solid var(--regua); text-shadow: none; font-family: Georgia, serif; }
+.ag-dossie .menu-btn.primary, .ag-dossie .menu-btn[aria-pressed="true"] { background: var(--tinta); color: #f3ead2; }
+.ag-dossie .menu-btn:disabled { opacity: .55; }
+.ag-dossie .ag-promocao { background: #f3ead2; border-color: #145c30; }
+.ag-dossie.ag-estado-tratamento { background-color: #d9cfb4; }
+.ag-hangar ul li strong, .papel .ag-lista-simples li { color: var(--tinta); }
+/* símbolos desenhados */
+.ag-carta-icone { color: #f2d98b; display: grid; place-items: center; }
+.ag-carta-icone .arcano-svg { width: 46px; height: 46px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.6)); }
+.arcano-oferta .ag-carta-icone .arcano-svg { width: 40px; height: 40px; }

@@ -3,6 +3,13 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.44.0 — 2026-11-10 — Dossiês em papel, Hangar em papel e símbolos desenhados
+- **Dossiês dos cientistas** (Alojamento e Dep. médico) como pasta de arquivo em papel manila: tinta escura, cores da caneta e do moral escurecidas para leitura no papel (contraste testado), botões em papel.
+- **Hangar** como "Quadro de operações" e coleta como "Ordem de serviço", em papel.
+- **Símbolos desenhados** (SVG, traço dourado) no lugar dos emojis nas cartas de campo e nos arcanos: satélite, cronômetro, vento, setas, prédio, radar, escudo, pegadas, ampulheta, estrela (`js/arte/arcanos.js`).
+- Roteiro de calibração: seção 13 (arcanos e semente da turma).
+- **Testes:** novo 91 (4 subtestes: símbolos sem emoji, contraste do dossiê em desktop e celular, Hangar em papel, arcanos em campo).
+
 ## v3.43.0 — 2026-11-10 — Arcanos no meio da missão e semente da turma (modo professor)
 - **Arcanos de campo** (tarô de Cult of the Lamb): ao achar a 1ª e a 3ª fonte, aparece um painel com 2 arcanos; o jogador escolhe 1 (ou deixa passar; some em 20 s) e o efeito vale até o fim da missão. Não pausa o jogo. Vale nas missões avulsas e nas da Agência. Arcanos [H]: Radar (a fonte mais próxima pisca no minimapa por 25 s), Fôlego (correr gasta metade), Escudo (o próximo erro de identificação não custa dose nem quebra o combo), Passos leves (+10 % de velocidade), Ampulheta (+30 s na meta de tempo), Estrela (+50 % de pontos nas próximas fontes).
 - **Semente da turma** nas Missões avulsas (modo professor): quem digita a mesma semente joga a mesma corrida (mesma posição e força das fontes, mesmos arcanos oferecidos), para comparar resultados na aula. Sem semente, cada partida é diferente. Na Agência, os arcanos seguem o alerta e o dia.
