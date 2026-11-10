@@ -21,6 +21,8 @@ import { metodosGente } from './ui-gente.js';
 import { registrarMissao } from './carreira.js';
 import { efeito, CARTAS, PROPOSTAS, PROPOSTA, cumpreProposta, exposicaoAlta } from './decisoes.js';
 import { metodosDecisoes } from './ui-decisoes.js';
+import { ajustarMoral, MORAL } from './base-viva.js';
+import { metodosBaseViva } from './ui-base-viva.js';
 import { distribuirDoseMissao, NORMAS, razao, corCaneta } from './equipe.js';
 import { avaliarPlano, bonusPlano, bonusDoObjetivo, PLANO } from './plano-dose.js';
 import { CUSTOS, registrarColeta, foiLevantado, pesquisaPronta, diasDeVolta, registrarRetorno } from './frota.js';
@@ -133,9 +135,11 @@ export class AgenciaUI {
         // v3.39: carreira. Quem estava na saída de um alerta concluído soma uma missão; promoções vão para o relatório.
         if (q && concluiuAlerta) {
             const promovidos = [];
-            for (const id of q.ids) { const m = this.est.equipe.find((x) => x.id === id); const novo = m && registrarMissao(m); if (novo) promovidos.push(preencher(L.promoveu, { nome: m.nome, posto: L.posto[novo] })); }
+            for (const id of q.ids) { const m = this.est.equipe.find((x) => x.id === id); const novo = m && registrarMissao(m); if (novo) { promovidos.push(preencher(L.promoveu, { nome: m.nome, posto: L.posto[novo] })); ajustarMoral(m, MORAL.promocao); } }
             if (promovidos.length) this.relatorio = (this.relatorio ? this.relatorio + ' ' : '') + promovidos.join(' ') + ' ' + L.promocaoOnde;
         }
+        // v3.41: moral. Cada saída cansa; voltar com a caneta amarela ou vermelha cansa mais.
+        if (q && a && a.tipo !== 'treino') for (const id of q.ids) { const m = this.est.equipe.find((x) => x.id === id); if (!m) continue; ajustarMoral(m, MORAL.missao); if (razao(m, this.est.dia) >= NORMAS.atencao) ajustarMoral(m, MORAL.canetaAlta); }
         if (!this.est.iniciado && treinamentoConcluido(this.cb.desbloqueadas())) iniciar(this.est, CUSTOS.creditosIniciais);
         // v3.17: a equipe volta no mesmo jato; a nave e os cientistas ficam ocupados durante o voo de volta
         let volta = null;
@@ -334,7 +338,7 @@ export class AgenciaUI {
         } else {
             const itens = e.ativos.map((x) => {
                 const a = alertaPorId(x.id), d = this.dadosAlerta(a);
-                return `<li><button type="button" class="ag-item ${a.tipo}${this.sel === a.id ? ' sel' : ''}" data-alerta="${a.id}" aria-pressed="${this.sel === a.id}"><span class="ag-item-tipo">${this.rotuloTipo(a)}</span><span class="ag-item-titulo">${d.titulo}</span><span class="ag-item-local">${a.local[lang]} · <span class="ag-prazo" data-id="${a.id}">${this.textoPrazo(x)}</span></span></button></li>`;
+                return `<li><button type="button" class="ag-item ${a.tipo}${this.sel === a.id ? ' sel' : ''}" data-alerta="${a.id}" aria-pressed="${this.sel === a.id}"><span class="ag-item-tipo">${this.rotuloTipo(a)}</span><span class="ag-item-titulo">${d.titulo}</span><span class="ag-item-local">${a.local[lang]} · <span class="ag-prazo" data-id="${a.id}">${this.textoPrazo(x)}</span></span>${this.htmlRende(a, x)}</button></li>`;
             }).join('');
             const lista = e.ativos.length ? `<h3 class="ag-lista-titulo">${preencher(L.ativosTitulo, { n: e.ativos.length, max: PARAMETROS.maxAtivos + PARAMETROS.rapidas.max })}</h3><ul class="ag-lista">${itens}</ul>` : `<p class="ag-dica">${L.semAlertas}</p>`;
             corpo = this.fala('marta', L.marta, L.martaMapa) + this.htmlAvisoPolitica() + this.htmlBriefing() + lista + `<div class="ag-detalhe" id="ag-detalhe" aria-live="polite">${this.sel ? this.htmlDetalhe() : (e.ativos.length ? `<p class="ag-dica">${L.selecione}</p>` : '')}</div>`;
@@ -352,7 +356,7 @@ export class AgenciaUI {
         const km = Math.round(distanciaKm(BASE, a) / 10) * 10, h = Math.max(1, Math.round(horasDeVoo(km)));
         const dif = d.dificuldade ? `<span class="mission-difficulty ${d.dificuldade}">${L.dificuldade}: ${d.dificuldade.toUpperCase()}</span>` : '';
         return `<span class="ag-item-tipo">${this.rotuloTipo(a)}</span><h3>${d.titulo}</h3>`
-            + `<p class="ag-item-local">${a.local[lang]}${a.quando ? ' · ' + a.quando[lang] : ''} · ${this.textoPrazo(at)}</p>${dif}`
+            + `<p class="ag-item-local">${a.local[lang]}${a.quando ? ' · ' + a.quando[lang] : ''} · ${this.textoPrazo(at)}</p>${dif}<p class="ag-nota">${this.L.rendeTit} ${this.htmlRende(a, at)}</p>`
             + this.htmlBoletim(a, lang)
             + `<p>${d.desc}</p>`
             + this.notaPericia(a)
@@ -492,7 +496,7 @@ export class AgenciaUI {
         else if (k === 'treino' || k === 'academia-completa') { const completa = k === 'academia-completa'; this.alvo = { tipo: 'treino', missaoId: 1, completa }; this.equipeSaida = null; this._parar(); this.vel = 0; this.cb.iniciarMissao(completa ? MISSIONS[0] : TUTORIAL); }
         else if (k === 'pular') { this.cb.pularTreinamento(); if (treinamentoConcluido(this.cb.desbloqueadas()) && !this.est.iniciado) { iniciar(this.est, CUSTOS.creditosIniciais); this.gravar(); } this.desenhar(false); }
         else if (k === 'caderno') this.cb.abrirCaderno();
-        else if (!this.acaoGente(k, b) && !this.acaoDecisoes(k, b)) this.acaoBase(k, b);
+        else if (!this.acaoGente(k, b) && !this.acaoDecisoes(k, b) && !this.acaoBaseViva(k, b)) this.acaoBase(k, b);
     }
 
     chegar() {
@@ -506,4 +510,4 @@ export class AgenciaUI {
     }
 }
 
-Object.assign(AgenciaUI.prototype, metodosBase, metodosGente, metodosDecisoes);
+Object.assign(AgenciaUI.prototype, metodosBase, metodosGente, metodosDecisoes, metodosBaseViva);

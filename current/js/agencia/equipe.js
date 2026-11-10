@@ -25,6 +25,7 @@ export const NORMAS = {
 };
 
 import { fatorCarreira, saneaCarreira } from './carreira.js';
+import { saneaMoral, MORAL } from './base-viva.js';
 
 const JANELA_MAX = 30;
 const NOMES_POOL = ['Ana', 'Bruno', 'Carla', 'Diego', 'Elisa', 'Fábio', 'Graça', 'Hugo', 'Iara', 'Jonas', 'Kátia', 'Lívia', 'Mateus', 'Nina', 'Otto', 'Paula', 'Quintino', 'Rosa', 'Sérgio', 'Tereza'];
@@ -48,7 +49,7 @@ export const especialidadeDe = (m) => (m && ESPECIALIDADES.includes(m.especialid
 export const bonusDe = (m, chave) => ((BONUS[especialidadeDe(m)] || {})[chave] ?? 1) * fatorCarreira(m, chave);   // v3.39: × bônus de carreira
 
 export function novoCientista(id, nome, retrato, especialidade) {
-    return { id, nome, retrato, especialidade: ESPECIALIDADES.includes(especialidade) ? especialidade : especialidadePorId(id), doses: [], tratamento: false, ocupadoAte: 0, equip: null, missoes: 0, escolhas: {} };
+    return { id, nome, retrato, especialidade: ESPECIALIDADES.includes(especialidade) ? especialidade : especialidadePorId(id), doses: [], tratamento: false, ocupadoAte: 0, equip: null, missoes: 0, escolhas: {}, moral: MORAL.inicial };
 }
 
 /** Equipe inicial: 4 cientistas (decisão do Arnaldo, 28/10/2026). */
@@ -161,6 +162,7 @@ export function saneaEquipe(lista) {
             doses: (Array.isArray(o.doses) ? o.doses : []).filter((d) => d && Number.isFinite(d.dia) && Number.isFinite(d.msv)).slice(-60).map((d) => ({ dia: inteiro(d.dia, 0, 1000000, 0), msv: num(d.msv, 0, 1000, 0) })),
             tratamento: o.tratamento === true, ocupadoAte: inteiro(o.ocupadoAte, 0, 1000000, 0), equip: typeof o.equip === 'string' ? o.equip.slice(0, 20) : null,
             ...saneaCarreira(o),   // v3.39
+            moral: saneaMoral(o),   // v3.41
         });
     }
     return ok.length ? ok : equipeInicial();

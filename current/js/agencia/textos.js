@@ -324,7 +324,7 @@ Object.assign(TXT.pt, {
     pensa: {
         tratamento: 'Preciso de uns dias longe das fontes.', promocao: 'Promoção! Qual bônus a Direção vai me dar?',
         vermelho: 'Minha caneta está quase no limite. Melhor outra pessoa ir à frente.', amarelo: 'A caneta já está amarela; posso ir, mas atrás.',
-        cansado: 'Foram muitos dias seguidos de campo. Um dia de folga cairia bem.', novato: 'Ainda não fui a campo. Quero aprender.',
+        cansado: 'Foram muitos dias seguidos de campo. Um dia de folga cairia bem.', desanimado: 'Ando sem ânimo. Uma folga e uma vitória da equipe ajudariam.', novato: 'Ainda não fui a campo. Quero aprender.',
         aposentar: 'Já fiz minha parte. Posso me aposentar quando a Agência quiser.', veterano: 'Já vi muita fonte perdida. Posso orientar os novatos.',
         pronto: 'Tudo certo para a próxima missão.',
     },
@@ -344,7 +344,7 @@ Object.assign(TXT.en, {
     pensa: {
         tratamento: 'I need a few days away from the sources.', promocao: 'I got promoted! Which bonus will the Director give me?',
         vermelho: 'My pen is almost at the limit. Someone else should go in front.', amarelo: 'My pen is already yellow; I can go, but behind.',
-        cansado: 'Too many field days in a row. A day off would be nice.', novato: 'I have not been to the field yet. Ready to learn.',
+        cansado: 'Too many field days in a row. A day off would be nice.', desanimado: 'I feel down lately. A day off and a team win would help.', novato: 'I have not been to the field yet. Ready to learn.',
         aposentar: 'I have done my part. I can retire whenever the Agency wants.', veterano: 'I have seen many lost sources. I can guide the rookies.',
         pronto: 'Ready for the next mission.',
     },
@@ -416,4 +416,28 @@ Object.assign(TXT.en, {
     relCartaPressa: 'Hurry card: +{v} credits.', relCartaPatrocinio: 'Sponsorship: +{v} credits.',
     relPropostaSim: 'Client offer met: +{v} credits.', relPropostaNao: 'Client offer not met: no extra.',
     relPropostaAuditoria: 'The Director recorded an unnecessary exposure in the client offer: −1 Agency rating.',
+});
+
+// v3.41: moral, confiança pública, dados do decaimento e ícones de recompensa
+Object.assign(TXT.pt, {
+    moralLinha: 'Moral: {v} ({faixa})', moralFaixa: { alto: 'animado', medio: 'normal', baixo: 'desanimado' },
+    confiancaTit: 'Confiança pública por região', confiancaExpl: 'Alerta concluído: +5 na região; alerta vencido: −10. A média muda a verba mensal (hoje {f} % do normal).',
+    regiao: { americaSul: 'América do Sul', americaNorte: 'América do Norte', europa: 'Europa', africa: 'África', asia: 'Ásia', oceania: 'Oceania' },
+    dadosTit: 'Mesa de jogos: dados do decaimento', dadosExpl: 'Cada dado é um núcleo: a cada rodada, quem tira 6 decai e sai da mesa. Uma partida por dia; acertar rende {v} créditos e anima a equipe.',
+    dadosPergunta: 'Com {n} dados na mesa, em qual rodada vão restar {h} ou menos?', dadosOpcao: 'rodada {v}',
+    dadosRodada: 'rodada {i}', dadosCerto: 'Acertou! +{v} créditos.', dadosErrado: 'Quase: errou por uma rodada.', dadosLonge: 'Não foi dessa vez.',
+    dadosResultado: 'Desta vez a metade saiu na rodada {m} (seu palpite: {p}). Em média, a "meia-vida" destes dados é de cerca de {t} rodadas: cada dado tem 5 chances em 6 de sobreviver a cada rodada, e o acaso faz cada partida ser diferente.',
+    dadosAmanha: 'Já houve partida hoje. Volte amanhã.',
+    rendeTit: 'Rende:', rendeAria: 'O que o alerta rende', rendePremio: 'prêmio com 2 estrelas', rendeBonus: 'bônus grande', rendeProposta: 'proposta do cliente', rendeUrgente: 'prazo curto', rendeConfianca: 'região com confiança baixa',
+});
+Object.assign(TXT.en, {
+    moralLinha: 'Morale: {v} ({faixa})', moralFaixa: { alto: 'high', medio: 'normal', baixo: 'low' },
+    confiancaTit: 'Public trust by region', confiancaExpl: 'Completed alert: +5 in the region; expired alert: −10. The average changes the monthly funding (now {f} % of normal).',
+    regiao: { americaSul: 'South America', americaNorte: 'North America', europa: 'Europe', africa: 'Africa', asia: 'Asia', oceania: 'Oceania' },
+    dadosTit: 'Game table: decay dice', dadosExpl: 'Each die is a nucleus: every round, the dice that roll a 6 decay and leave the table. One game per day; a right guess earns {v} credits and lifts the team.',
+    dadosPergunta: 'With {n} dice on the table, in which round will {h} or fewer remain?', dadosOpcao: 'round {v}',
+    dadosRodada: 'round {i}', dadosCerto: 'Right! +{v} credits.', dadosErrado: 'Close: off by one round.', dadosLonge: 'Not this time.',
+    dadosResultado: 'This time half was gone in round {m} (your guess: {p}). On average, the "half-life" of these dice is about {t} rounds: each die has 5 chances in 6 of surviving each round, and chance makes every game different.',
+    dadosAmanha: 'There was already a game today. Come back tomorrow.',
+    rendeTit: 'Yields:', rendeAria: 'What the alert yields', rendePremio: 'prize with 2 stars', rendeBonus: 'big bonus', rendeProposta: 'client offer', rendeUrgente: 'short deadline', rendeConfianca: 'region with low trust',
 });

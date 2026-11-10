@@ -93,6 +93,17 @@ Inspiração: doutrinas e cartas de tarô (Cult of the Lamb), escolha de equipam
 | Cartas de campo | 3 de 5 por alerta e dia: levantamento, pressa (+25 % de prêmio, meta −25 %), fôlego (metade do gasto), segunda chance (1º erro sem dose), patrocínio (+100) | Os alunos escolhem carta ou ignoram? Alguma é sempre a melhor? | | |
 | Propostas do cliente | ~30 % dos alertas de campo; "só um cientista" +40 % ou "sem objetivo de dose" +30 %; −1 de nota se a caneta passar de 75 % (sozinho) ou alguém passar de 1 mSv (sem plano) | A turma aceita? A perda de nota pesa? Vira discussão sobre ética de proteção? | | |
 
+## 12. Moral, confiança pública, dados do decaimento, ajuda escondida e ícones (v3.41)
+Inspiração: fé dos seguidores, ajuda escondida e Knucklebones (Cult of the Lamb); pânico das nações e verba do conselho (X-COM). Todos os valores são **hipóteses de jogo [H]**, salvo a meia-vida dos dados, que é cálculo [C]. Simulador de um ano (`tests/ferramentas/calibrar-economia.mjs`, K = 5e-5, ritmo 1,5): Base completa no dia 240 (v3.38: dia 244), efeito da confiança pública sobre a verba.
+| Item | Valor | Pergunta para a turma | Observado | Ajustar? |
+|---|---|---|---|---|
+| Moral | começa em 70; −6 por saída, −6 a mais se voltar com caneta amarela ou vermelha; +3 por dia de folga; +10 na promoção; +4 no briefing certo; +3 nos dados | O moral cai rápido demais? Os alunos dão folga por causa dele? | | |
+| Efeito do moral | ≥ 80: +3 % de velocidade; < 40: −5 %; < 20: −10 % | É perceptível? Injusto? | | |
+| Confiança pública | 6 regiões; começa em 60; +5 ao concluir, −10 ao vencer; verba × (1 + (média − 60)/200), entre 0,7 e 1,2 | Os alunos priorizam regiões com confiança baixa? | | |
+| Dados do decaimento | 30 dados, sai quem tira 6; palpite da rodada da metade (2 a 6); acerto exato +40 créditos; 1 por dia; meia-vida ≈ 3,8 rodadas [C] | A turma entende por que o resultado varia? Combina com a versão aplicada em sala pelo Arnaldo? | | |
+| Ajuda escondida | depois de max(60 s; 35 % da meta) sem achar fonte, pulso fraco no bloco 4 × 4 da fonte mais próxima no minimapa | Os alunos lentos destravam? Os rápidos percebem? | | |
+| Ícones nos alertas | 💰 prêmio, ⭐ bônus, 🤝 proposta, ⏳ prazo ≤ 3 dias, 📉 região com confiança < 40 | Ajudam a escolher o alerta? | | |
+
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
 

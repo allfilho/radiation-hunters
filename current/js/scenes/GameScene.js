@@ -11,6 +11,7 @@ import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
 import { foiLevantado } from '../agencia/frota.js';
 import { tempoAteObjetivo } from '../agencia/plano-dose.js';
 import { efeito, CARTAS } from '../agencia/decisoes.js';
+import { fatorMoral, precisaAjuda, posAproximada } from '../agencia/base-viva.js';
 import { bonusDe } from '../agencia/equipe.js';
 import { equipDe } from '../agencia/ciencia.js';
 import { currentLang, t } from '../i18n/index.js';
@@ -782,6 +783,19 @@ export class GameScene extends Phaser.Scene {
             });
         }
 
+        // v3.41: ajuda escondida. Muito tempo sem achar fonte: um pulso fraco no bloco aproximado da fonte mais próxima, sem aviso.
+        const semAchar = (this.elapsedMs - (this.ultimoAchadoMs || 0)) / 1000;
+        if (!this.fim && this.sources && precisaAjuda(semAchar, this.metaTempoS)) {
+            const T = CONFIG.TILE_SIZE, px = this.player.x / T, py = this.player.y / T;
+            const alvo = this.sources.filter((s) => !s.found).map((s) => ({ s, d: Math.hypot(s.furniture.centerX / T - px, s.furniture.centerY / T - py) })).sort((u, v) => u.d - v.d)[0];
+            if (alvo) {
+                const p = posAproximada(alvo.s.furniture.centerX / T, alvo.s.furniture.centerY / T);
+                this.ajudaMostrada = p; const pulso = 0.5 + 0.5 * Math.sin(this.time.now / 500);
+                ctx.fillStyle = `rgba(120,200,255,${0.10 + 0.10 * pulso})`;
+                ctx.beginPath(); ctx.arc(p.x * scale, p.y * scale, scale * 3.2, 0, Math.PI * 2); ctx.fill();
+            }
+        } else this.ajudaMostrada = null;
+
         // Levantamento aéreo (modo Agência): só as fontes que emitem GAMA aparecem marcadas (laranja); alfa e beta não são detectadas do ar
         if (this.levantado) {
             const pulso = 0.5 + 0.5 * Math.sin(this.time.now / 260);
@@ -999,7 +1013,7 @@ export class GameScene extends Phaser.Scene {
     fatorVelocidade() {
         if (ui.origem !== 'agencia' || !ui.agencia || !ui.agencia.equipeSaida) return 1;
         const m = ui.agencia.est.equipe.find((x) => x.id === ui.agencia.cientistaAtivo());
-        return m ? bonusDe(m, 'velocidade') : 1;
+        return m ? bonusDe(m, 'velocidade') * fatorMoral(m) : 1;   // v3.41: × moral
     }
 
     /** v3.38 (Fase F): dosímetro com o objetivo do plano de dose. HUD de quem está à frente; alarme uma vez por cientista. */
@@ -1693,6 +1707,7 @@ export class GameScene extends Phaser.Scene {
             GameState.score += points;
             
             source.found = true;
+            this.ultimoAchadoMs = this.elapsedMs;   // v3.41: ajuda escondida recomeça a contar
             this.foundSources.push(source);
             const ultima = this.foundSources.length === this.sources.length && this.licoesCompletas();
             if (ultima) this.concluindo = true;   // congela o relógio e o movimento

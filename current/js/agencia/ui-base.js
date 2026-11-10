@@ -172,7 +172,7 @@ export const metodosBase = {
         if (s === 'laboratorio') return rel + this.htmlLaboratorio();
         if (s === 'alojamento') return rel + this.htmlAlojamento();
         if (s === 'medico') return rel + this.htmlMedico();
-        if (s === 'comando') return rel + this.fala('marta', L.marta, L.martaMapa) + `<div class="ag-cartao"><p>${preencher(L.comandoResumo, { a: e.ativos.length, c: Object.values(e.concluidos).filter((n) => n > 0).length, x: e.expirados })}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="trocar">${L.irMapa}</button></div></div>` + this.htmlPoliticas() + this.htmlMural();
+        if (s === 'comando') return rel + this.fala('marta', L.marta, L.martaMapa) + `<div class="ag-cartao"><p>${preencher(L.comandoResumo, { a: e.ativos.length, c: Object.values(e.concluidos).filter((n) => n > 0).length, x: e.expirados })}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="trocar">${L.irMapa}</button></div></div>` + this.htmlPoliticas() + this.htmlConfianca() + this.htmlMural();
         if (s === 'academia') {
             const m1 = TUTORIAL, feito = treinamentoConcluido(this.cb.desbloqueadas()), est = this.cb.estrelas(1);
             return rel + this.fala('teo', L.teo, feito ? L.teoFalaFeito : L.teoFala)
@@ -214,7 +214,7 @@ export const metodosBase = {
             const mot = camasOcupadas(e) >= camasTotal(e) ? 'camas' : (e.creditos < custo ? 'creditos' : null);
             return `<div class="ag-membro"><div class="inv-retrato" aria-hidden="true">${retratoSvg(c.retrato, 'sorriso', { engenheiro: eng })}</div><div class="ag-membro-info"><p class="ag-fala-nome">${c.nome}</p><p class="ag-nota">${L.papel[eng ? 'engenheiro' : 'cientista']}${eng ? '' : ' · ' + L.especialidade[especialidadeDe(c)] + ': ' + L.espBonus[especialidadeDe(c)]}</p>${this.botaoCusto('contratar', L.contratar.replace(' ({v})', ''), custo, mot, `data-id="${c.id}"`)}</div></div>`;
         }).join('');
-        return `<div class="ag-cartao"><h3>${L.sala.alojamento} · ${preencher(L.camas, { n: camasOcupadas(e), k: camasTotal(e) })}</h3>${eq}${engs}</div>`
+        return `<div class="ag-cartao"><h3>${L.sala.alojamento} · ${preencher(L.camas, { n: camasOcupadas(e), k: camasTotal(e) })}</h3>${eq}${engs}</div>` + this.htmlDados()
             + (temMedico(e) ? '' : `<div class="ag-cartao"><p class="ag-nota">${L.semMedicoDica}</p></div>`) + `<div class="ag-cartao"><h3>${L.contratarTit}</h3>${cands || `<p class="ag-nota">${L.semCandidatos}</p>`}</div>`
             + `<div class="ag-cartao"><h3>${L.normasTit}</h3><p class="ag-nota">${L.normasTxt}</p></div>`;
     },

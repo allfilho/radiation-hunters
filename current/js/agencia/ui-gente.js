@@ -23,7 +23,7 @@ export const metodosGente = {
             + ofertaDe(m, pend).map((b) => `<button type="button" class="menu-btn secondary ag-mini" data-ag="carreira" data-m="${m.id}" data-b="${b}">${L.bonusCarreira[b]}</button>`).join('') + `</div></div>` : '';
         const apos = podeAposentar(m) ? `<div class="ag-acoes"><button type="button" class="menu-btn secondary ag-mini" data-ag="aposentar" data-m="${m.id}">${L.aposentarBtn}</button></div><p class="ag-nota">${L.aposentarNota}</p>` : '';
         return `<div class="ag-carreira" data-carreira="${m.id}"><p class="ag-nota"><strong>${L.posto[posto]}</strong> · ${preencher(L.missoesN, { n: m.missoes || 0 })}${falta !== null ? ' · ' + preencher(L.proximoPosto, { n: falta }) : ''}${bonus ? ' · ' + bonus : ''}</p>`
-            + `<p class="ag-pensamento">“${pens}”</p>${escolha}${apos}</div>`;
+            + `<p class="ag-nota">${this.htmlMoral(m)}</p><p class="ag-pensamento">“${pens}”</p>${escolha}${apos}</div>`;
     },
     htmlMural() {
         const L = this.L, mural = this.est.mural || [];

@@ -3,6 +3,15 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.41.0 — 2026-11-10 — Moral, confiança pública, dados do decaimento, ajuda escondida e ícones de recompensa
+- **Moral da equipe** (fé dos seguidores de Cult of the Lamb): de 0 a 100, começa em 70. Cai 6 a cada saída e mais 6 se o cientista voltar com a caneta amarela ou vermelha; sobe com dia de folga (+3), promoção (+10), briefing certo (+4 para todos) e partida de dados ganha (+3). Animado (≥ 80) anda 3 % mais rápido; desanimado (< 40) 5 % mais devagar (< 20: 10 %) [H]. Aparece no dossiê, com pensamento próprio quando está baixo.
+- **Confiança pública por região** (pânico das nações do X-COM): 6 regiões do mapa, começam em 60; alerta concluído +5, alerta vencido −10. A média muda a verba mensal: 1 com 60, entre 0,7 e 1,2 [H]. Painel no Centro de comando.
+- **Mesa de jogos do Alojamento: dados do decaimento** (no lugar do Knucklebones): 30 dados, sai quem tira 6; o jogador aposta em qual rodada restará a metade. Uma partida por dia; acerto exato +40 créditos e moral. A resposta mostra a rolagem e explica a meia-vida média de cerca de 3,8 rodadas (ln 2 ÷ ln 6/5) [C].
+- **Ajuda escondida** (Cult of the Lamb): depois de muito tempo sem achar fonte (60 s ou 35 % da meta), um pulso fraco aparece no minimapa no bloco aproximado da fonte mais próxima, sem aviso.
+- **Ícones de recompensa** nos alertas (lista e detalhe): prêmio, bônus, proposta do cliente, prazo curto e região com confiança baixa.
+- Código: `js/agencia/base-viva.js` (lógica pura) e `js/agencia/ui-base-viva.js` (telas); save com `moral`, `confianca` e `dados`. Simulador de um ano: Base completa no dia 240 (antes 244). Roteiro de calibração: seção 12.
+- **Testes:** novo 88 (10 subtestes, pt/en, desktop e celular).
+
 ## v3.40.0 — 2026-11-10 — Políticas da Agência, cartas de campo e propostas do cliente
 - **Políticas da Agência** (doutrinas de Cult of the Lamb): no Centro de comando, escolhas permanentes de 1 de 2, abertas com 3, 8 e 15 alertas concluídos [H]. Dose da equipe: Revezamento obrigatório (bônus do plano de dose ×1,5) ou Produção (prêmio das missões de campo ×1,1, sem bônus do plano). Informação: Mapa prévio (toda missão de campo chega com as fontes gama marcadas, prêmio ×0,85) ou Resposta rápida (+4 dias de prazo nos alertas novos). Pessoal: Folga garantida (alta 5 pontos antes, um chamado rápido a menos) ou Plantão (um chamado a mais, alta 5 pontos depois). Aviso no painel do mapa quando há política para escolher.
 - **Cartas de campo** (tarô de Cult of the Lamb + equipamento do X-COM): no preparo, 3 de 5 cartas por alerta e dia; escolher uma ou nenhuma. Levantamento emprestado, Pressa do cliente (+25 % de prêmio, meta de tempo 25 % menor), Fôlego (correr gasta metade), Segunda chance (o 1º erro de identificação não custa dose), Patrocínio (+100 créditos ao concluir) [H].

@@ -2300,3 +2300,14 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 .ag-carta-nome { font-weight: 700; color: #c9a8ff; }
 .ag-carta-desc { font-size: .8rem; color: #cfd6e0; }
 .ag-proposta { margin-top: 12px; }
+
+/* v3.41: moral, confiança, dados e ícones de recompensa */
+.ag-moral-alto { color: #7dffb5; } .ag-moral-baixo { color: #ffb36b; }
+.ag-confs li.ag-conf { display: grid; grid-template-columns: minmax(0, 9em) 1fr 2.5em; gap: 8px; align-items: center; }
+.ag-conf-barra { height: 8px; background: #12202e; border-radius: 4px; overflow: hidden; }
+.ag-conf-barra > span { display: block; height: 100%; background: #4fc3ff; }
+.ag-conf-barra > span.baixa { background: #ff8a5a; } .ag-conf-barra > span.alta { background: #00e08a; }
+.ag-dados-tab { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 6px 0; }
+.ag-dados-tab li { display: flex; flex-direction: column; align-items: center; min-width: 4.2em; padding: 4px 6px; border: 1px solid #2b4a66; border-radius: 6px; font-size: .78rem; }
+.ag-rende { display: flex; flex-wrap: wrap; gap: 6px; font-size: .78rem; color: #cfd6e0; margin-top: 2px; }
+.ag-rende-i { white-space: nowrap; }

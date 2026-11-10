@@ -6,6 +6,8 @@
 // para o Mural da Agência. Todos os números são HIPÓTESES DE JOGO [H], a calibrar em sala.
 // ============================================
 
+import { ajustarMoral, moralDe, MORAL } from './base-viva.js';
+
 /** Postos por missões concluídas [H]. Nomes neutros quanto a gênero (pt). */
 export const POSTOS = [
     { id: 'iniciante', min: 0 },
@@ -85,6 +87,7 @@ export function aposentar(est, id) {
 export function pensamento(m, dia, r, seguidas) {
     if (m.tratamento) return 'tratamento';
     if (promocaoPendente(m)) return 'promocao';
+    if (moralDe(m) < MORAL.baixo) return 'desanimado';   // v3.41
     if (r >= 0.75) return 'vermelho';
     if (r >= 0.5) return 'amarelo';
     if (seguidas >= 3) return 'cansado';
@@ -125,7 +128,7 @@ export function responderBriefing(est, perguntaId, certo) {
     b.dia = est.dia; b.respostas = (b.respostas || 0) + 1;
     b.vistas = [...(b.vistas || []), perguntaId].slice(-BRIEFING.memoria);
     let ganho = 0;
-    if (certo) { b.acertos = (b.acertos || 0) + 1; ganho = BRIEFING.premio; est.creditos += ganho; }
+    if (certo) { b.acertos = (b.acertos || 0) + 1; ganho = BRIEFING.premio; est.creditos += ganho; for (const m of est.equipe || []) ajustarMoral(m, MORAL.briefing); }   // v3.41: moral
     est.briefing = b;
     return ganho;
 }

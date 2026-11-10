@@ -15,6 +15,7 @@ import { ehRapida, alertaPorId, novaSemente, PROB_POCO, PERICIA_ID } from './rap
 import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas, saneaEntregas } from './ciencia.js';
 import { saneaMural, saneaBriefing } from './carreira.js';
 import { efeito, saneaPoliticas } from './decisoes.js';
+import { saneaConfianca, saneaDados, ajustarConfianca, fatorVerba, ajustarMoral, MORAL, CONFIANCA } from './base-viva.js';
 import { ESPECIALIDADES, especialidadePorId, equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
 import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
 
@@ -46,7 +47,7 @@ export function novoEstado() {
         v: 3, iniciado: false, dia: 0, fator: PARAMETROS.fatorInicial, creditos: 0, nota: 0, proximoAlerta: null, proximaRapida: null, rapidasFeitas: 0, ativos: [], usados: [], concluidos: {}, expirados: 0, historico: [],
         equipe: equipeInicial(), candidatos: [], naves: naveInicial(), modulos: modulosIniciais(), grade: { ...GRADE_INICIAL },
         pesquisa: {}, coleta: [], levantados: [], proxId: 10,
-        colhidas: {}, pericia: { feita: false, ato2: false }, mural: [], briefing: saneaBriefing(null), politicas: {}, ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
+        colhidas: {}, pericia: { feita: false, ato2: false }, mural: [], briefing: saneaBriefing(null), politicas: {}, confianca: saneaConfianca(null), dados: saneaDados(null), ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
     };
 }
 
@@ -104,6 +105,7 @@ export function sanear(d) {
     e.pericia = { feita: !!(o.pericia && o.pericia.feita), ato2: !!(o.pericia && o.pericia.ato2) };   // v3.37
     e.mural = saneaMural(o.mural); e.briefing = saneaBriefing(o.briefing);   // v3.39
     e.politicas = saneaPoliticas(o.politicas);   // v3.40
+    e.confianca = saneaConfianca(o.confianca); e.dados = saneaDados(o.dados);   // v3.41
     Object.assign(e, saneaCiencia(o, e.dia));
     saneaEntregas(e);
     e.v = 3;
@@ -151,6 +153,7 @@ export function avancarDia(est, rand = Math.random) {
     const ev = [];
     est.dia += 1;
     // equipe: quem estava em tratamento volta quando a dose relativa cai abaixo de 75 % (85 % com Departamento médico)
+    for (const m of est.equipe) if (!m.tratamento && (m.ocupadoAte || 0) < est.dia && !m.doses.some((d) => d.dia === est.dia - 1)) ajustarMoral(m, MORAL.folga);   // v3.41: um dia de folga anima
     for (const m of est.equipe) if (verificarRetorno(m, est.dia, limiteRetorno(est))) { const e = { tipo: 'retorno', dia: est.dia, quem: m.nome }; ev.push(e); registrar(est, e); }
     // naves em viagem: chegada
     for (const n of est.naves) {
@@ -178,6 +181,7 @@ export function avancarDia(est, rand = Math.random) {
         if (est.dia >= a.expira) {
             est.ativos = est.ativos.filter((x) => x.id !== a.id);
             est.nota += ehRapida(a.id) ? PARAMETROS.rapidas.pontosExpirou : PARAMETROS.pontosExpirou; est.expirados += 1;
+            ajustarConfianca(est, alertaPorId(a.id), CONFIANCA.expirou);   // v3.41: a região perde confiança
             const e = { tipo: 'expirou', dia: est.dia, id: a.id }; ev.push(e); registrar(est, e);
         }
     }
@@ -213,7 +217,7 @@ export function avancarDia(est, rand = Math.random) {
         const e = { tipo: 'novo', dia: est.dia, id: 'i-tempo' }; ev.push(e); registrar(est, e);
     }
     if (est.dia % PARAMETROS.diasPorMes === 0) {
-        const pagamento = Math.round(PARAMETROS.verbaBase * est.fator / 100);
+        const pagamento = Math.round(PARAMETROS.verbaBase * est.fator / 100 * fatorVerba(est));   // v3.41: confiança pública média
         est.creditos += pagamento;
         const nota = est.nota;
         let humor = 'satisfeito', passo = 0;
@@ -241,6 +245,7 @@ export function concluir(est, id, pontos) {
     if (ehRapida(id)) est.rapidasFeitas += 1; else est.concluidos[id] = (est.concluidos[id] || 0) + 1;
     if (id === PERICIA_ID) est.pericia.feita = true;   // v3.37: abre o Ato 2 no próximo dia
     if (id === 'i-tempo') est.pericia.ato2 = true;
+    ajustarConfianca(est, a, CONFIANCA.concluido);   // v3.41
     registrar(est, { tipo: 'concluido', dia: est.dia, id, valor: ganho });
     return ganho;
 }
