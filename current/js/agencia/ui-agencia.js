@@ -19,6 +19,8 @@ import { TXT, NOME_AGENCIA } from './textos.js';
 import { metodosBase } from './ui-base.js';
 import { metodosGente } from './ui-gente.js';
 import { registrarMissao } from './carreira.js';
+import { efeito, CARTAS, PROPOSTAS, PROPOSTA, cumpreProposta, exposicaoAlta } from './decisoes.js';
+import { metodosDecisoes } from './ui-decisoes.js';
 import { distribuirDoseMissao, NORMAS, razao, corCaneta } from './equipe.js';
 import { avaliarPlano, bonusPlano, bonusDoObjetivo, PLANO } from './plano-dose.js';
 import { CUSTOS, registrarColeta, foiLevantado, pesquisaPronta, diasDeVolta, registrarRetorno } from './frota.js';
@@ -107,11 +109,26 @@ export class AgenciaUI {
             const nomesDe = (ids) => ids.map((id) => (this.est.equipe.find((m) => m.id === id) || {}).nome).filter(Boolean).join(', ');
             const partes = [];
             if (!concluiuCampo) partes.push(L.relPlanoSemConclusao);
-            else if (av.cumprido) { const b = bonusPlano(av.objetivo, ganhoCampo, true, true); this.est.creditos += b; partes.push(preencher(L.relPlanoOk, { v, b })); }
+            else if (av.cumprido) { const b = Math.round(bonusPlano(av.objetivo, ganhoCampo, true, true) * efeito(this.est, 'bonusPlano')); this.est.creditos += b; partes.push(preencher(L.relPlanoOk, { v, b })); }
             if (av.acima.length && (concluiuCampo || av.revisao)) partes.push(preencher(L.relPlanoFora, { v, quem: nomesDe(av.acima) }));
             if (av.revisao) { revisao = av.revisados; partes.push(preencher(L.relPlanoRevisao, { quem: nomesDe(av.revisados), d: PLANO.revisaoDias })); }
             if (partes.length) this.relatorio = (this.relatorio ? this.relatorio + ' ' : '') + partes.join(' ');
-            this.ultimoPlano = { ...av, bonus: concluiuCampo && av.cumprido ? Math.round(ganhoCampo * bonusDoObjetivo(av.objetivo)) : 0 };
+            this.ultimoPlano = { ...av, bonus: concluiuCampo && av.cumprido ? Math.round(Math.round(ganhoCampo * bonusDoObjetivo(av.objetivo)) * efeito(this.est, 'bonusPlano')) : 0 };
+        }
+        // v3.40: carta de campo e proposta do cliente
+        if (q && emCampo(a)) {
+            const partes = [], E = this.est, nota0 = E.nota;
+            if (concluiuCampo && q.carta === 'pressa') { const x = Math.round(ganhoCampo * (CARTAS.pressa.premio - 1)); E.creditos += x; partes.push(preencher(L.relCartaPressa, { v: x })); }
+            if (concluiuCampo && q.carta === 'patrocinio') { E.creditos += CARTAS.patrocinio.creditos; partes.push(preencher(L.relCartaPatrocinio, { v: CARTAS.patrocinio.creditos })); }
+            if (q.proposta) {
+                const cumpre = cumpreProposta(q.proposta, q.ids, q.objetivo), doses = (res || []).map((x) => x.msv);
+                const razoes = q.ids.map((id) => { const m = E.equipe.find((x) => x.id === id); return m ? razao(m, E.dia) : 0; });
+                if (!cumpre) partes.push(L.relPropostaNao);
+                else if (concluiuCampo) { const x = Math.round(ganhoCampo * PROPOSTAS[q.proposta].premio); E.creditos += x; partes.push(preencher(L.relPropostaSim, { v: x })); }
+                if (cumpre && exposicaoAlta(q.proposta, razoes, doses)) { E.nota -= PROPOSTA.notaPerda; partes.push(L.relPropostaAuditoria); }
+            }
+            if (partes.length) this.relatorio = (this.relatorio ? this.relatorio + ' ' : '') + partes.join(' ');
+            this.ultimaDecisao = { carta: q.carta || null, proposta: q.proposta || null, notaDelta: E.nota - nota0 };
         }
         // v3.39: carreira. Quem estava na saída de um alerta concluído soma uma missão; promoções vão para o relatório.
         if (q && concluiuAlerta) {
@@ -320,7 +337,7 @@ export class AgenciaUI {
                 return `<li><button type="button" class="ag-item ${a.tipo}${this.sel === a.id ? ' sel' : ''}" data-alerta="${a.id}" aria-pressed="${this.sel === a.id}"><span class="ag-item-tipo">${this.rotuloTipo(a)}</span><span class="ag-item-titulo">${d.titulo}</span><span class="ag-item-local">${a.local[lang]} · <span class="ag-prazo" data-id="${a.id}">${this.textoPrazo(x)}</span></span></button></li>`;
             }).join('');
             const lista = e.ativos.length ? `<h3 class="ag-lista-titulo">${preencher(L.ativosTitulo, { n: e.ativos.length, max: PARAMETROS.maxAtivos + PARAMETROS.rapidas.max })}</h3><ul class="ag-lista">${itens}</ul>` : `<p class="ag-dica">${L.semAlertas}</p>`;
-            corpo = this.fala('marta', L.marta, L.martaMapa) + this.htmlBriefing() + lista + `<div class="ag-detalhe" id="ag-detalhe" aria-live="polite">${this.sel ? this.htmlDetalhe() : (e.ativos.length ? `<p class="ag-dica">${L.selecione}</p>` : '')}</div>`;
+            corpo = this.fala('marta', L.marta, L.martaMapa) + this.htmlAvisoPolitica() + this.htmlBriefing() + lista + `<div class="ag-detalhe" id="ag-detalhe" aria-live="polite">${this.sel ? this.htmlDetalhe() : (e.ativos.length ? `<p class="ag-dica">${L.selecione}</p>` : '')}</div>`;
         }
         const hist = e.historico.slice(-6).reverse().map((h) => `<li>${this.textoHistorico(h)}</li>`).join('');
         const emViagem = e.naves.filter((n) => n.missao).map((n) => { const a = alertaPorId(n.missao.alertaId); return `<li>${L.tipoNave[n.tipo]}: ${a ? this.dadosAlerta(a).titulo : ''} · ${preencher(L.viagemNave, { d: n.missao.chegaEm })}</li>`; }).join('');
@@ -475,7 +492,7 @@ export class AgenciaUI {
         else if (k === 'treino' || k === 'academia-completa') { const completa = k === 'academia-completa'; this.alvo = { tipo: 'treino', missaoId: 1, completa }; this.equipeSaida = null; this._parar(); this.vel = 0; this.cb.iniciarMissao(completa ? MISSIONS[0] : TUTORIAL); }
         else if (k === 'pular') { this.cb.pularTreinamento(); if (treinamentoConcluido(this.cb.desbloqueadas()) && !this.est.iniciado) { iniciar(this.est, CUSTOS.creditosIniciais); this.gravar(); } this.desenhar(false); }
         else if (k === 'caderno') this.cb.abrirCaderno();
-        else if (!this.acaoGente(k, b)) this.acaoBase(k, b);
+        else if (!this.acaoGente(k, b) && !this.acaoDecisoes(k, b)) this.acaoBase(k, b);
     }
 
     chegar() {
@@ -489,4 +506,4 @@ export class AgenciaUI {
     }
 }
 
-Object.assign(AgenciaUI.prototype, metodosBase, metodosGente);
+Object.assign(AgenciaUI.prototype, metodosBase, metodosGente, metodosDecisoes);

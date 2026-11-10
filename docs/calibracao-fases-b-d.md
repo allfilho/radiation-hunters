@@ -82,6 +82,17 @@ Inspiração: seguidores com níveis e pensamentos (Cult of the Lamb) e postos c
 | Aposentadoria | Referência com 20 missões; vai ao Mural, libera cama, +1 de nota | Alguém se aposenta numa turma? Faz sentido o prêmio? | | |
 | Briefing do dia | 1 pergunta por dia de jogo (nível 1 ou 2), +30 créditos no acerto | Os alunos respondem ou pulam? O valor muda o comportamento? | | |
 
+## 11. Políticas, cartas de campo e propostas do cliente (v3.40)
+Inspiração: doutrinas e cartas de tarô (Cult of the Lamb), escolha de equipamento antes da missão (X-COM). Todos os valores são **hipóteses de jogo [H]**.
+| Item | Valor | Pergunta para a turma | Observado | Ajustar? |
+|---|---|---|---|---|
+| Marcos das políticas | 3, 8 e 15 alertas concluídos | A primeira política aparece na primeira aula? | | |
+| Dose da equipe | Revezamento (bônus do plano ×1,5) × Produção (prêmio de campo ×1,1, sem bônus do plano) | Qual a turma escolhe? Ela entende que é uma escolha ALARA × dinheiro? | | |
+| Informação | Mapa prévio (fontes gama marcadas, prêmio ×0,85) × Resposta rápida (+4 dias de prazo) | O mapa prévio deixa o jogo fácil demais? | | |
+| Pessoal | Folga (alta 5 pontos antes, −1 chamado) × Plantão (+1 chamado, alta 5 pontos depois) | O efeito é perceptível? | | |
+| Cartas de campo | 3 de 5 por alerta e dia: levantamento, pressa (+25 % de prêmio, meta −25 %), fôlego (metade do gasto), segunda chance (1º erro sem dose), patrocínio (+100) | Os alunos escolhem carta ou ignoram? Alguma é sempre a melhor? | | |
+| Propostas do cliente | ~30 % dos alertas de campo; "só um cientista" +40 % ou "sem objetivo de dose" +30 %; −1 de nota se a caneta passar de 75 % (sozinho) ou alguém passar de 1 mSv (sem plano) | A turma aceita? A perda de nota pesa? Vira discussão sobre ética de proteção? | | |
+
 ## Como registrar
 Para cada linha, anote o valor observado e, se for mudar, o valor proposto. Me envie a folha preenchida (foto ou texto): eu ajusto as constantes (`js/agencia/ciencia.js`, `js/agencia/equipe.js`, `js/fisica/dose.js`, `js/fisica/geiger.js`), rodo a suíte e entrego a versão. Enquanto isso, o rótulo [H] permanece no código e nos textos.
 

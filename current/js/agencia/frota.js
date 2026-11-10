@@ -5,6 +5,7 @@
 // Todos os VALORES abaixo (custos, prazos, capacidades) são escolhas de jogo [H] para calibrar em sala de aula.
 // As ações recebem o estado `est` (de simulacao.js) e devolvem { ok: true, ... } ou { ok: false, motivo }.
 // ============================================
+import { efeito } from './decisoes.js';
 import { disponivel, gerarCandidato, NORMAS } from './equipe.js';
 import { saneaIsotopos, contratarEngenheiro, CIENCIA } from './ciencia.js';
 
@@ -57,7 +58,7 @@ export const camasLivres = (est) => Math.max(0, camasTotal(est) - camasOcupadas(
 export const temOficina = (est) => modulosProntos(est, 'oficina').length > 0;
 export const temMedico = (est) => modulosProntos(est, 'medico').length > 0;
 /** Limite de dose relativa para dar alta: mais folgado com o Departamento médico (reavaliação clínica) [H]. */
-export const limiteRetorno = (est) => (temMedico(est) ? NORMAS.retornoMedico : NORMAS.retorno);
+export const limiteRetorno = (est) => (temMedico(est) ? NORMAS.retornoMedico : NORMAS.retorno) + efeito(est, 'retorno');   // v3.40: políticas de folga/plantão
 export const temLaboratorio = (est) => modulosProntos(est, 'laboratorio').length > 0;
 export const pesquisaPronta = (est, id) => !!est.pesquisa[id] && est.pesquisa[id].pronto <= est.dia;
 export const naveLivre = (n, dia) => !n.missao && n.livreEm <= dia;

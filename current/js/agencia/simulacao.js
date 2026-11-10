@@ -14,6 +14,7 @@ import { ALERTAS } from './dados.js';
 import { ehRapida, alertaPorId, novaSemente, PROB_POCO, PERICIA_ID } from './rapidas.js';
 import { saneaCiencia, avancarCiencia, saneaIsotopos, registrarColhidas, saneaEntregas } from './ciencia.js';
 import { saneaMural, saneaBriefing } from './carreira.js';
+import { efeito, saneaPoliticas } from './decisoes.js';
 import { ESPECIALIDADES, especialidadePorId, equipeInicial, saneaEquipe, verificarRetorno, inteiro as inteiroE, distribuirDoseMissao, NORMAS } from './equipe.js';
 import { modulosIniciais, naveInicial, GRADE_INICIAL, GRADE_MAX, MODULOS_VALIDOS, TIPOS_NAVE, CUSTOS, renovarCandidatos, PRAZO_COLETA, limiteRetorno, temOficina } from './frota.js';
 
@@ -45,7 +46,7 @@ export function novoEstado() {
         v: 3, iniciado: false, dia: 0, fator: PARAMETROS.fatorInicial, creditos: 0, nota: 0, proximoAlerta: null, proximaRapida: null, rapidasFeitas: 0, ativos: [], usados: [], concluidos: {}, expirados: 0, historico: [],
         equipe: equipeInicial(), candidatos: [], naves: naveInicial(), modulos: modulosIniciais(), grade: { ...GRADE_INICIAL },
         pesquisa: {}, coleta: [], levantados: [], proxId: 10,
-        colhidas: {}, pericia: { feita: false, ato2: false }, mural: [], briefing: saneaBriefing(null), ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
+        colhidas: {}, pericia: { feita: false, ato2: false }, mural: [], briefing: saneaBriefing(null), politicas: {}, ciencia: { concluidas: {}, andamento: {} }, engenheiros: [], fila: [], equipamentos: {},
     };
 }
 
@@ -102,6 +103,7 @@ export function sanear(d) {
     e.levantados = [...new Set((Array.isArray(o.levantados) ? o.levantados : []).filter((id) => idValido(id)))];
     e.pericia = { feita: !!(o.pericia && o.pericia.feita), ato2: !!(o.pericia && o.pericia.ato2) };   // v3.37
     e.mural = saneaMural(o.mural); e.briefing = saneaBriefing(o.briefing);   // v3.39
+    e.politicas = saneaPoliticas(o.politicas);   // v3.40
     Object.assign(e, saneaCiencia(o, e.dia));
     saneaEntregas(e);
     e.v = 3;
@@ -183,7 +185,7 @@ export function avancarDia(est, rand = Math.random) {
         if (est.ativos.filter((x) => !ehRapida(x.id)).length < PARAMETROS.maxAtivos) {
             const id = sortear(est, rand);
             if (id) {
-                est.ativos.push({ id, desde: est.dia, expira: est.dia + prazoDe(id) });
+                est.ativos.push({ id, desde: est.dia, expira: est.dia + prazoDe(id) + efeito(est, 'prazo') });   // v3.40: política de resposta rápida
                 const e = { tipo: 'novo', dia: est.dia, id }; ev.push(e); registrar(est, e);
             }
             est.proximoAlerta = est.dia + inteiroAleatorio(rand, PARAMETROS.intervaloMin, PARAMETROS.intervaloMax);
@@ -192,11 +194,11 @@ export function avancarDia(est, rand = Math.random) {
     // chamados de cidadãos: calendário próprio, não ocupam as vagas das missões da história
     if (est.proximaRapida == null) est.proximaRapida = est.dia + PARAMETROS.rapidas.primeira;
     if (est.dia >= est.proximaRapida) {
-        if (est.ativos.filter((x) => ehRapida(x.id)).length < PARAMETROS.rapidas.max) {
+        if (est.ativos.filter((x) => ehRapida(x.id)).length < PARAMETROS.rapidas.max + efeito(est, 'rapidas')) {   // v3.40: políticas de folga/plantão
             const R = PARAMETROS.rapidas, nMax = est.rapidasFeitas < R.facilAte ? 1 : est.rapidasFeitas < R.medioAte ? 2 : 3;
             const poco = !!est.ciencia.concluidas.espectrometriaGama && rand() < PROB_POCO;   // v3.36: poço de petróleo só depois do espectrômetro (sem a pesquisa, nenhum sorteio novo: o fluxo antigo não muda)
             const id = 'q' + novaSemente(rand, est.ativos.map((x) => x.id), nMax, poco);
-            est.ativos.push({ id, desde: est.dia, expira: est.dia + PARAMETROS.rapidas.prazo });
+            est.ativos.push({ id, desde: est.dia, expira: est.dia + PARAMETROS.rapidas.prazo + efeito(est, 'prazo') });
             const e = { tipo: 'novo', dia: est.dia, id }; ev.push(e); registrar(est, e);
             est.proximaRapida = est.dia + inteiroAleatorio(rand, PARAMETROS.rapidas.intervaloMin, PARAMETROS.rapidas.intervaloMax);
         } else est.proximaRapida = est.dia + 1;
@@ -233,7 +235,8 @@ export function concluir(est, id, pontos) {
     const p = inteiro(pontos, 1, 3, 1);
     est.nota += ehRapida(id) ? PARAMETROS.rapidas.nota : p;
     const base = PARAMETROS.premioMissao[(alertaPorId(id) || {}).nivel] || PARAMETROS.premioMissao.normal;
-    const ganho = Math.round(base * PARAMETROS.fatorEstrelas[p]);
+    const a = alertaPorId(id) || {}, campo = a.tipo === 'missao' || a.tipo === 'rapida';
+    const ganho = Math.round(base * PARAMETROS.fatorEstrelas[p] * (campo && !a.falso ? efeito(est, 'premioCampo') : 1));   // v3.40: políticas
     est.creditos += ganho;
     if (ehRapida(id)) est.rapidasFeitas += 1; else est.concluidos[id] = (est.concluidos[id] || 0) + 1;
     if (id === PERICIA_ID) est.pericia.feita = true;   // v3.37: abre o Ato 2 no próximo dia

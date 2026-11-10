@@ -2290,3 +2290,13 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 /* v3.39: o dossiê não vaza à direita (a coluna de texto não cresce com botões e seletores) */
 .ag-membro-info { grid-template-columns: minmax(0, 1fr); }
 .ag-membro-info .menu-btn { white-space: normal; max-width: 100%; min-width: 0; }
+
+/* v3.40: políticas, cartas de campo e proposta do cliente */
+.ag-politica-op .menu-btn { text-align: left; }
+.ag-cartas { margin-top: 12px; }
+.ag-cartas-op { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.ag-carta { display: flex; flex-direction: column; gap: 4px; min-height: 96px; padding: 10px; text-align: left; color: #e8eef5; background: linear-gradient(#1b1430, #120d22); border: 2px solid #5d4a8f; border-radius: 8px; cursor: pointer; font: inherit; }
+.ag-carta.sel { border-color: #c9a8ff; box-shadow: 0 0 0 2px rgba(201,168,255,.35) inset; }
+.ag-carta-nome { font-weight: 700; color: #c9a8ff; }
+.ag-carta-desc { font-size: .8rem; color: #cfd6e0; }
+.ag-proposta { margin-top: 12px; }

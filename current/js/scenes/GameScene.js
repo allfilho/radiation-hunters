@@ -10,6 +10,7 @@ import { JanelaDeContagem, PARAMETROS as PARAM_GEIGER, SONDA_ALFA_FATOR, contar,
 import { DOSE, doseDe, taxaGamaCps } from '../fisica/dose.js';
 import { foiLevantado } from '../agencia/frota.js';
 import { tempoAteObjetivo } from '../agencia/plano-dose.js';
+import { efeito, CARTAS } from '../agencia/decisoes.js';
 import { bonusDe } from '../agencia/equipe.js';
 import { equipDe } from '../agencia/ciencia.js';
 import { currentLang, t } from '../i18n/index.js';
@@ -865,7 +866,9 @@ export class GameScene extends Phaser.Scene {
     }
     
     /** Meta de tempo da missão (s): timeLimit da missão; 240 s quando a missão não define. [H] */
-    get metaTempoS() { return this.missionData.timeLimit > 0 ? this.missionData.timeLimit : 240; }
+    get metaTempoS() { const m = this.missionData.timeLimit > 0 ? this.missionData.timeLimit : 240; return Math.round(m * (this.cartaCampo() === 'pressa' ? CARTAS.pressa.meta : 1)); }   // v3.40: carta de pressa
+    /** v3.40: carta de campo da saída (modo Agência) ou null. */
+    cartaCampo() { const q = ui.origem === 'agencia' && ui.agencia && ui.agencia.equipeSaida; return q ? q.carta || null : null; }
     
     /** Entrada do jogador bloqueada (pausa, modal de identificação, missão encerrada) */
     bloqueado() { return GameState.paused || GameState.modalAberto || this.concluindo || this.fim || !this.gameStarted; }
@@ -1109,7 +1112,7 @@ export class GameScene extends Phaser.Scene {
         
         // Update stamina
         if (isRunning && (dx !== 0 || dy !== 0)) {
-            GameState.stamina = Math.max(0, GameState.stamina - CONFIG.STAMINA_DRAIN * k);
+            GameState.stamina = Math.max(0, GameState.stamina - CONFIG.STAMINA_DRAIN * k * (this.cartaCampo() === 'folego' ? CARTAS.folego.stamina : 1));   // v3.40: carta de fôlego
         } else {
             GameState.stamina = Math.min(CONFIG.STAMINA_MAX, GameState.stamina + CONFIG.STAMINA_REGEN * k);
         }
@@ -1778,7 +1781,8 @@ export class GameScene extends Phaser.Scene {
             if (GameState.settings.screenShake) this.cameras.main.shake(200, 0.004);
             ui.marcarTentativa(selected.name);
             const doseErro = this.doseDoErroDeIdentificacao();
-            const txtDose = doseErro > 0 ? '\n☢ ' + t('wrongIdDose').replace('{0}', String(doseErro).replace('.', currentLang === 'pt' ? ',' : '.')) : '';
+            const txtDose = doseErro > 0 ? '\n☢ ' + t('wrongIdDose').replace('{0}', String(doseErro).replace('.', currentLang === 'pt' ? ',' : '.')) : (this._erroGratis ? '\n🃏 ' + t('cartaSegundaUsada') : '');
+            this._erroGratis = false;
             ui.showIdentifyFeedback(false, t('wrongIsotope') + txtDose + (hint ? '\n💡 ' + hint : ''));
             ui.showNotification(t('wrongIsotope'), 'error');
             ui.updateCombo(1);
@@ -1859,6 +1863,8 @@ export class GameScene extends Phaser.Scene {
     doseDoErroDeIdentificacao() {
         if (!this.emCampoAgencia()) return 0;
         const quem = ui.agencia.est.equipe.find((m) => m.id === ui.agencia.cientistaAtivo());
+        const q = ui.agencia.equipeSaida;
+        if (q && q.carta === 'segundaChance' && !q.erroGratisUsado) { q.erroGratisUsado = true; this._erroGratis = true; return 0; }   // v3.40: carta de segunda chance
         const d = DOSE.erroIdMsv * (quem ? bonusDe(quem, 'erroId') : 1);   // v3.32: especialidade física
         ui.agencia.registrarDoseCampo(d); GameState.doseMissao = (GameState.doseMissao || 0) + d;
         ui.atualizarCaneta(ui.agencia.penDoLider(ui.agencia.doseDoAtivo()));
@@ -2023,7 +2029,11 @@ export class GameScene extends Phaser.Scene {
         this.completeMission();
     }
 
-    get levantado() { const a = ui.origem === 'agencia' && ui.agencia.alvo; return !!a && a.tipo === 'missao' && foiLevantado(ui.agencia.est, a.id); }
+    get levantado() {
+        const a = ui.origem === 'agencia' && ui.agencia.alvo; if (!a || !(a.tipo === 'missao' || a.tipo === 'rapida')) return false;
+        const q = ui.agencia.equipeSaida;   // v3.40: carta "levantamento" e política "mapa prévio" também marcam as fontes gama
+        return (a.tipo === 'missao' && foiLevantado(ui.agencia.est, a.id)) || (!!q && q.carta === 'levantamento') || efeito(ui.agencia.est, 'levantamento');
+    }
 
     /** Modo Agência, missões de campo (não o treinamento): depois de achar e organizar as fontes, é preciso levá-las ao ponto de coleta. */
     precisaColeta() {

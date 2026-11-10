@@ -172,7 +172,7 @@ export const metodosBase = {
         if (s === 'laboratorio') return rel + this.htmlLaboratorio();
         if (s === 'alojamento') return rel + this.htmlAlojamento();
         if (s === 'medico') return rel + this.htmlMedico();
-        if (s === 'comando') return rel + this.fala('marta', L.marta, L.martaMapa) + `<div class="ag-cartao"><p>${preencher(L.comandoResumo, { a: e.ativos.length, c: Object.values(e.concluidos).filter((n) => n > 0).length, x: e.expirados })}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="trocar">${L.irMapa}</button></div></div>` + this.htmlMural();
+        if (s === 'comando') return rel + this.fala('marta', L.marta, L.martaMapa) + `<div class="ag-cartao"><p>${preencher(L.comandoResumo, { a: e.ativos.length, c: Object.values(e.concluidos).filter((n) => n > 0).length, x: e.expirados })}</p><div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="trocar">${L.irMapa}</button></div></div>` + this.htmlPoliticas() + this.htmlMural();
         if (s === 'academia') {
             const m1 = TUTORIAL, feito = treinamentoConcluido(this.cb.desbloqueadas()), est = this.cb.estrelas(1);
             return rel + this.fala('teo', L.teo, feito ? L.teoFalaFeito : L.teoFala)
@@ -326,7 +326,7 @@ export const metodosBase = {
             + `<div class="ag-nave-int" role="group" aria-label="${L.naveInterior}"><span class="ag-frente" aria-hidden="true">${L.frente} ▶</span>${casco}<div class="ag-assentos" style="--n:${p.max}">${assentos}</div></div>${acoesAssento}`
             + (p.aviso ? `<p class="ag-aviso" role="status">${p.aviso}</p>` : '')
             + `<h4 class="ag-sub">${L.elencoTit}</h4><div class="ag-elenco">${cartoes}</div>`
-            + this.htmlPlano()
+            + this.htmlPlano() + this.htmlDecisoesPreparo()
             + `<div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="decolar" ${pode ? '' : 'disabled'}>${p.tipo === 'voo' ? L.decolar : L.enviarResgate}</button><button type="button" class="menu-btn secondary" data-ag="sugerir">${L.sugerir}</button><button type="button" class="menu-btn secondary" data-ag="cancelar-preparo">${L.cancelarPreparo}</button></div></div>`;
     },
     /** v3.38 (Fase F): o preparo de um voo para missão de campo ou chamado rápido leva um plano de dose. */
@@ -391,7 +391,8 @@ export const metodosBase = {
             if (p.tipo === 'resgate') { const r = enviarResgate(e, p.coletaId, ids); this.preparo = null; return feito(r); }
             if (!primeiraNaveLivre(e, 'tripulacao')) return true;
             const objetivo = this.objetivoDoPreparo();   // v3.38: plano de dose da saída (null = sem objetivo)
-            this.equipeSaida = { ids: [...ids], lider: ids[0], ativo: ids[0], acum: {}, naveId: (primeiraNaveLivre(e, 'tripulacao') || {}).id, objetivo, alarmes: {} };   // o primeiro assento é o líder, que vai à frente
+            const carta = this.temPlano() ? (p.carta || null) : null, proposta = p.aceitaProposta ? this.propostaDoPreparo() : null;   // v3.40
+            this.equipeSaida = { ids: [...ids], lider: ids[0], ativo: ids[0], acum: {}, naveId: (primeiraNaveLivre(e, 'tripulacao') || {}).id, objetivo, alarmes: {}, carta, proposta };   // o primeiro assento é o líder, que vai à frente
             this.voo = { alvo: p.alvo }; this.preparo = null; this._parar(); this.vel = 0; this.desenhar(false);
             const c = this.el.querySelector('#ag-chegar'); if (c) c.focus();
             return true;
