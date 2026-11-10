@@ -3,6 +3,16 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.46.0 — 2026-11-10 — Sistema de interface: um botão, duas superfícies
+- **Motivo:** o treinamento e outras telas misturavam três estilos de botão (neon, aço e papel), tamanhos diferentes e três famílias de letra. Esta versão define um sistema e o aplica.
+- **Um botão, duas medidas:** todo botão de ação tem 44 px de altura (38 px na versão compacta), a mesma letra e o mesmo recuo. Botões lado a lado dividem a linha por igual; sozinho, ocupa a largura do documento. O menu inicial tem todos os botões da mesma largura.
+- **O estilo vem da superfície:** sobre papel, botão de papel (o principal em tinta cheia); sobre aço, botão de aço. Não há mais botão de aço dentro de bilhete ou documento.
+- **Falas dos personagens** no painel e nas salas viram memorando em papel com retrato (a barra inferior continua de aço).
+- **Jornal de abertura:** o "Continuar" neon virou botão de papel.
+- **Identificar a fonte** virou ficha de identificação em papel: isótopos como cartões, resultado e notas em texto corrido com serifa (antes, parágrafos em verde-neon centralizados). O aviso flutuante não cobre mais a ficha.
+- Aviso da mesa de dados virou bilhete, igual aos outros avisos.
+- **Testes:** 92 ampliado (fonte, tamanho de letra e altura dos botões por linha no treinamento; fala em papel).
+
 ## v3.45.0 — 2026-11-10 — Uma regra visual (aço e papel) e movimento
 - **Regra única em toda a Agência:** aço para aparelhos e comandos (barra, mapa-múndi, interior da nave, HUD, modais de sistema); **papel para documentos e notícias**. Todos os cartões de conteúdo das salas da Base (Laboratório, Oficina, Dep. médico, Academia, Cofre, Biblioteca, Hangar, Centro de comando, Alojamento) e o detalhe do alerta passam a ser papel com tinta escura, títulos em serifa e botões de papel (o principal em tinta cheia).
 - **Alertas como recortes de notícia** (faixa colorida por tipo), avisos como bilhetes, cientistas do preparo como mini-fichas.

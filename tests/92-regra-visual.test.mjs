@@ -56,3 +56,27 @@ test('movimento: a entrada anima ao trocar de vista ou de sala, não a cada cliq
     assert.deepEqual(erros, []);
   } finally { await nav.close(); await srv.fechar(); }
 });
+
+// v3.46: sistema de botões. Nenhum botão de aço sobre papel; mesma letra e mesma altura por linha; ficha de identificação em papel.
+test('sistema de botões: no treinamento (Academia) e nos avisos, botões em papel com a mesma fonte, tamanho de letra e altura por linha', async () => {
+  const srv = await servidor(), nav = await abrirNavegador();
+  try {
+    const { pg, erros } = await novaPagina(nav, srv.url, { idioma: 'en' });
+    await novoJogo(pg); await pg.waitForSelector('.ag-aviso .menu-btn'); await pg.waitForTimeout(350);
+    const ler = (sel) => pg.$$eval(sel, (bs) => bs.filter((b) => b.offsetParent).map((b) => { const c = getComputedStyle(b), r = b.getBoundingClientRect(); return { fam: c.fontFamily.split(',')[0].replace(/"/g, ''), fs: c.fontSize, h: Math.round(r.height), top: Math.round(r.top), bg: c.backgroundColor }; }));
+    const aviso = await ler('.ag-aviso .menu-btn');
+    assert.ok(aviso.length >= 1); for (const b of aviso) { assert.equal(b.fam, 'Georgia'); assert.notEqual(b.bg, 'rgba(0, 0, 0, 0)'); }
+    await pg.click('[data-ag="sala-academia"]'); await pg.waitForSelector('[data-ag="treino"]'); await pg.waitForTimeout(350);
+    const bs = await ler('.ag-janela .ag-cartao .menu-btn');
+    assert.ok(bs.length >= 2);
+    assert.equal(new Set(bs.map((b) => b.fam)).size, 1); assert.equal(bs[0].fam, 'Georgia');
+    assert.equal(new Set(bs.map((b) => b.fs)).size, 1, 'mesmo tamanho de letra');
+    const porLinha = {}; for (const b of bs) (porLinha[b.top] = porLinha[b.top] || []).push(b.h);
+    for (const hs of Object.values(porLinha)) assert.equal(new Set(hs).size, 1, 'mesma altura na mesma linha');
+    for (const b of bs) assert.ok(b.h >= 38, `altura mínima (${b.h})`);
+    // fala do instrutor em papel (memorando), não em aço
+    const fala = await pg.$eval('.ag-janela .ag-fala', (e) => getComputedStyle(e).backgroundColor);
+    assert.ok(lum(fala) > 0.6, `fala em papel (${fala})`);
+    assert.deepEqual(erros, []);
+  } finally { await nav.close(); await srv.fechar(); }
+});
