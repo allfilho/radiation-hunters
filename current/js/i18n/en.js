@@ -359,6 +359,7 @@ Source: BASE (Germany), "Fukushima ten years later"; IAEA, Fukushima Daiichi Acc
         camaraAria: "Ionization chamber: game-estimated dose rate", camaraRot: "Chamber: {0} mSv/h (game estimate)",
         planoAria: "Dosimeter: trip dose of the scientist in front and the dose plan goal",
         planoRot: "Dosimeter: {d} of {o} mSv", planoTempo: " · about {t} to the goal at the current rate", planoAtingido: " · goal reached",
+        notebookKicker: "Clippings archive · Chronos Agency",
         cartaSegundaUsada: "Second-chance card: this mistake cost no dose.",
         alarmeDose: "{nome}’s dosimeter alarm: goal of {v} mSv reached. Swap who is in front (7 to 0) or finish soon.",
         useSpectro: "Use the spectrometer", spectroGamma: "Spectrometer: gamma line(s) at {0}.", spectroNoGamma: "Spectrometer: no gamma lines; the source does not emit gamma.", spectroNoData: "Spectrometer: no emission data for this source.", wrongIdDose: "The delay next to the source cost the scientist {0} mSv.",

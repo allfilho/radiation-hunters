@@ -3,6 +3,15 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.42.0 — 2026-11-10 — Identidade de jornal em todo o jogo e briefing fácil no começo
+- **Caderno de campo** virou "Arquivo de recortes": papel claro, tinta escura, abas como seções de jornal, cada conceito como recorte colado com fita; os não descobertos aparecem como recorte riscado. Corrige um defeito de contraste: o estilo de aço dos modais cobria o papel e deixava texto marrom sobre azul-escuro (ilegível).
+- **Briefing do dia** como "Boletim da manhã" da Gazeta Chronos (mês e dia de jogo). **Mais fácil no começo** [H]: até o dia 15 só "fato ou mito" de nível 1 dos conceitos de base; até o dia 40, nível 1; depois, nível 1 ou 2. O assunto da pergunta passa a entrar no Caderno de campo.
+- **Relatório de volta** como "Edição extra": a primeira frase vira manchete; o resto, texto em colunas quando cabe.
+- **Preparo do voo:** plano de dose como "Ficha de dosimetria" em papel; cartas de campo como arcanos (numeral, símbolo, moldura dourada); proposta do cliente como telegrama.
+- **Centro de comando:** Políticas no "Diário Oficial da Agência"; Mural como coluna de Homenagem; confiança pública como Pesquisa de opinião.
+- **Mesa de dados:** feltro verde, dados desenhados em cada rodada, rodada da metade em destaque; aviso no painel do mapa ("Mesa de jogos aberta hoje") com botão que leva ao Alojamento.
+- i18n +1 chave (229). **Testes:** novo 89 (5 subtestes: contraste do caderno ≥ 7 em desktop e celular, briefing fácil, jornal na Agência pt/en); 01 ajustado.
+
 ## v3.41.0 — 2026-11-10 — Moral, confiança pública, dados do decaimento, ajuda escondida e ícones de recompensa
 - **Moral da equipe** (fé dos seguidores de Cult of the Lamb): de 0 a 100, começa em 70. Cai 6 a cada saída e mais 6 se o cientista voltar com a caneta amarela ou vermelha; sobe com dia de folga (+3), promoção (+10), briefing certo (+4 para todos) e partida de dados ganha (+3). Animado (≥ 80) anda 3 % mais rápido; desanimado (< 40) 5 % mais devagar (< 20: 10 %) [H]. Aparece no dossiê, com pensamento próprio quando está baixo.
 - **Confiança pública por região** (pânico das nações do X-COM): 6 regiões do mapa, começam em 60; alerta concluído +5, alerta vencido −10. A média muda a verba mensal: 1 com 60, entre 0,7 e 1,2 [H]. Painel no Centro de comando.

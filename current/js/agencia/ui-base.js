@@ -154,7 +154,7 @@ export const metodosBase = {
     // ---------- painel da Base ----------
     htmlPainelBase() {
         const L = this.L, e = this.est, s = this.sala;
-        const rel = this.relatorio ? `<p class="ag-relatorio" role="status">${this.relatorio}</p>` : '';
+        const rel = this.htmlRelatorio();
         if (this.preparo && this.preparo.tipo === 'resgate') return rel + this.htmlPreparo();
         if (!s) return rel + this.fala('marta', L.marta, L.martaBase) + `<div class="ag-cartao"><h3>${L.normasTit}</h3><p>${L.normasTxt}</p></div>`;
         if (s === 'vazio') {
@@ -341,7 +341,7 @@ export const metodosBase = {
         const opcoes = OBJETIVOS.map((o) => `<button type="button" class="menu-btn secondary ag-mini${obj === o.msv ? ' sel' : ''}" data-ag="objetivo" data-v="${o.msv}" aria-pressed="${obj === o.msv}">${preencher(L.planoOpcao, { v: fmt(o.msv), b: Math.round(o.bonus * 100) })}</button>`).join('')
             + `<button type="button" class="menu-btn secondary ag-mini${obj === null ? ' sel' : ''}" data-ag="objetivo" data-v="0" aria-pressed="${obj === null}">${L.planoSem}</button>`;
         const av = avisosPlano(membros, e.dia, obj), sug = sugerirObjetivo(membros, e.dia);
-        return `<div class="ag-plano" id="ag-plano" role="group" aria-label="${L.planoTit}"><h4 class="ag-sub">${L.planoTit}</h4><p class="ag-nota">${L.planoExpl}</p>`
+        return `<div class="ag-plano papel" id="ag-plano" role="group" aria-label="${L.planoTit}"><span class="papel-secao">${L.planoFicha}</span><h4 class="ag-sub">${L.planoTit}</h4><p class="ag-nota">${L.planoExpl}</p>`
             + (membros.length ? `<ul class="ag-lista-simples">${margens}</ul>` : '')
             + `<div class="ag-acoes ag-plano-op">${opcoes}</div>`
             + `<p class="ag-nota" id="ag-plano-escolha" role="status">${obj === null ? L.planoSemNota : preencher(L.planoEscolha, { v: fmt(obj), b: Math.round(OBJETIVOS.find((o) => o.msv === obj).bonus * 100) })}</p>`

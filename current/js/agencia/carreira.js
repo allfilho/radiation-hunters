@@ -111,9 +111,15 @@ export function saneaMural(lista) {
 
 // ---------- briefing do dia ----------
 export const BRIEFING = { premio: 30, memoria: 30 };   // [H] créditos por acerto; não repete as últimas 30 perguntas
-/** Pergunta do briefing do dia: determinística pelo dia, de nível 1 ou 2, sem repetir as recentes. */
-export function perguntaDoBriefing(perguntas, dia, vistas = []) {
-    const ok = perguntas.filter((p) => p.nivel <= 2 && !String(p.no).startsWith('E-'));
+/** Dificuldade do briefing pelo dia de jogo [H] (v3.42): começa com "fato ou mito" fácil dos conceitos de base e sobe aos poucos. */
+export const BRIEFING_FASES = [{ ate: 15, nivel: 1, formato: 'mf', raiz: true }, { ate: 40, nivel: 1 }, { ate: Infinity, nivel: 2 }];
+export const faseBriefing = (dia) => BRIEFING_FASES.find((f) => dia < f.ate);
+/** Pergunta do briefing do dia: determinística pelo dia, fácil no começo, sem repetir as recentes. `conceitos` (opcional) diz quais nós são de base. */
+export function perguntaDoBriefing(perguntas, dia, vistas = [], conceitos = null) {
+    const f = faseBriefing(dia), raiz = conceitos ? new Set(conceitos.filter((c) => !c.prereq.length && !c.historia).map((c) => c.id)) : null;
+    const filtro = (p, rigido) => p.nivel <= f.nivel && !String(p.no).startsWith('E-') && (!rigido || ((!f.formato || p.formato === f.formato) && (!f.raiz || !raiz || raiz.has(p.no))));
+    let ok = perguntas.filter((p) => filtro(p, true));
+    if (!ok.length) ok = perguntas.filter((p) => filtro(p, false));
     const novas = ok.filter((p) => !vistas.includes(p.id));
     const lista = novas.length ? novas : ok;
     if (!lista.length) return null;

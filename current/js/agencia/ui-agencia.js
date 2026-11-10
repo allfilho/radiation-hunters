@@ -21,7 +21,7 @@ import { metodosGente } from './ui-gente.js';
 import { registrarMissao } from './carreira.js';
 import { efeito, CARTAS, PROPOSTAS, PROPOSTA, cumpreProposta, exposicaoAlta } from './decisoes.js';
 import { metodosDecisoes } from './ui-decisoes.js';
-import { ajustarMoral, MORAL } from './base-viva.js';
+import { ajustarMoral, MORAL, dadosPendente } from './base-viva.js';
 import { metodosBaseViva } from './ui-base-viva.js';
 import { distribuirDoseMissao, NORMAS, razao, corCaneta } from './equipe.js';
 import { avaliarPlano, bonusPlano, bonusDoObjetivo, PLANO } from './plano-dose.js';
@@ -327,7 +327,7 @@ export class AgenciaUI {
 
     htmlPainelMapa() {
         const L = this.L, e = this.est, lang = currentLang;
-        const rel = this.relatorio ? `<p class="ag-relatorio" role="status">${this.relatorio}</p>` : '';
+        const rel = this.htmlRelatorio();
         let corpo = '';
         if (!e.iniciado) {
             corpo = this.fala('marta', L.marta, L.martaTreino) + `<div class="ag-aviso"><p>${L.esperaTreino}</p><button type="button" class="menu-btn" data-ag="sala-academia">${L.irBase}: ${L.sala.academia}</button></div>`;
@@ -341,7 +341,7 @@ export class AgenciaUI {
                 return `<li><button type="button" class="ag-item ${a.tipo}${this.sel === a.id ? ' sel' : ''}" data-alerta="${a.id}" aria-pressed="${this.sel === a.id}"><span class="ag-item-tipo">${this.rotuloTipo(a)}</span><span class="ag-item-titulo">${d.titulo}</span><span class="ag-item-local">${a.local[lang]} · <span class="ag-prazo" data-id="${a.id}">${this.textoPrazo(x)}</span></span>${this.htmlRende(a, x)}</button></li>`;
             }).join('');
             const lista = e.ativos.length ? `<h3 class="ag-lista-titulo">${preencher(L.ativosTitulo, { n: e.ativos.length, max: PARAMETROS.maxAtivos + PARAMETROS.rapidas.max })}</h3><ul class="ag-lista">${itens}</ul>` : `<p class="ag-dica">${L.semAlertas}</p>`;
-            corpo = this.fala('marta', L.marta, L.martaMapa) + this.htmlAvisoPolitica() + this.htmlBriefing() + lista + `<div class="ag-detalhe" id="ag-detalhe" aria-live="polite">${this.sel ? this.htmlDetalhe() : (e.ativos.length ? `<p class="ag-dica">${L.selecione}</p>` : '')}</div>`;
+            corpo = this.fala('marta', L.marta, L.martaMapa) + this.htmlAvisoPolitica() + (dadosPendente(e) ? `<p class="ag-dica" id="ag-aviso-dados">🎲 ${L.dadosAviso} <button type="button" class="menu-btn secondary ag-mini" data-ag="ir-dados">${L.sala.alojamento}</button></p>` : '') + this.htmlBriefing() + lista + `<div class="ag-detalhe" id="ag-detalhe" aria-live="polite">${this.sel ? this.htmlDetalhe() : (e.ativos.length ? `<p class="ag-dica">${L.selecione}</p>` : '')}</div>`;
         }
         const hist = e.historico.slice(-6).reverse().map((h) => `<li>${this.textoHistorico(h)}</li>`).join('');
         const emViagem = e.naves.filter((n) => n.missao).map((n) => { const a = alertaPorId(n.missao.alertaId); return `<li>${L.tipoNave[n.tipo]}: ${a ? this.dadosAlerta(a).titulo : ''} · ${preencher(L.viagemNave, { d: n.missao.chegaEm })}</li>`; }).join('');

@@ -359,6 +359,7 @@ Fonte: BASE (Alemanha), "Fukushima ten years later"; AIEA, Fukushima Daiichi Acc
         camaraAria: "Câmara de ionização: taxa de dose estimada no jogo", camaraRot: "Câmara: {0} mSv/h (estimativa de jogo)",
         planoAria: "Dosímetro: dose da saída de quem está à frente e o objetivo do plano de dose",
         planoRot: "Dosímetro: {d} de {o} mSv", planoTempo: " · cerca de {t} até o objetivo na taxa atual", planoAtingido: " · objetivo atingido",
+        notebookKicker: "Arquivo de recortes · Agência Chronos",
         cartaSegundaUsada: "Carta de segunda chance: este erro não custou dose.",
         alarmeDose: "Alarme do dosímetro de {nome}: objetivo de {v} mSv atingido. Troque quem vai à frente (7 a 0) ou termine logo.",
         useSpectro: "Usar o espectrômetro", spectroGamma: "Espectrômetro: linha(s) gama em {0}.", spectroNoGamma: "Espectrômetro: nenhuma linha gama; a fonte não emite gama.", spectroNoData: "Espectrômetro: sem dados de emissão para esta fonte.", wrongIdDose: "A demora junto à fonte custou {0} mSv ao cientista.",

@@ -441,3 +441,13 @@ Object.assign(TXT.en, {
     dadosAmanha: 'There was already a game today. Come back tomorrow.',
     rendeTit: 'Yields:', rendeAria: 'What the alert yields', rendePremio: 'prize with 2 stars', rendeBonus: 'big bonus', rendeProposta: 'client offer', rendeUrgente: 'short deadline', rendeConfianca: 'region with low trust',
 });
+
+// v3.42: identidade de jornal
+Object.assign(TXT.pt, {
+    boletimNome: 'Gazeta Chronos', boletimLinha: 'Boletim da manhã · Mês {m}, dia {d}', extraLinha: 'Edição extra · Mês {m}, dia {d}',
+    briefingMfDica: 'Responda: é fato ou é mito?', planoFicha: 'Ficha de dosimetria', telegramaCab: 'TELEGRAMA · URGENTE · DO CLIENTE PARA A AGÊNCIA', diarioOficial: 'Diário Oficial da Agência', muralSecao: 'Homenagem', confiancaSecao: 'Pesquisa de opinião', dadosAviso: 'Mesa de jogos aberta hoje no Alojamento: dados do decaimento.', briefingRecorte: 'O recorte deste assunto foi guardado no Caderno de campo.',
+});
+Object.assign(TXT.en, {
+    boletimNome: 'Chronos Gazette', boletimLinha: 'Morning bulletin · Month {m}, day {d}', extraLinha: 'Special edition · Month {m}, day {d}',
+    briefingMfDica: 'Answer: is it fact or myth?', planoFicha: 'Dosimetry form', telegramaCab: 'TELEGRAM · URGENT · FROM THE CLIENT TO THE AGENCY', diarioOficial: 'Agency Official Gazette', muralSecao: 'Tribute', confiancaSecao: 'Opinion poll', dadosAviso: 'Game table open today in the Quarters: decay dice.', briefingRecorte: 'The clipping on this topic was saved in the Field Notebook.',
+});

@@ -5,6 +5,10 @@
 import { currentLang } from '../i18n/index.js';
 import { retratoSvg } from '../investigacao/retratos.js';
 import { PERGUNTAS } from '../data/encontros/perguntas.js';
+import { CONCEITOS } from '../data/encontros/conceitos.js';
+import { GameState } from '../estado.js';
+import { salvar } from '../progresso.js';
+import { mesDe, diaDoMes } from './simulacao.js';
 import { razao, doseNaJanela } from './equipe.js';
 import { postoDe, faltamParaProximo, promocaoPendente, ofertaDe, escolherBonus, podeAposentar, aposentar, pensamento, perguntaDoBriefing, briefingPendente, responderBriefing, BRIEFING } from './carreira.js';
 
@@ -28,22 +32,34 @@ export const metodosGente = {
     htmlMural() {
         const L = this.L, mural = this.est.mural || [];
         const itens = mural.map((r) => `<li class="ag-mural-item"><span class="inv-retrato" aria-hidden="true">${retratoSvg(r.retrato, 'sorriso')}</span><span><strong>${esc(r.nome)}</strong><br><span class="ag-nota">${preencher(L.muralItem, { n: r.missoes, d: r.dia, esp: L.especialidade[r.especialidade] || '' })}</span></span></li>`).join('');
-        return `<div class="ag-cartao" id="ag-mural"><h3>${L.muralTit}</h3>${itens ? `<ul class="ag-mural">${itens}</ul>` : `<p class="ag-nota">${L.muralVazio}</p>`}</div>`;
+        return `<div class="ag-cartao papel" id="ag-mural"><span class="papel-secao">${L.muralSecao}</span><h3>${L.muralTit}</h3>${itens ? `<ul class="ag-mural">${itens}</ul>` : `<p class="ag-nota">${L.muralVazio}</p>`}</div>`;
     },
-    /** Briefing do dia no painel do mapa: uma pergunta dos Encontros por dia de jogo. */
+    /** Briefing do dia no painel do mapa: "Boletim da manhã" em papel de jornal, uma pergunta por dia (v3.42: fácil no começo). */
     htmlBriefing() {
         const L = this.L, e = this.est, lang = currentLang, r = this.briefingResp;
+        const cab = `<header class="papel-cab"><span class="papel-nome">${L.boletimNome}</span><span class="papel-linha">${preencher(L.boletimLinha, { m: mesDe(e.dia) + 1, d: diaDoMes(e.dia) })}</span></header>`;
         if (r && r.dia === e.dia) {
             const p = PERGUNTAS.find((x) => x.id === r.id); if (!p) return '';
-            return `<div class="ag-cartao ag-briefing" id="ag-briefing"><h3>${L.briefingTit}</h3><p>${p[lang].enunciado}</p><p class="ag-nota" role="status"><strong>${r.certo ? preencher(L.briefingCerto, { v: BRIEFING.premio }) : L.briefingErrado}</strong> ${p[lang].explicacao}</p></div>`;
+            return `<div class="ag-cartao papel ag-briefing" id="ag-briefing">${cab}<span class="papel-secao">${L.briefingTit}</span><p class="papel-manchete">${p[lang].enunciado}</p>`
+                + `<p role="status"><strong>${r.certo ? preencher(L.briefingCerto, { v: BRIEFING.premio }) : L.briefingErrado}</strong> ${p[lang].explicacao}</p><p class="ag-nota">${L.briefingRecorte}</p></div>`;
         }
         if (!briefingPendente(e)) return '';
-        const p = perguntaDoBriefing(PERGUNTAS, e.dia, (e.briefing || {}).vistas); if (!p) return '';
+        const p = perguntaDoBriefing(PERGUNTAS, e.dia, (e.briefing || {}).vistas, CONCEITOS); if (!p) return '';
         const op = p.formato === 'mf'
             ? [['fato', L.briefingFato], ['mito', L.briefingMito]]
             : p[lang].opcoes.map((o, i) => [String(i), o]);
-        return `<div class="ag-cartao ag-briefing" id="ag-briefing" data-pergunta="${p.id}"><h3>${L.briefingTit}</h3><p class="ag-nota">${preencher(L.briefingExpl, { v: BRIEFING.premio })}</p><p>${p[lang].enunciado}</p><div class="ag-acoes">`
+        return `<div class="ag-cartao papel ag-briefing" id="ag-briefing" data-pergunta="${p.id}">${cab}<span class="papel-secao">${L.briefingTit}</span>`
+            + `<p class="papel-manchete">${p[lang].enunciado}</p><p class="ag-nota">${preencher(L.briefingExpl, { v: BRIEFING.premio })}${p.formato === 'mf' ? ' ' + L.briefingMfDica : ''}</p><div class="ag-acoes">`
             + op.map(([v, t]) => `<button type="button" class="menu-btn secondary ag-mini" data-ag="briefing" data-v="${v}">${t}</button>`).join('') + `</div></div>`;
+    },
+    /** v3.42: relatório de volta como "Edição extra" da Gazeta: a 1ª frase vira manchete; as demais, o texto em colunas. */
+    htmlRelatorio() {
+        if (!this.relatorio) return '';
+        const L = this.L, e = this.est;
+        const frases = String(this.relatorio).split(/(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ“"])/u).filter(Boolean);
+        const [manchete, ...resto] = frases;
+        return `<div class="ag-relatorio papel" role="status"><header class="papel-cab"><span class="papel-nome">${L.boletimNome}</span><span class="papel-linha">${preencher(L.extraLinha, { m: mesDe(e.dia) + 1, d: diaDoMes(e.dia) })}</span></header>`
+            + `<p class="papel-manchete">${manchete}</p>${resto.length ? `<div class="${resto.length > 2 ? 'papel-colunas' : ''}">${resto.map((f) => `<p>${f}</p>`).join('')}</div>` : ''}</div>`;
     },
     /** Cliques desta parte. Devolve true se tratou. */
     acaoGente(k, b) {
@@ -59,6 +75,7 @@ export const metodosGente = {
             const v = b.dataset.v, certo = p.formato === 'mf' ? v === p.correta : Number(v) === p.correta;
             responderBriefing(e, p.id, certo);
             this.briefingResp = { dia: e.dia, id: p.id, certo };
+            try { const a = GameState.aprendizado; if (a) { a.fichas = a.fichas || {}; a.fichas[p.no] = true; salvar(); } } catch (err) { /* sem armazenamento: só não guarda o recorte */ }   // v3.42: o conceito entra no caderno
             this.gravar(); this.desenhar(false); return true;
         }
         return false;
