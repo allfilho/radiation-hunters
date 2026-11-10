@@ -321,13 +321,14 @@ export const metodosBase = {
         const acoesAssento = selOcupado ? `<div class="ag-acoes"><button type="button" class="menu-btn secondary ag-mini" data-ag="tirar-assento">${L.tirarDaNave}</button>${p.selSeat > 0 ? `<button type="button" class="menu-btn secondary ag-mini" data-ag="passar-frente">${L.passarFrente}</button>` : ''}</div>` : '';
         const titulo = p.tipo === 'voo' && a ? this.dadosAlerta(a).titulo : L.enviarResgate;
         const casco = '';
-        return `<div class="ag-cartao" id="ag-preparo"><h3>${L.preparoTit}: ${titulo}</h3><p class="ag-nota">${preencher(L.preparoSelec, { n: p.max })}</p>`
+        return `<div class="ag-cartao ag-ordem" id="ag-preparo"><header class="papel-cab"><span class="papel-nome">${L.ordemMissao}</span><span class="papel-linha">${titulo}</span></header>`
+            + `<span class="papel-secao">${L.ordemEquipe}</span><h3 class="sr-only">${L.preparoTit}: ${titulo}</h3><p class="ag-nota">${preencher(L.preparoSelec, { n: p.max })}</p>`
             + (semNave ? `<p class="ag-aviso">${L.semNave}</p>` : '') + (nenhum ? `<p class="ag-aviso">${L.semEquipe}</p>` : '')
             + `<div class="ag-nave-int" role="group" aria-label="${L.naveInterior}"><span class="ag-frente" aria-hidden="true">${L.frente} ▶</span>${casco}<div class="ag-assentos" style="--n:${p.max}">${assentos}</div></div>${acoesAssento}`
             + (p.aviso ? `<p class="ag-aviso" role="status">${p.aviso}</p>` : '')
             + `<h4 class="ag-sub">${L.elencoTit}</h4><div class="ag-elenco">${cartoes}</div>`
             + this.htmlPlano() + this.htmlDecisoesPreparo()
-            + `<div class="ag-acoes"><button type="button" class="menu-btn primary" data-ag="decolar" ${pode ? '' : 'disabled'}>${p.tipo === 'voo' ? L.decolar : L.enviarResgate}</button><button type="button" class="menu-btn secondary" data-ag="sugerir">${L.sugerir}</button><button type="button" class="menu-btn secondary" data-ag="cancelar-preparo">${L.cancelarPreparo}</button></div></div>`;
+            + `<div class="ag-acoes ag-barra-acao"><button type="button" class="menu-btn primary" data-ag="decolar" ${pode ? '' : 'disabled'}>${p.tipo === 'voo' ? L.decolar : L.enviarResgate}</button><button type="button" class="menu-btn secondary" data-ag="sugerir">${L.sugerir}</button><button type="button" class="menu-btn secondary" data-ag="cancelar-preparo">${L.cancelarPreparo}</button></div></div>`;
     },
     /** v3.38 (Fase F): o preparo de um voo para missão de campo ou chamado rápido leva um plano de dose. */
     temPlano() { const p = this.preparo, a = p && p.alvo; return !!p && p.tipo === 'voo' && !!a && (a.tipo === 'missao' || a.tipo === 'rapida'); },
@@ -341,7 +342,7 @@ export const metodosBase = {
         const opcoes = OBJETIVOS.map((o) => `<button type="button" class="menu-btn secondary ag-mini${obj === o.msv ? ' sel' : ''}" data-ag="objetivo" data-v="${o.msv}" aria-pressed="${obj === o.msv}">${preencher(L.planoOpcao, { v: fmt(o.msv), b: Math.round(o.bonus * 100) })}</button>`).join('')
             + `<button type="button" class="menu-btn secondary ag-mini${obj === null ? ' sel' : ''}" data-ag="objetivo" data-v="0" aria-pressed="${obj === null}">${L.planoSem}</button>`;
         const av = avisosPlano(membros, e.dia, obj), sug = sugerirObjetivo(membros, e.dia);
-        return `<div class="ag-plano papel" id="ag-plano" role="group" aria-label="${L.planoTit}"><span class="papel-secao">${L.planoFicha}</span><h4 class="ag-sub">${L.planoTit}</h4><p class="ag-nota">${L.planoExpl}</p>`
+        return `<div class="ag-plano papel" id="ag-plano" role="group" aria-label="${L.planoTit}"><span class="papel-secao">${L.planoFicha}</span><h4 class="ag-sub sr-only">${L.planoTit}</h4><p class="ag-nota">${L.planoExpl}</p>`
             + (membros.length ? `<ul class="ag-lista-simples">${margens}</ul>` : '')
             + `<div class="ag-acoes ag-plano-op">${opcoes}</div>`
             + `<p class="ag-nota" id="ag-plano-escolha" role="status">${obj === null ? L.planoSemNota : preencher(L.planoEscolha, { v: fmt(obj), b: Math.round(OBJETIVOS.find((o) => o.msv === obj).bonus * 100) })}</p>`

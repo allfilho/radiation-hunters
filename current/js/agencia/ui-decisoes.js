@@ -38,7 +38,7 @@ export const metodosDecisoes = {
         if (!this.temPlano()) return '';
         const L = this.L, e = this.est, p = this.preparo;
         const cartas = sortearCartas(p.alvo.id, e.dia);
-        const html = `<div class="ag-cartas" id="ag-cartas" role="group" aria-label="${L.cartasTit}"><h4 class="ag-sub">${L.cartasTit}</h4><p class="ag-nota">${L.cartasExpl}</p><div class="ag-cartas-op">`
+        const html = `<div class="ag-cartas" id="ag-cartas" role="group" aria-label="${L.cartasTit}"><span class="papel-secao">${L.cartasTit}</span><p class="ag-nota">${L.cartasExpl}</p><div class="ag-cartas-op">`
             + cartas.map((c) => `<button type="button" class="ag-carta${p.carta === c ? ' sel' : ''}" data-ag="carta" data-c="${c}" aria-pressed="${p.carta === c}"><span class="ag-carta-num" aria-hidden="true">${NUMERAL[c]}</span><span class="ag-carta-icone" aria-hidden="true">${simbolo(c)}</span><span class="ag-carta-nome">${L.carta[c].nome}</span><span class="ag-carta-desc">${L.carta[c].desc}</span></button>`).join('')
             + `</div></div>`;
         const prop = this.propostaDoPreparo();

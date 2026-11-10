@@ -80,3 +80,26 @@ test('sistema de botões: no treinamento (Academia) e nos avisos, botões em pap
     assert.deepEqual(erros, []);
   } finally { await nav.close(); await srv.fechar(); }
 });
+
+// v3.47: fundamentos da auditoria. Nenhum botão na fonte padrão do navegador; ordem de missão com "Decolar" sempre à vista.
+for (const [w, h] of [[1280, 720], [390, 844]]) {
+  test(`fundamentos (${w}×${h}): sem botão em Arial/padrão no menu, Agência, preparo e campo; Decolar visível sem rolar; alvos de toque ≥ 44 px no celular`, async () => {
+    const srv = await servidor(), nav = await abrirNavegador();
+    try {
+      const { pg, erros } = await novaPagina(nav, srv.url, { idioma: 'pt', viewport: { width: w, height: h }, toque: w < 800, antes: EST });
+      const OK = ['Orbitron', 'Inter', 'Georgia', 'Courier New'];
+      const fontes = () => pg.evaluate(() => { const modal = [...document.querySelectorAll('.modal.active')].pop(), raiz = modal || document.querySelector('.screen.active');
+        return [...raiz.querySelectorAll('button')].filter((b) => b.offsetParent).map((b) => ({ f: getComputedStyle(b).fontFamily.split(',')[0].replace(/"/g, ''), h: Math.round(b.getBoundingClientRect().height), c: (b.className || b.id).toString().slice(0, 30) })); });
+      const ruins = [], pequenos = [];
+      const confere = async (onde) => { for (const b of await fontes()) { if (!OK.includes(b.f)) ruins.push(`${onde}: ${b.c} em ${b.f}`); if (w < 800 && b.h < 44) pequenos.push(`${onde}: ${b.c} ${b.h}px`); } };
+      await pg.waitForTimeout(300); await confere('menu');
+      await novoJogo(pg); await pg.waitForSelector('.ag-pino'); await pg.waitForTimeout(300); await confere('mapa');
+      await pg.click('.ag-item[data-alerta="m2"]'); await pg.click('[data-ag="enviar"]'); await pg.waitForSelector('#ag-preparo.ag-ordem'); await pg.waitForTimeout(350); await confere('preparo');
+      assert.match(await pg.textContent('#ag-preparo'), /Ordem de missão/);
+      const dec = await pg.$eval('[data-ag="decolar"]', (b) => { const r = b.getBoundingClientRect(); return { topo: r.top, base: r.bottom, vh: innerHeight }; });
+      assert.ok(dec.topo >= 0 && dec.base <= dec.vh + 1, `Decolar à vista (${JSON.stringify(dec)})`);
+      assert.deepEqual(ruins, []); assert.deepEqual(pequenos, []);
+      assert.deepEqual(erros, []);
+    } finally { await nav.close(); await srv.fechar(); }
+  });
+}

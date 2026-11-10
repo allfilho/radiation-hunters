@@ -392,14 +392,14 @@ export class AgenciaUI {
             return this.htmlCabine() + this.fala('otavio', L.otavio, L.otavioVolta)
                 + `<p class="ag-voo-estado" id="ag-voo-estado" role="status">${preencher(L.vooVolta, { origem: a.local[lang] })}</p>`
                 + `<div class="ag-barra-voo" role="progressbar" aria-label="${L.barra}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ag-barra"><span id="ag-barra-cheia"></span></div>`
-                + `<div class="ag-cartao"><h3>${L.vooTituloVolta}</h3><p class="ag-nota">${preencher(L.distancia, { km: km.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), h })}</p><p class="ag-nota">${preencher(n === 1 ? L.naveVoltaUm : L.naveVolta, { d: n })}</p></div>`
-                + `<div class="ag-acoes"><button type="button" class="menu-btn primary" id="ag-chegar" data-ag="chegar">${L.pularViagem}</button></div>`;
+                + `<div class="ag-cartao"><h3>${L.vooTituloVolta}</h3><p class="ag-nota">${preencher(L.distancia, { km: km.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), h })}</p><p class="ag-nota">${preencher(n === 1 ? L.naveVoltaUm : L.naveVolta, { d: n })}</p>`
+                + `<div class="ag-acoes"><button type="button" class="menu-btn primary" id="ag-chegar" data-ag="chegar">${L.pularViagem}</button></div></div>`;
         }
         return this.htmlCabine() + this.fala('otavio', L.otavio, L.martaVoo)
             + `<p class="ag-voo-estado" id="ag-voo-estado" role="status">${preencher(L.vooSaindo, { destino: a.local[lang] })}</p>`
             + `<div class="ag-barra-voo" role="progressbar" aria-label="${L.barra}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="ag-barra"><span id="ag-barra-cheia"></span></div>`
-            + `<div class="ag-cartao"><h3>${L.briefing}: ${d.titulo}</h3><p>${d.desc}</p><p class="ag-nota">${preencher(L.distancia, { km: km.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), h })}</p></div>`
-            + `<div class="ag-acoes"><button type="button" class="menu-btn primary" id="ag-chegar" data-ag="chegar">${L.pularViagem}</button><button type="button" class="menu-btn secondary" data-ag="cancelar-voo">${L.cancelarVoo}</button></div>`;
+            + `<div class="ag-cartao"><h3>${L.briefing}: ${d.titulo}</h3><p>${d.desc}</p><p class="ag-nota">${preencher(L.distancia, { km: km.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), h })}</p>`
+            + `<div class="ag-acoes"><button type="button" class="menu-btn primary" id="ag-chegar" data-ag="chegar">${L.pularViagem}</button><button type="button" class="menu-btn secondary" data-ag="cancelar-voo">${L.cancelarVoo}</button></div></div>`;
     }
 
     iniciarVoo() {

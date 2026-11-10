@@ -2564,3 +2564,52 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 #identify-modal .modal-btn.ok-btn { background: var(--tinta); color: #f7f0dc; }
 /* o aviso flutuante não cobre a ficha: o resultado já está escrito nela */
 body:has(#identify-modal.active) #notification { display: none; }
+
+/* ============================================================================================
+   v3.47: FUNDAMENTOS (auditoria visual da v3.46)
+   Letras: Orbitron = comandos e rótulos de aço; Inter = texto em aço; Georgia = papel.
+   A fonte de pixel fica só no logotipo e nos rótulos da arte da Base. Cantos: aço 6 px, papel 3 px.
+   ============================================================================================ */
+button, input, select, textarea { font-family: inherit; }   /* nenhum controle cai na fonte padrão do navegador */
+.mission-number, .geiger-label, .combo-value, .shield-key, .source-slot .source-name, .action-key, .pause-content h2, .ag-barra h2, .ag-foto-cab, .ag-console-nome { font-family: var(--ui-font); letter-spacing: .04em; }
+.pause-content h2 { font-size: 1.5rem; } .ag-barra h2 { font-size: clamp(.8rem, 1.7vw, 1.05rem); font-weight: 700; }
+/* cantos */
+.menu-btn, .modal-btn, .back-btn, .mission-tab, .ag-btn-nav, .ag-btn-rel, .ag-menu-bt, .lang-btn, .action-btn, .shield-btn, .close-btn, .ag-fechar { border-radius: 6px; }
+:is(.papel, .telegrama, .turma, .ag-dossie, .ag-geo .ag-cartao:not(.ag-dados), .ag-geo .ag-detalhe, .ag-geo .ag-aviso, #identify-modal, .complete-content, .enc-jornal) :is(.menu-btn, .modal-btn, .enc-opcao, .licao-opcao, .isotope-btn) { border-radius: 3px; }
+/* um principal por superfície: no papel é tinta cheia (o fim de missão usava marrom) */
+.complete-content :is(.menu-btn, .modal-btn) { background: var(--tinta); color: #f7f0dc; border: 2px solid var(--regua); font: 700 var(--bt-fs)/1.2 Georgia, 'Times New Roman', serif; box-shadow: 2px 2px 0 rgba(0,0,0,.25); }
+.complete-content :is(.menu-btn, .modal-btn):is(:hover, :focus-visible) { background: #3a2c1d; color: #fffaf0; outline: 3px solid #2d5a7a; outline-offset: 1px; }
+/* medidas: os comandos de aço também seguem 44 px */
+.ag-menu-bt, .ag-btn-nav, .ag-btn-rel, .lang-btn, .mission-tab, .close-btn, .ag-fechar { min-height: var(--bt-h); }
+.close-btn, .ag-fechar, .ag-btn-rel { min-width: var(--bt-h); }
+.lang-btn { padding: 8px 14px; font-size: var(--bt-fs-s); }
+.shield-btn { min-height: 44px; min-width: 44px; }
+/* respostas dos encontros alinhadas (o recuo parecia erro) */
+.enc-opcao.leve { margin-left: 0; font-size: 16px; min-height: 52px; }
+/* toque: no celular nada abaixo de 44 px */
+@media (max-width: 700px), (pointer: coarse) { .menu-btn.ag-mini, .turma .menu-btn { min-height: 44px; } }
+
+/* ---------- ordem de missão (preparo do voo): um documento só, com barra de ação fixa ---------- */
+.ag-geo #ag-preparo.ag-ordem { background: var(--papel) linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,.04)); color: var(--tinta); font-family: Georgia, 'Times New Roman', serif;
+    border: 3px double var(--regua); border-radius: 3px; padding: 14px 18px 0; box-shadow: 0 10px 30px rgba(0,0,0,.5); gap: 10px; }
+.ag-geo #ag-preparo .papel-cab .papel-nome { font-size: 1.35rem; } .ag-geo #ag-preparo .papel-cab .papel-linha { font-size: .95rem; font-style: normal; font-weight: 700; }
+.ag-geo #ag-preparo > :is(.ag-nota, p), .ag-geo #ag-preparo .ag-cartas > .ag-nota { color: var(--tinta2); font-family: Georgia, serif; }
+.ag-geo #ag-preparo .ag-sub { color: var(--tinta); font: 700 .68rem/1.2 Georgia, serif; letter-spacing: .16em; text-transform: uppercase; border-top: 1px solid var(--regua); border-bottom: 1px solid var(--regua); padding: 2px 0; margin: 6px 0 2px; align-self: flex-start; }
+.ag-geo #ag-preparo .papel-secao { align-self: flex-start; }
+/* o interior da nave é a única peça de aço: uma "foto" emoldurada dentro do documento */
+.ag-geo #ag-preparo .ag-nave-int { border: 2px solid var(--regua); box-shadow: 3px 3px 0 rgba(0,0,0,.25); color: #dff5ff; font-family: var(--body-font); }
+.ag-geo #ag-preparo .ag-nave-int .ag-nota { color: #b7c0cc; font-family: var(--body-font); }
+/* a ficha de dosimetria deixa de ser papel dentro de papel */
+.ag-geo #ag-preparo .ag-plano.papel { background: none; border: 0; box-shadow: none; padding: 0; margin-top: 4px; }
+.ag-geo #ag-preparo .ag-cartas { margin-top: 4px; }
+.ag-geo #ag-preparo .ag-aviso { margin: 0; }
+.ag-geo #ag-preparo .menu-btn { background: #f7f0dc; color: var(--tinta); border: 2px solid var(--regua); border-radius: 3px; box-shadow: 2px 2px 0 rgba(0,0,0,.25); font-family: Georgia, serif; font-weight: 700; text-shadow: none; }
+.ag-geo #ag-preparo .menu-btn:is(.primary, .sel, [aria-pressed="true"]) { background: var(--tinta); color: #f7f0dc; }
+.ag-geo #ag-preparo .menu-btn:is(:hover, :focus-visible):not(:disabled) { background: #fffaf0; color: var(--tinta); outline: 3px solid #2d5a7a; outline-offset: 1px; }
+.ag-geo #ag-preparo .menu-btn:is(.primary, .sel, [aria-pressed="true"]):is(:hover, :focus-visible):not(:disabled) { background: #3a2c1d; color: #fffaf0; }
+.ag-geo #ag-preparo .menu-btn:disabled { opacity: .5; box-shadow: none; }
+.ag-geo #ag-preparo .telegrama .menu-btn { font-family: 'Courier New', monospace; }
+/* barra de ação sempre à vista */
+.ag-barra-acao { position: sticky; bottom: 0; z-index: 3; margin: 6px -18px 0; padding: 10px 18px; background: #e4d7b6; border-top: 3px double var(--regua); box-shadow: 0 -6px 12px rgba(0,0,0,.18); }
+.ag-barra-acao > .menu-btn.primary { flex: 2 1 180px; }
+:is(.ag-painel, .ag-janela):has(#ag-preparo) { padding-bottom: 0; }

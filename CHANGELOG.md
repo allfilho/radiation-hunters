@@ -3,6 +3,14 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.47.0 — 2026-11-10 — Fundamentos da auditoria visual e ordem de missão
+- **Auditoria** (claude/radhunter-auditoria-visual-v3-46.md): 32 telas em dois tamanhos, com medição automática dos botões. Esta versão resolve os passos 1 e 2 do plano.
+- **Letras:** nenhum controle cai mais na fonte padrão do navegador (52 botões estavam em Arial: fechar, idioma, relógio, HUD, escudos). A fonte de pixel fica só no logotipo e nos rótulos da arte da Base; título da Agência, "PAUSADO", rótulos do Geiger e do HUD passam à fonte de interface.
+- **Cantos e medidas:** aço 6 px, papel 3 px; comandos de aço (menu de salas, navegação, relógio, idioma, abas, fechar) com 44 px; no celular nenhum botão abaixo de 44 px.
+- **Um principal por superfície:** o botão do fim de missão (marrom) passa a tinta cheia, como os outros em papel. Respostas dos encontros alinhadas.
+- **Ordem de missão:** o preparo do voo virou um documento único em papel (Equipe a bordo, Cientistas na Base, Ficha de dosimetria, Carta de campo, telegrama), com o interior da nave como única peça de aço e **barra de ação fixa**: "Decolar" fica sempre à vista. No voo, os botões entraram no documento do briefing.
+- **Testes:** 92 ampliado (nenhum botão fora das famílias do sistema em menu, mapa e preparo; Decolar visível sem rolar; alvos de toque ≥ 44 px no celular).
+
 ## v3.46.0 — 2026-11-10 — Sistema de interface: um botão, duas superfícies
 - **Motivo:** o treinamento e outras telas misturavam três estilos de botão (neon, aço e papel), tamanhos diferentes e três famílias de letra. Esta versão define um sistema e o aplica.
 - **Um botão, duas medidas:** todo botão de ação tem 44 px de altura (38 px na versão compacta), a mesma letra e o mesmo recuo. Botões lado a lado dividem a linha por igual; sozinho, ocupa a largura do documento. O menu inicial tem todos os botões da mesma largura.
