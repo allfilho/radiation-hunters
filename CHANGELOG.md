@@ -3,6 +3,13 @@
 Novas entradas entram no TOPO desta lista (logo abaixo do marcador). O histórico completo também está no Git (`git log`) e nos tags `vX.Y.Z`.
 
 <!-- HISTORICO-INICIO -->
+## v3.45.0 — 2026-11-10 — Uma regra visual (aço e papel) e movimento
+- **Regra única em toda a Agência:** aço para aparelhos e comandos (barra, mapa-múndi, interior da nave, HUD, modais de sistema); **papel para documentos e notícias**. Todos os cartões de conteúdo das salas da Base (Laboratório, Oficina, Dep. médico, Academia, Cofre, Biblioteca, Hangar, Centro de comando, Alojamento) e o detalhe do alerta passam a ser papel com tinta escura, títulos em serifa e botões de papel (o principal em tinta cheia).
+- **Alertas como recortes de notícia** (faixa colorida por tipo), avisos como bilhetes, cientistas do preparo como mini-fichas.
+- **Movimento:** entrada curta e escalonada dos documentos ao trocar de vista ou de sala (nunca a cada clique), detalhe do alerta sobe ao selecionar, resposta ao passar e ao tocar em alertas, cartas e fichas, transição suave entre telas. Tudo desligado com "reduzir movimento" do sistema.
+- **Correção:** as opções do plano de dose vazavam da ficha no computador (defeito da v3.42).
+- **Testes:** novo 92 (auditoria automática de contraste ≥ 4,5 de todo texto em papel, em 9 salas, lista e detalhe, desktop e celular; plano sem vazar; regras do movimento).
+
 ## v3.44.0 — 2026-11-10 — Dossiês em papel, Hangar em papel e símbolos desenhados
 - **Dossiês dos cientistas** (Alojamento e Dep. médico) como pasta de arquivo em papel manila: tinta escura, cores da caneta e do moral escurecidas para leitura no papel (contraste testado), botões em papel.
 - **Hangar** como "Quadro de operações" e coleta como "Ordem de serviço", em papel.

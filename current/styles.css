@@ -2443,3 +2443,58 @@ span.ag-caneta { background: transparent; font-weight: 700; }
 .ag-carta-icone { color: #f2d98b; display: grid; place-items: center; }
 .ag-carta-icone .arcano-svg { width: 46px; height: 46px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.6)); }
 .arcano-oferta .ag-carta-icone .arcano-svg { width: 40px; height: 40px; }
+
+/* ============================================
+   v3.45: UMA REGRA VISUAL. Aço = aparelhos e comandos (barra, mapa, nave, HUD, modais de sistema).
+   Papel = documentos e notícias (todo cartão de conteúdo da Agência, alertas, detalhe, avisos).
+   ============================================ */
+.ag-geo .ag-cartao:not(.ag-dados):not(#ag-preparo), .ag-geo .ag-detalhe:not(:empty) {
+    background: var(--papel) linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,.04)); color: var(--tinta); font-family: Georgia, 'Times New Roman', serif;
+    border: 3px double var(--regua); border-radius: 3px; padding: 12px 16px; box-shadow: 0 6px 18px rgba(0,0,0,.4); }
+.ag-geo .ag-cartao:not(.ag-dados):not(#ag-preparo) h3, .ag-geo .ag-detalhe h3 { font-family: Georgia, serif; font-variant: small-caps; font-weight: 800; font-size: 1.12rem; letter-spacing: .02em; color: var(--tinta); border-bottom: 1px solid var(--regua); padding-bottom: 3px; }
+.ag-geo .ag-cartao:not(.ag-dados):not(#ag-preparo) :is(.ag-nota, .ag-dica, .ag-item-local), .ag-geo .ag-detalhe :is(.ag-nota, .ag-dica, .ag-item-local) { color: var(--tinta2); }
+.ag-geo .ag-cartao:not(.ag-dados):not(#ag-preparo) :is(.ag-sub, h4, strong, .ag-fala-nome, li), .ag-geo .ag-detalhe :is(strong, li) { color: var(--tinta); }
+.ag-geo .ag-cartao:not(.ag-dados):not(#ag-preparo) .ag-sub { font-family: Georgia, serif; font-size: 1rem; }
+.ag-geo .ag-detalhe .ag-item-tipo, .ag-geo .ag-item .ag-item-tipo { color: var(--carimbo); }
+.ag-geo .ag-detalhe .ag-boletim strong { color: #e8f1e9; } .ag-geo .ag-detalhe .ag-boletim q { color: #c9d4de; }
+/* botões dentro de papel: papel claro; o principal é tinta cheia */
+.ag-geo :is(.ag-cartao:not(.ag-dados):not(#ag-preparo), .ag-detalhe) .menu-btn { background: #f7f0dc; color: var(--tinta); border: 2px solid var(--regua); border-radius: 3px; box-shadow: 2px 2px 0 rgba(0,0,0,.25); font-family: Georgia, serif; text-shadow: none; }
+.ag-geo :is(.ag-cartao:not(.ag-dados):not(#ag-preparo), .ag-detalhe) .menu-btn.primary { background: var(--tinta); color: var(--papel); }
+.ag-geo :is(.ag-cartao:not(.ag-dados):not(#ag-preparo), .ag-detalhe) .menu-btn:is(:hover, :focus-visible):not(:disabled) { background: #fffaf0; color: var(--tinta); outline: 3px solid #2d5a7a; outline-offset: 1px; }
+.ag-geo :is(.ag-cartao:not(.ag-dados):not(#ag-preparo), .ag-detalhe) .menu-btn.primary:is(:hover, :focus-visible):not(:disabled) { background: #3a2c1d; color: #fffaf0; }
+.ag-geo :is(.ag-cartao:not(.ag-dados):not(#ag-preparo), .ag-detalhe) .menu-btn:disabled { opacity: .55; box-shadow: none; }
+.ag-geo :is(.ag-cartao:not(.ag-dados):not(#ag-preparo), .ag-detalhe) .menu-btn :is(span, small) { color: inherit; }
+/* alertas como recortes de notícia */
+.ag-geo .ag-item { background: #f3ead2; color: var(--tinta); border: 1px solid #a89062; border-left: 6px solid var(--carimbo); border-radius: 2px; font-family: Georgia, serif; box-shadow: 2px 2px 0 rgba(0,0,0,.3); }
+.ag-geo .ag-item.rapida { border-left-color: #b07a12; } .ag-geo .ag-item.investigacao { border-left-color: #2d5a7a; }
+.ag-geo .ag-item.rapida .ag-item-tipo { color: #7a5200; } .ag-geo .ag-item.investigacao .ag-item-tipo { color: #214a66; }
+.ag-geo .ag-item .ag-item-titulo { font-size: 1.02rem; font-weight: 800; color: var(--tinta); }
+.ag-geo .ag-item .ag-item-local, .ag-geo .ag-item .ag-rende { color: var(--tinta2); }
+.ag-geo .ag-item:is(:hover, :focus-visible) { background: #fffaf0; border-color: var(--regua); border-left-color: var(--carimbo); }
+.ag-geo .ag-item.sel { background: #fffaf0; outline: 3px solid var(--primary); outline-offset: 1px; }
+.ag-geo .ag-detalhe .ag-rende { color: var(--tinta2); }
+/* avisos como bilhetes */
+.ag-geo .ag-aviso:not(.telegrama) { background: #f6e9a8; color: var(--tinta); border: 1px solid #8a7341; border-left: 6px solid #b07a12; border-radius: 2px; font-family: Georgia, serif; box-shadow: 2px 2px 0 rgba(0,0,0,.3); }
+.ag-geo .ag-aviso:not(.telegrama) p { color: var(--tinta); }
+/* correção: opções do plano de dose não vazam */
+.ag-plano-op .menu-btn { width: 100%; min-width: 0; }
+/* cartões de cientista do preparo: mini-ficha em papel */
+.ag-geo .ag-cartao-cient { background: #e6d6a4; color: var(--tinta); border: 1px solid #8a7341; border-top: 5px solid #c9b276; border-radius: 2px 8px 2px 2px; font-family: Georgia, serif; box-shadow: 2px 2px 0 rgba(0,0,0,.3); }
+.ag-geo .ag-cartao-cient :is(strong, span) { color: var(--tinta); }
+.ag-geo .ag-cartao-cient .ag-c-verde { background: transparent; color: #145c30; } .ag-geo .ag-cartao-cient .ag-c-amarelo { background: transparent; color: #7a5a00; } .ag-geo .ag-cartao-cient .ag-c-vermelho { background: transparent; color: #8f1d12; }
+.ag-geo .ag-cartao-cient.ag-borda-verde { border-top-color: #1f8a4c; } .ag-geo .ag-cartao-cient.ag-borda-amarelo { border-top-color: #c79a00; } .ag-geo .ag-cartao-cient.ag-borda-vermelho { border-top-color: #b3261a; }
+
+/* ---------- movimento (v3.45): entradas curtas, resposta ao toque; nada se move com "reduzir movimento" ---------- */
+@media (prefers-reduced-motion: no-preference) {
+    @keyframes rh-sobe { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    @keyframes rh-surge { from { opacity: 0; } to { opacity: 1; } }
+    .ag-entra > * { animation: rh-sobe .22s ease-out both; }
+    .ag-entra > *:nth-child(2) { animation-delay: .04s; } .ag-entra > *:nth-child(3) { animation-delay: .08s; } .ag-entra > *:nth-child(4) { animation-delay: .12s; } .ag-entra > *:nth-child(n+5) { animation-delay: .16s; }
+    .ag-entra-det { animation: rh-sobe .18s ease-out both; }
+    .ag-geo .ag-item, .ag-carta, .ag-geo .menu-btn, .ag-geo .ag-cartao-cient, .ag-geo .ag-assento, .ag-menu-bt { transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease, border-color .12s ease; }
+    .ag-geo .ag-item:is(:hover, :focus-visible) { transform: translateX(3px); }
+    .ag-geo .ag-cartao-cient:not(:disabled):hover { transform: translateY(-2px); }
+    .ag-geo .ag-item:active, .ag-geo .ag-cartao-cient:not(:disabled):active, .ag-carta:active { transform: scale(.98); }
+    .screen.active { animation: rh-surge .18s ease-out; }
+    .ag-relatorio.papel { animation: rh-sobe .3s ease-out both; }
+}

@@ -275,6 +275,10 @@ export class AgenciaUI {
 <div class="ag-corpo"><div class="ag-palco">${palco}</div>${this.vista === 'mapa' ? `<aside class="ag-painel${this.preparo ? ' ag-sobreposto' : ''}" ${this.preparo ? 'role="dialog" ' : ''}aria-label="${L.registro}">${painel}</aside>` : this.htmlJanelaBase(painel)}</div>
 <p class="ag-anuncio sr-only" id="ag-anuncio" role="status"></p></div>`;
         this.el.setAttribute('aria-label', NOME_AGENCIA[currentLang]);
+        // v3.45: entradas animadas só quando a vista, a sala ou o alerta selecionado mudam (nunca a cada clique)
+        const chave = [this.vista, this.sala, !!this.preparo, !!this.voo, !!this.normas].join('|');
+        if (chave !== this._chaveVista) { this._chaveVista = chave; this.el.querySelectorAll('.ag-painel, .ag-janela').forEach((n) => n.classList.add('ag-entra')); }
+        if (this.sel !== this._selAnim) { this._selAnim = this.sel; const d = this.el.querySelector('#ag-detalhe'); if (d && this.sel) d.classList.add('ag-entra-det'); }
         this.ligar(); this.atualizarHud();
         if (this.voo) this.iniciarVoo();
         if (anuncio) { const n = this.el.querySelector('#ag-anuncio'); if (n) n.textContent = anuncio; }
